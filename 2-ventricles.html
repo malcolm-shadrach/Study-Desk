@@ -1,0 +1,119 @@
+
+<style>
+  .notes-wrap { padding: 1.5rem 0; font-family: var(--font-sans); }
+  .section { margin-bottom: 1.5rem; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); overflow: hidden; }
+  .section-header { padding: 0.6rem 1rem; font-size: 13px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+  .section-body { padding: 0.75rem 1rem; }
+  .item { display: flex; gap: 10px; padding: 6px 0; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 14px; line-height: 1.5; color: var(--color-text-primary); }
+  .item:last-child { border-bottom: none; }
+  .label { font-weight: 500; min-width: 170px; flex-shrink: 0; color: var(--color-text-primary); }
+  .val { color: var(--color-text-secondary); }
+  .flow-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; padding: 4px 0; }
+  .node { padding: 4px 12px; border-radius: var(--border-radius-md); font-size: 13px; font-weight: 500; }
+  .arr { color: var(--color-text-tertiary); font-size: 16px; }
+  .purple-h { background: #EEEDFE; color: #3C3489; }
+  .teal-h { background: #E1F5EE; color: #085041; }
+  .amber-h { background: #FAEEDA; color: #633806; }
+  .coral-h { background: #FAECE7; color: #712B13; }
+  .blue-h { background: #E6F1FB; color: #0C447C; }
+  .gray-h { background: #F1EFE8; color: #444441; }
+  .tag { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 99px; margin-right: 4px; }
+  @media (prefers-color-scheme: dark) {
+    .purple-h { background: #3C3489; color: #CECBF6; }
+    .teal-h { background: #085041; color: #9FE1CB; }
+    .amber-h { background: #633806; color: #FAC775; }
+    .coral-h { background: #712B13; color: #F5C4B3; }
+    .blue-h { background: #0C447C; color: #B5D4F4; }
+    .gray-h { background: #444441; color: #D3D1C7; }
+  }
+</style>
+
+<div class="notes-wrap">
+
+  <div style="font-size: 18px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 1.25rem;">The ventricular system</div>
+
+  <div class="section">
+    <div class="section-header teal-h">Overview</div>
+    <div class="section-body">
+      <div class="item"><span class="val">Ventricles are fluid-filled cavities within the brain containing cerebrospinal fluid (CSF). There are four ventricles total.</span></div>
+      <div class="item"><span class="label">CSF is made by</span><span class="val">Choroid plexus — pink, gummy tissue found in every ventricle</span></div>
+      <div class="item"><span class="label">CSF is circulated by</span><span class="val">Ependymal cells (part of the choroid plexus)</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header purple-h">Lateral ventricles (×2)</div>
+    <div class="section-body">
+      <div class="item"><span class="label">Number</span><span class="val">Two — one left, one right</span></div>
+      <div class="item"><span class="label">Parts</span><span class="val">Anterior horn · Posterior horn · Inferior horn</span></div>
+      <div class="item"><span class="label">Separator</span><span class="val">Septum pellucidum — thin membrane between the two lateral ventricles</span></div>
+      <div class="item"><span class="label">Choroid plexus</span><span class="val">Present in each lateral ventricle; produces CSF</span></div>
+      <div class="item"><span class="label">Drains via</span><span class="val">Interventricular foramen (also called foramen of Monro) → 3rd ventricle</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header amber-h">Third ventricle</div>
+    <div class="section-body">
+      <div class="item"><span class="label">Receives CSF from</span><span class="val">Both lateral ventricles via interventricular foramina</span></div>
+      <div class="item"><span class="label">Choroid plexus</span><span class="val">Present; produces CSF</span></div>
+      <div class="item"><span class="label">Drains via</span><span class="val">Cerebral aqueduct (runs through the midbrain) → 4th ventricle</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header coral-h">Fourth ventricle</div>
+    <div class="section-body">
+      <div class="item"><span class="label">Receives CSF from</span><span class="val">Third ventricle via cerebral aqueduct</span></div>
+      <div class="item"><span class="label">Choroid plexus</span><span class="val">Present; produces CSF</span></div>
+      <div class="item"><span class="label">CSF exits via (×2)</span><span class="val">Lateral apertures = foramina of Luschka (one each side)</span></div>
+      <div class="item"><span class="label">CSF exits via (×1)</span><span class="val">Median aperture = foramen of Magendie (midline)</span></div>
+      <div class="item"><span class="label">All apertures drain into</span><span class="val">Subarachnoid space</span></div>
+      <div class="item"><span class="label">Alternative route</span><span class="val">CSF can also travel down the central canal of the spinal cord</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header blue-h">CSF flow pathway</div>
+    <div class="section-body" style="padding-top: 0.9rem; padding-bottom: 0.9rem;">
+      <div class="flow-row">
+        <span class="node purple-h">Lateral ventricles</span>
+        <span class="arr">→</span>
+        <span class="node gray-h" style="font-size:12px;">Interventricular foramen</span>
+        <span class="arr">→</span>
+        <span class="node amber-h">3rd ventricle</span>
+        <span class="arr">→</span>
+        <span class="node gray-h" style="font-size:12px;">Cerebral aqueduct</span>
+        <span class="arr">→</span>
+        <span class="node coral-h">4th ventricle</span>
+      </div>
+      <div class="flow-row" style="margin-top: 10px; padding-left: 8px;">
+        <span class="arr">↓</span>
+      </div>
+      <div class="flow-row">
+        <span class="node blue-h">Subarachnoid space</span>
+        <span style="font-size:13px; color: var(--color-text-secondary);">via foramina of Luschka (×2) + Magendie (×1)</span>
+      </div>
+      <div class="flow-row" style="margin-top: 6px;">
+        <span style="font-size:13px; color: var(--color-text-secondary);">— or —</span>
+      </div>
+      <div class="flow-row">
+        <span class="node teal-h">Central canal of spinal cord</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header gray-h">Key terms to memorize</div>
+    <div class="section-body">
+      <div class="item"><span class="label">Choroid plexus</span><span class="val">CSF-producing tissue in every ventricle</span></div>
+      <div class="item"><span class="label">Septum pellucidum</span><span class="val">Thin membrane separating the two lateral ventricles</span></div>
+      <div class="item"><span class="label">Interventricular foramen</span><span class="val">Connects lateral ventricles → 3rd ventricle (= foramen of Monro)</span></div>
+      <div class="item"><span class="label">Cerebral aqueduct</span><span class="val">Connects 3rd → 4th ventricle; passes through midbrain</span></div>
+      <div class="item"><span class="label">Foramina of Luschka</span><span class="val">Lateral apertures of 4th ventricle (×2)</span></div>
+      <div class="item"><span class="label">Foramen of Magendie</span><span class="val">Median aperture of 4th ventricle (×1)</span></div>
+      <div class="item"><span class="label">Subarachnoid space</span><span class="val">Where CSF goes after leaving the 4th ventricle</span></div>
+    </div>
+  </div>
+
+</div>

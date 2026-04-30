@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brain Anatomy — Overview Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F4F1EC;
+    --surface: #FDFCFA;
+    --border: #E0DBD3;
+    --text: #191612;
+    --muted: #7A7469;
+    --accent: #3B6D8C;
+    --accent-dk: #2C5470;
+    --accent-light: #EBF3F8;
+    --green: #2E6B3E;
+    --green-light: #EAF4EC;
+    --green-border: #A8D5B5;
+    --red: #8E2D2D;
+    --red-light: #F8EAEA;
+    --red-border: #E5AAAA;
+    --reveal: #1A4F6E;
+    --reveal-light: #E6F2FA;
+    --reveal-border: #90C3DC;
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 1rem 5rem;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    max-width: 560px;
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+
+  .tag-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 0.9rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: var(--surface);
+  }
+
+  .tag.purple { background: #EEEDFE; border-color: #AFA9EC; color: #3C3489; }
+  .tag.teal   { background: #E1F5EE; border-color: #5DCAA5; color: #085041; }
+  .tag.coral  { background: #FAECE7; border-color: #F0997B; color: #712B13; }
+  .tag.blue   { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
+  .tag.amber  { background: #FAEEDA; border-color: #EF9F27; color: #633806; }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(30px, 6vw, 42px);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+  }
+
+  h1 em { font-style: italic; color: var(--accent); }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  /* Card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    width: 100%;
+    max-width: 560px;
+    box-shadow: 0 1px 24px rgba(0,0,0,0.05);
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .q-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .score-pill {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: var(--bg);
+  }
+
+  .progress-track {
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    padding: 2px 9px;
+    border-radius: 20px;
+    margin-bottom: 0.6rem;
+    font-weight: 500;
+  }
+
+  .q-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--text);
+    margin-bottom: 1.4rem;
+    min-height: 56px;
+    font-weight: 400;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+
+  .opt {
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 11px 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    line-height: 1.45;
+  }
+
+  .opt:hover:not(:disabled) {
+    background: var(--bg);
+    border-color: #C0B9B0;
+    transform: translateX(3px);
+  }
+
+  .opt:disabled { cursor: default; transform: none; }
+
+  .opt.correct {
+    background: var(--green-light);
+    border-color: var(--green);
+    color: var(--green);
+    font-weight: 500;
+  }
+
+  .opt.wrong {
+    background: var(--red-light);
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  .opt.reveal {
+    background: var(--reveal-light);
+    border-color: var(--reveal);
+    color: var(--reveal);
+  }
+
+  .feedback {
+    font-size: 13px;
+    line-height: 1.65;
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    margin-bottom: 1.25rem;
+    display: none;
+    animation: fadeUp 0.2s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(-5px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .feedback.show { display: block; }
+  .feedback.ok  { background: var(--green-light); color: var(--green); border: 1px solid var(--green-border); }
+  .feedback.bad { background: var(--red-light);   color: var(--red);   border: 1px solid var(--red-border);   }
+
+  .next-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 24px;
+    border-radius: var(--radius);
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    display: none;
+    transition: background 0.15s, transform 0.1s;
+  }
+
+  .next-btn.show { display: inline-block; }
+  .next-btn:hover { background: var(--accent-dk); transform: translateY(-1px); }
+  .next-btn:active { transform: translateY(0); }
+
+  /* Results */
+  .done {
+    text-align: center;
+    padding: 0.5rem 0 1rem;
+    display: none;
+  }
+
+  .done-score {
+    font-family: 'DM Serif Display', serif;
+    font-size: 64px;
+    font-weight: 400;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .done-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .done-msg {
+    font-size: 15px;
+    color: var(--text);
+    margin-bottom: 1.75rem;
+    line-height: 1.6;
+  }
+
+  .done-msg em {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .restart-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 28px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+
+  .restart-btn:hover { background: var(--bg); transform: translateY(-1px); }
+
+  footer {
+    margin-top: 2rem;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag-row">
+    <span class="tag purple">Cerebrum</span>
+    <span class="tag blue">Diencephalon</span>
+    <span class="tag coral">Brainstem</span>
+    <span class="tag teal">Cerebellum</span>
+    <span class="tag amber">Internal structures</span>
+  </div>
+  <h1>Brain <em>Anatomy</em><br>Overview Quiz</h1>
+  <p class="subtitle">Ninja Nerd · Dissectible Model Lecture &nbsp;·&nbsp; 14 questions</p>
+</header>
+
+<div class="card">
+  <div id="quiz-body">
+    <div class="meta-row">
+      <span class="q-label" id="qcount">Question 1 of 14</span>
+      <span class="score-pill" id="scorepill">Score: 0</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+    <div id="section-tag-wrap"></div>
+    <div class="q-text" id="qtext"></div>
+    <div class="options" id="opts"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextbtn" onclick="nextQ()">Next question →</button>
+  </div>
+
+  <div class="done" id="done">
+    <div class="done-score" id="done-score"></div>
+    <div class="done-label">Final score</div>
+    <div class="done-msg" id="done-msg"></div>
+    <button class="restart-btn" onclick="restart()">Try again</button>
+  </div>
+</div>
+
+<footer>Select an answer to reveal the explanation &nbsp;·&nbsp; Questions shuffle each attempt</footer>
+
+<script>
+const ALL = [
+  {
+    section:"Cerebrum", sclass:"purple",
+    q:"What is the largest part of the brain, and what are its two main structural divisions?",
+    opts:["Cerebellum — left and right lobes","Cerebrum — right and left hemispheres","Brainstem — midbrain and pons","Diencephalon — thalamus and hypothalamus"],
+    ans:1,
+    exp:"The cerebrum is the largest part of the brain, divided into the right and left hemispheres. The two hemispheres are connected by the corpus callosum."
+  },
+  {
+    section:"Cerebrum", sclass:"purple",
+    q:"What structure connects the right and left hemispheres of the cerebrum, and what does it do?",
+    opts:["The thalamus — relays sensory signals","The corpus callosum — allows communication between hemispheres","The internal capsule — carries motor fibres","The pons — connects hemispheres to the spinal cord"],
+    ans:1,
+    exp:"The corpus callosum is a large white matter tract that bridges the two hemispheres, enabling them to communicate and coordinate with each other."
+  },
+  {
+    section:"Cerebrum — Lobes", sclass:"purple",
+    q:"Which lobe of the cerebrum is primarily responsible for motor control, decision-making, and speech production?",
+    opts:["Parietal lobe","Occipital lobe","Temporal lobe","Frontal lobe"],
+    ans:3,
+    exp:"The frontal lobe handles voluntary motor control, higher cognitive functions, and speech production (via Broca's area). It sits anterior to the central sulcus."
+  },
+  {
+    section:"Cerebrum — Lobes", sclass:"purple",
+    q:"A patient has difficulty recognising objects visually despite having intact eyes. Which lobe is most likely affected?",
+    opts:["Frontal lobe","Parietal lobe","Temporal lobe","Occipital lobe"],
+    ans:3,
+    exp:"The occipital lobe is the primary visual processing centre. Damage can cause visual agnosia — the inability to interpret what the eyes see — even with intact ocular function."
+  },
+  {
+    section:"Cerebrum — Lobes", sclass:"purple",
+    q:"Somatosensory processing (touch, pain, proprioception) is the primary function of which lobe?",
+    opts:["Frontal lobe","Parietal lobe","Temporal lobe","Occipital lobe"],
+    ans:1,
+    exp:"The parietal lobe, sitting posterior to the central sulcus, contains the primary somatosensory cortex (post-central gyrus) and processes touch, pain, temperature, and proprioception."
+  },
+  {
+    section:"Diencephalon", sclass:"blue",
+    q:"The thalamus is best described as which of the following?",
+    opts:["The emotional centre of the brain","A relay station that routes sensory signals to the correct cortical area","The regulator of hunger and body temperature","The coordinator of smooth voluntary movement"],
+    ans:1,
+    exp:"The thalamus acts as the brain's central relay station — it receives sensory information from the body and routes it to the appropriate areas of the cerebral cortex for processing."
+  },
+  {
+    section:"Diencephalon", sclass:"blue",
+    q:"A tumour compressing the hypothalamus causes abnormal weight gain, constant cold intolerance, and disrupted sleep. Which functions are being disrupted?",
+    opts:["Motor planning and coordination","Sensory relay and visual processing","Hormonal regulation, temperature control, and sleep-wake cycle","Memory formation and language"],
+    ans:2,
+    exp:"The hypothalamus regulates temperature, hunger, thirst, sleep, and hormonal output (via the pituitary gland). Compression disrupts all three functions seen in this patient."
+  },
+  {
+    section:"Diencephalon", sclass:"blue",
+    q:"Which structure connects the hypothalamus to the pituitary gland, forming the basis of hormonal control?",
+    opts:["Corpus callosum","Arcuate fasciculus","Hypothalamo-hypophyseal axis","Medial lemniscus"],
+    ans:2,
+    exp:"The hypothalamus communicates with the pituitary (hypophysis) via the hypothalamo-hypophyseal axis — controlling the release of hormones that regulate thyroid, adrenal, and reproductive function."
+  },
+  {
+    section:"Brainstem", sclass:"coral",
+    q:"The brainstem consists of three parts. Which of the following correctly lists all three?",
+    opts:["Pons, cerebellum, medulla","Midbrain, pons, medulla oblongata","Thalamus, midbrain, pons","Medulla, hypothalamus, midbrain"],
+    ans:1,
+    exp:"The brainstem is made up of three structures from top to bottom: midbrain, pons, and medulla oblongata. It connects the brain to the spinal cord and controls vital functions."
+  },
+  {
+    section:"Brainstem", sclass:"coral",
+    q:"Why is damage to the medulla oblongata considered immediately life-threatening above all other brain injuries?",
+    opts:["It controls memory and personality","It regulates hunger and thirst","It controls breathing, heart rate, and blood pressure","It coordinates voluntary movement"],
+    ans:2,
+    exp:"The medulla oblongata contains the vital centres controlling breathing, heart rate, and blood pressure. Damage here can cause respiratory arrest or cardiac arrest, which are immediately fatal without intervention."
+  },
+  {
+    section:"Brainstem", sclass:"coral",
+    q:"Motor pathways from the cerebral cortex cross (decussate) at which structure, causing contralateral motor deficits after a stroke?",
+    opts:["The pons","The midbrain","The pyramidal decussation in the medulla oblongata","The internal capsule"],
+    ans:2,
+    exp:"The corticospinal tract crosses at the pyramidal decussation in the medulla oblongata. This is why a right hemisphere stroke causes left-sided weakness — the pathway has already crossed before reaching the spinal cord."
+  },
+  {
+    section:"Cerebellum", sclass:"teal",
+    q:"A patient has wide-based staggering gait and cannot coordinate their limbs, but muscle strength is completely intact. Which structure is damaged?",
+    opts:["Frontal lobe — motor cortex","Thalamus","Cerebellum","Parietal lobe"],
+    ans:2,
+    exp:"This is cerebellar ataxia. The cerebellum fine-tunes and coordinates movement but does not generate it. Intact strength rules out the motor cortex; the coordination deficit points directly to the cerebellum."
+  },
+  {
+    section:"Cerebellum", sclass:"teal",
+    q:"What is the key distinction between the cerebellum's role and the cerebrum's role in voluntary movement?",
+    opts:["The cerebellum initiates movement; the cerebrum refines it","The cerebrum initiates movement; the cerebellum fine-tunes and coordinates it","Both initiate movement independently","Neither initiates movement — that is the brainstem's role"],
+    ans:1,
+    exp:"The frontal lobe of the cerebrum plans and initiates voluntary movement. The cerebellum does not initiate movement — it receives feedback and smooths out the execution, ensuring precision, coordination, and balance."
+  },
+  {
+    section:"Internal Structures", sclass:"amber",
+    q:"Cerebrospinal fluid (CSF) is found in the ventricles of the brain. Who produces it, and what is its primary function?",
+    opts:["The dura mater — provides structural support","The choroid plexus — cushions the brain and spinal cord","The thalamus — regulates fluid balance","The arachnoid villi — produces and absorbs nutrients"],
+    ans:1,
+    exp:"CSF is produced by the choroid plexus within the ventricles. It circulates around the brain and spinal cord, cushioning them from mechanical shock and helping to maintain a stable chemical environment."
+  },
+];
+
+let qs, qi, score, answered;
+
+const scolors = {
+  purple: { bg:"#EEEDFE", color:"#3C3489", border:"#AFA9EC" },
+  blue:   { bg:"#E6F1FB", color:"#0C447C", border:"#85B7EB" },
+  coral:  { bg:"#FAECE7", color:"#712B13", border:"#F0997B" },
+  teal:   { bg:"#E1F5EE", color:"#085041", border:"#5DCAA5" },
+  amber:  { bg:"#FAEEDA", color:"#633806", border:"#EF9F27" },
+};
+
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function restart() {
+  qs = shuffle([...ALL]);
+  qi = 0; score = 0; answered = false;
+  document.getElementById('done').style.display = 'none';
+  document.getElementById('quiz-body').style.display = 'block';
+  render();
+}
+
+function render() {
+  answered = false;
+  const total = qs.length;
+  document.getElementById('prog').style.width = ((qi / total) * 100) + '%';
+  document.getElementById('qcount').textContent = 'Question ' + (qi + 1) + ' of ' + total;
+  document.getElementById('scorepill').textContent = 'Score: ' + score;
+
+  const q = qs[qi];
+  const sc = scolors[q.sclass] || scolors.blue;
+  const wrap = document.getElementById('section-tag-wrap');
+  wrap.innerHTML = '';
+  const stag = document.createElement('span');
+  stag.className = 'section-tag';
+  stag.textContent = q.section;
+  stag.style.background = sc.bg;
+  stag.style.color = sc.color;
+  stag.style.border = '1px solid ' + sc.border;
+  wrap.appendChild(stag);
+
+  document.getElementById('qtext').textContent = q.q;
+
+  const optsEl = document.getElementById('opts');
+  optsEl.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.textContent = o;
+    btn.onclick = () => answer(i);
+    optsEl.appendChild(btn);
+  });
+
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback';
+  fb.textContent = '';
+
+  const nb = document.getElementById('nextbtn');
+  nb.className = 'next-btn';
+  nb.textContent = qi === qs.length - 1 ? 'See results' : 'Next question →';
+}
+
+function answer(i) {
+  if (answered) return;
+  answered = true;
+  const q = qs[qi];
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach((b, idx) => {
+    b.disabled = true;
+    if (idx === q.ans) b.classList.add(i === q.ans ? 'correct' : 'reveal');
+    else if (idx === i) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('feedback');
+  if (i === q.ans) {
+    score++;
+    fb.className = 'feedback show ok';
+    fb.textContent = '✓ Correct! ' + q.exp;
+  } else {
+    fb.className = 'feedback show bad';
+    fb.textContent = '✗ Not quite. ' + q.exp;
+  }
+  document.getElementById('scorepill').textContent = 'Score: ' + score;
+  document.getElementById('nextbtn').classList.add('show');
+}
+
+function nextQ() {
+  qi++;
+  if (qi >= qs.length) {
+    document.getElementById('quiz-body').style.display = 'none';
+    const d = document.getElementById('done');
+    d.style.display = 'block';
+    document.getElementById('done-score').textContent = score + '/' + qs.length;
+    const pct = Math.round((score / qs.length) * 100);
+    let msg;
+    if (pct === 100) msg = 'Perfect score — <em>the brain holds no secrets from you.</em>';
+    else if (pct >= 85) msg = 'Excellent work. <em>Almost there — review the ones you missed.</em>';
+    else if (pct >= 70) msg = 'Solid foundation. <em>A few gaps worth revisiting before your exam.</em>';
+    else if (pct >= 50) msg = 'Good start. <em>Go back over the study notes and try again.</em>';
+    else msg = 'Keep going — <em>review the notes section by section and try again.</em>';
+    document.getElementById('done-msg').innerHTML = msg;
+    document.getElementById('prog').style.width = '100%';
+  } else {
+    render();
+  }
+}
+
+restart();
+</script>
+</body>
+</html>

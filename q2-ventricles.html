@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ventricular System — Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F4F1EC;
+    --surface: #FDFCFA;
+    --border: #E0DBD3;
+    --text: #191612;
+    --muted: #7A7469;
+    --accent: #3B6D8C;
+    --accent-dk: #2C5470;
+    --accent-light: #EBF3F8;
+    --green: #2E6B3E;
+    --green-light: #EAF4EC;
+    --green-border: #A8D5B5;
+    --red: #8E2D2D;
+    --red-light: #F8EAEA;
+    --red-border: #E5AAAA;
+    --reveal: #1A4F6E;
+    --reveal-light: #E6F2FA;
+    --reveal-border: #90C3DC;
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 1rem 5rem;
+  }
+
+  header {
+    text-align: center;
+    max-width: 560px;
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+
+  .tag-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 0.9rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: var(--surface);
+  }
+
+  .tag.purple { background: #EEEDFE; border-color: #AFA9EC; color: #3C3489; }
+  .tag.teal   { background: #E1F5EE; border-color: #5DCAA5; color: #085041; }
+  .tag.coral  { background: #FAECE7; border-color: #F0997B; color: #712B13; }
+  .tag.blue   { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
+  .tag.amber  { background: #FAEEDA; border-color: #EF9F27; color: #633806; }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(30px, 6vw, 42px);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+  }
+
+  h1 em { font-style: italic; color: var(--accent); }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    width: 100%;
+    max-width: 560px;
+    box-shadow: 0 1px 24px rgba(0,0,0,0.05);
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .q-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .score-pill {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: var(--bg);
+  }
+
+  .progress-track {
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    padding: 2px 9px;
+    border-radius: 20px;
+    margin-bottom: 0.6rem;
+    font-weight: 500;
+  }
+
+  .q-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--text);
+    margin-bottom: 1.4rem;
+    min-height: 56px;
+    font-weight: 400;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+
+  .opt {
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 11px 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    line-height: 1.45;
+  }
+
+  .opt:hover:not(:disabled) {
+    background: var(--bg);
+    border-color: #C0B9B0;
+    transform: translateX(3px);
+  }
+
+  .opt:disabled { cursor: default; transform: none; }
+
+  .opt.correct {
+    background: var(--green-light);
+    border-color: var(--green);
+    color: var(--green);
+    font-weight: 500;
+  }
+
+  .opt.wrong {
+    background: var(--red-light);
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  .opt.reveal {
+    background: var(--reveal-light);
+    border-color: var(--reveal);
+    color: var(--reveal);
+  }
+
+  .feedback {
+    font-size: 13px;
+    line-height: 1.65;
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    margin-bottom: 1.25rem;
+    display: none;
+    animation: fadeUp 0.2s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(-5px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .feedback.show { display: block; }
+  .feedback.ok  { background: var(--green-light); color: var(--green); border: 1px solid var(--green-border); }
+  .feedback.bad { background: var(--red-light);   color: var(--red);   border: 1px solid var(--red-border);   }
+
+  .next-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 24px;
+    border-radius: var(--radius);
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    display: none;
+    transition: background 0.15s, transform 0.1s;
+  }
+
+  .next-btn.show { display: inline-block; }
+  .next-btn:hover { background: var(--accent-dk); transform: translateY(-1px); }
+  .next-btn:active { transform: translateY(0); }
+
+  .done {
+    text-align: center;
+    padding: 0.5rem 0 1rem;
+    display: none;
+  }
+
+  .done-score {
+    font-family: 'DM Serif Display', serif;
+    font-size: 64px;
+    font-weight: 400;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .done-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .done-msg {
+    font-size: 15px;
+    color: var(--text);
+    margin-bottom: 1.75rem;
+    line-height: 1.6;
+  }
+
+  .done-msg em {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .restart-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 28px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+
+  .restart-btn:hover { background: var(--bg); transform: translateY(-1px); }
+
+  footer {
+    margin-top: 2rem;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag-row">
+    <span class="tag purple">Lateral ventricles</span>
+    <span class="tag amber">Third ventricle</span>
+    <span class="tag coral">Fourth ventricle</span>
+    <span class="tag teal">CSF pathway</span>
+    <span class="tag blue">Key structures</span>
+  </div>
+  <h1>Ventricular <em>System</em><br>Quiz</h1>
+  <p class="subtitle">Ninja Nerd · Ventricular Model Lecture &nbsp;·&nbsp; 14 questions</p>
+</header>
+
+<div class="card">
+  <div id="quiz-body">
+    <div class="meta-row">
+      <span class="q-label" id="qcount">Question 1 of 14</span>
+      <span class="score-pill" id="scorepill">Score: 0</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+    <div id="section-tag-wrap"></div>
+    <div class="q-text" id="qtext"></div>
+    <div class="options" id="opts"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextbtn" onclick="nextQ()">Next question →</button>
+  </div>
+
+  <div class="done" id="done">
+    <div class="done-score" id="done-score"></div>
+    <div class="done-label">Final score</div>
+    <div class="done-msg" id="done-msg"></div>
+    <button class="restart-btn" onclick="restart()">Try again</button>
+  </div>
+</div>
+
+<footer>Select an answer to reveal the explanation &nbsp;·&nbsp; Questions shuffle each attempt</footer>
+
+<script>
+const ALL = [
+  {
+    section: "Lateral ventricles", sclass: "purple",
+    q: "How many lateral ventricles are there, and what are the three parts of each?",
+    opts: [
+      "One lateral ventricle — anterior, posterior, and superior horns",
+      "Two lateral ventricles — anterior, posterior, and inferior horns",
+      "Two lateral ventricles — frontal, parietal, and temporal horns",
+      "Four lateral ventricles — one per cerebral lobe"
+    ],
+    ans: 1,
+    exp: "There are two lateral ventricles — one in each cerebral hemisphere. Each is divided into the anterior horn, posterior horn, and inferior horn, all filled with cerebrospinal fluid."
+  },
+  {
+    section: "Lateral ventricles", sclass: "purple",
+    q: "What is the septum pellucidum, and where is it found?",
+    opts: [
+      "A thick muscular wall separating the third and fourth ventricles",
+      "The lining of the cerebral aqueduct",
+      "A thin membrane separating the two lateral ventricles from each other",
+      "The choroid plexus of the lateral ventricle"
+    ],
+    ans: 2,
+    exp: "The septum pellucidum is a thin midline membrane positioned between the two lateral ventricles, separating them from one another."
+  },
+  {
+    section: "Lateral ventricles", sclass: "purple",
+    q: "Which structure drains both lateral ventricles into the third ventricle?",
+    opts: [
+      "The cerebral aqueduct",
+      "The foramen of Magendie",
+      "The central canal",
+      "The interventricular foramen (foramen of Monro)"
+    ],
+    ans: 3,
+    exp: "The interventricular foramen, also called the foramen of Monro, connects each lateral ventricle to the third ventricle, allowing CSF to drain downward."
+  },
+  {
+    section: "Key structures", sclass: "blue",
+    q: "What is the choroid plexus, and what is its function?",
+    opts: [
+      "A layer of dura mater that protects the ventricles from trauma",
+      "Pink gummy tissue found in every ventricle that produces cerebrospinal fluid",
+      "A network of veins that drains CSF into the venous sinuses",
+      "A membrane that separates the ventricles from the brain parenchyma"
+    ],
+    ans: 1,
+    exp: "The choroid plexus is specialised pink, gummy tissue found in all four ventricles. It is responsible for producing cerebrospinal fluid (CSF)."
+  },
+  {
+    section: "Key structures", sclass: "blue",
+    q: "Which cells are responsible for circulating CSF throughout the ventricles?",
+    opts: [
+      "Astrocytes",
+      "Oligodendrocytes",
+      "Ependymal cells",
+      "Microglia"
+    ],
+    ans: 2,
+    exp: "Ependymal cells line the ventricles and are part of the choroid plexus. They help circulate CSF throughout the ventricular system."
+  },
+  {
+    section: "Key structures", sclass: "blue",
+    q: "In which ventricle is the choroid plexus NOT present?",
+    opts: [
+      "Lateral ventricles",
+      "Third ventricle",
+      "Cerebral aqueduct",
+      "Fourth ventricle"
+    ],
+    ans: 2,
+    exp: "The choroid plexus is found in all four ventricles (lateral, third, and fourth), but NOT in the cerebral aqueduct, which is simply a passage connecting the third and fourth ventricles."
+  },
+  {
+    section: "Third ventricle", sclass: "amber",
+    q: "The third ventricle receives CSF from which structures?",
+    opts: [
+      "Directly from the subarachnoid space via the foramen of Magendie",
+      "From the fourth ventricle via the cerebral aqueduct",
+      "From both lateral ventricles via the interventricular foramina",
+      "From the central canal of the spinal cord"
+    ],
+    ans: 2,
+    exp: "The third ventricle receives CSF from both the left and right lateral ventricles, each draining through their respective interventricular foramen (foramen of Monro)."
+  },
+  {
+    section: "Third ventricle", sclass: "amber",
+    q: "What structure drains the third ventricle, and through which part of the brain does it pass?",
+    opts: [
+      "Interventricular foramen — passes through the diencephalon",
+      "Cerebral aqueduct — passes through the midbrain",
+      "Lateral aperture — passes through the pons",
+      "Central canal — passes through the medulla"
+    ],
+    ans: 1,
+    exp: "The cerebral aqueduct (also called the aqueduct of Sylvius) drains the third ventricle. It runs through the midbrain to reach the fourth ventricle."
+  },
+  {
+    section: "Fourth ventricle", sclass: "coral",
+    q: "The fourth ventricle has three openings through which CSF exits. Which option correctly names all three?",
+    opts: [
+      "Two foramina of Magendie (lateral) and one foramen of Luschka (median)",
+      "Two foramina of Luschka (lateral) and one foramen of Magendie (median)",
+      "Three foramina of Luschka arranged symmetrically",
+      "One foramen of Monro and two foramina of Luschka"
+    ],
+    ans: 1,
+    exp: "The fourth ventricle has two lateral apertures called the foramina of Luschka, and one median aperture called the foramen of Magendie. All three drain CSF into the subarachnoid space."
+  },
+  {
+    section: "Fourth ventricle", sclass: "coral",
+    q: "Where does CSF go after passing through the foramina of Luschka and Magendie?",
+    opts: [
+      "Back into the lateral ventricles for recirculation",
+      "Into the dural sinuses directly",
+      "Into the subarachnoid space",
+      "Into the epidural space"
+    ],
+    ans: 2,
+    exp: "CSF drains from the fourth ventricle through the foramina of Luschka and Magendie into the subarachnoid space, where it bathes the surface of the brain and spinal cord."
+  },
+  {
+    section: "Fourth ventricle", sclass: "coral",
+    q: "Besides draining into the subarachnoid space, what is the other route CSF can take from the fourth ventricle?",
+    opts: [
+      "Back up through the cerebral aqueduct into the third ventricle",
+      "Down through the central canal of the spinal cord",
+      "Through the cribriform plate into the nasal cavity",
+      "Into the choroid plexus for reabsorption"
+    ],
+    ans: 1,
+    exp: "CSF from the fourth ventricle can either exit into the subarachnoid space via the foramina, or travel downward into the central canal of the spinal cord."
+  },
+  {
+    section: "CSF pathway", sclass: "teal",
+    q: "A blockage at the cerebral aqueduct would cause CSF to accumulate in which structures?",
+    opts: [
+      "Only the fourth ventricle",
+      "The subarachnoid space and central canal",
+      "Both lateral ventricles and the third ventricle",
+      "Only the lateral ventricles"
+    ],
+    ans: 2,
+    exp: "The cerebral aqueduct connects the third to the fourth ventricle. A blockage here would prevent drainage from everything upstream — both lateral ventricles and the third ventricle — causing obstructive hydrocephalus."
+  },
+  {
+    section: "CSF pathway", sclass: "teal",
+    q: "Place these structures in the correct order of CSF flow: cerebral aqueduct, lateral ventricles, subarachnoid space, fourth ventricle, third ventricle.",
+    opts: [
+      "Third ventricle → lateral ventricles → cerebral aqueduct → fourth ventricle → subarachnoid space",
+      "Lateral ventricles → third ventricle → cerebral aqueduct → fourth ventricle → subarachnoid space",
+      "Lateral ventricles → cerebral aqueduct → third ventricle → fourth ventricle → subarachnoid space",
+      "Fourth ventricle → third ventricle → lateral ventricles → cerebral aqueduct → subarachnoid space"
+    ],
+    ans: 1,
+    exp: "CSF flows: lateral ventricles → interventricular foramina → third ventricle → cerebral aqueduct → fourth ventricle → foramina of Luschka & Magendie → subarachnoid space."
+  },
+  {
+    section: "CSF pathway", sclass: "teal",
+    q: "Which of the following correctly pairs a connecting structure with the two ventricles it links?",
+    opts: [
+      "Cerebral aqueduct — lateral ventricles to third ventricle",
+      "Interventricular foramen — third ventricle to fourth ventricle",
+      "Foramen of Magendie — lateral ventricles to subarachnoid space",
+      "Cerebral aqueduct — third ventricle to fourth ventricle"
+    ],
+    ans: 3,
+    exp: "The cerebral aqueduct connects the third ventricle to the fourth ventricle. The interventricular foramen connects the lateral ventricles to the third ventricle, and the foramina of Luschka and Magendie connect the fourth ventricle to the subarachnoid space."
+  },
+];
+
+let qs, qi, score, answered;
+
+const scolors = {
+  purple: { bg:"#EEEDFE", color:"#3C3489", border:"#AFA9EC" },
+  blue:   { bg:"#E6F1FB", color:"#0C447C", border:"#85B7EB" },
+  coral:  { bg:"#FAECE7", color:"#712B13", border:"#F0997B" },
+  teal:   { bg:"#E1F5EE", color:"#085041", border:"#5DCAA5" },
+  amber:  { bg:"#FAEEDA", color:"#633806", border:"#EF9F27" },
+};
+
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function restart() {
+  qs = shuffle([...ALL]);
+  qi = 0; score = 0; answered = false;
+  document.getElementById('done').style.display = 'none';
+  document.getElementById('quiz-body').style.display = 'block';
+  render();
+}
+
+function render() {
+  answered = false;
+  const total = qs.length;
+  document.getElementById('prog').style.width = ((qi / total) * 100) + '%';
+  document.getElementById('qcount').textContent = 'Question ' + (qi + 1) + ' of ' + total;
+  document.getElementById('scorepill').textContent = 'Score: ' + score;
+
+  const q = qs[qi];
+  const sc = scolors[q.sclass] || scolors.blue;
+  const wrap = document.getElementById('section-tag-wrap');
+  wrap.innerHTML = '';
+  const stag = document.createElement('span');
+  stag.className = 'section-tag';
+  stag.textContent = q.section;
+  stag.style.background = sc.bg;
+  stag.style.color = sc.color;
+  stag.style.border = '1px solid ' + sc.border;
+  wrap.appendChild(stag);
+
+  document.getElementById('qtext').textContent = q.q;
+
+  const optsEl = document.getElementById('opts');
+  optsEl.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.textContent = o;
+    btn.onclick = () => answer(i);
+    optsEl.appendChild(btn);
+  });
+
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback';
+  fb.textContent = '';
+
+  const nb = document.getElementById('nextbtn');
+  nb.className = 'next-btn';
+  nb.textContent = qi === qs.length - 1 ? 'See results' : 'Next question →';
+}
+
+function answer(i) {
+  if (answered) return;
+  answered = true;
+  const q = qs[qi];
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach((b, idx) => {
+    b.disabled = true;
+    if (idx === q.ans) b.classList.add(i === q.ans ? 'correct' : 'reveal');
+    else if (idx === i) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('feedback');
+  if (i === q.ans) {
+    score++;
+    fb.className = 'feedback show ok';
+    fb.textContent = '✓ Correct! ' + q.exp;
+  } else {
+    fb.className = 'feedback show bad';
+    fb.textContent = '✗ Not quite. ' + q.exp;
+  }
+  document.getElementById('scorepill').textContent = 'Score: ' + score;
+  document.getElementById('nextbtn').classList.add('show');
+}
+
+function nextQ() {
+  qi++;
+  if (qi >= qs.length) {
+    document.getElementById('quiz-body').style.display = 'none';
+    const d = document.getElementById('done');
+    d.style.display = 'block';
+    document.getElementById('done-score').textContent = score + '/' + qs.length;
+    const pct = Math.round((score / qs.length) * 100);
+    let msg;
+    if (pct === 100) msg = 'Perfect score — <em>the ventricles hold no secrets from you.</em>';
+    else if (pct >= 85) msg = 'Excellent work. <em>Almost there — review the ones you missed.</em>';
+    else if (pct >= 70) msg = 'Solid foundation. <em>A few gaps worth revisiting before your exam.</em>';
+    else if (pct >= 50) msg = 'Good start. <em>Go back over the study notes and try again.</em>';
+    else msg = 'Keep going — <em>review the notes section by section and try again.</em>';
+    document.getElementById('done-msg').innerHTML = msg;
+    document.getElementById('prog').style.width = '100%';
+  } else {
+    render();
+  }
+}
+
+restart();
+</script>
+</body>
+</html>

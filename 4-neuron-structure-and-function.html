@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neuron Structure & Function — Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F9F7F4;
+  --surface: #FFFFFF;
+  --surface-2: #F4F1EC;
+  --border: #E5E0D8;
+  --border-strong: #C8C0B4;
+  --text: #1A1714;
+  --text-muted: #6B6560;
+  --text-faint: #A39D97;
+
+  --teal-bg: #E4F5EE;
+  --teal-mid: #1D9E75;
+  --teal-dark: #085041;
+
+  --purple-bg: #EEEDFE;
+  --purple-mid: #534AB7;
+  --purple-dark: #3C3489;
+
+  --coral-bg: #FAECE7;
+  --coral-mid: #D85A30;
+  --coral-dark: #712B13;
+
+  --blue-bg: #E6F1FB;
+  --blue-mid: #378ADD;
+  --blue-dark: #0C447C;
+
+  --amber-bg: #FDF3E3;
+  --amber-mid: #EF9F27;
+  --amber-dark: #633806;
+
+  --pink-bg: #FBEAF0;
+  --pink-mid: #D4537E;
+  --pink-dark: #72243E;
+
+  --accent: #1D9E75;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ── Layout ── */
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── Header ── */
+.header {
+  padding: 56px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+
+.header-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.eyebrow-text {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(32px, 5vw, 52px);
+  line-height: 1.1;
+  color: var(--text);
+  font-weight: 400;
+  margin-bottom: 14px;
+}
+
+.header h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.header-sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 540px;
+  line-height: 1.7;
+}
+
+/* ── Nav tabs ── */
+.nav {
+  display: flex;
+  gap: 0;
+  margin-bottom: 40px;
+  border-bottom: 1.5px solid var(--border);
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display: none; }
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 20px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2.5px solid transparent;
+  margin-bottom: -1.5px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.nav-btn:hover { color: var(--text); }
+
+.nav-btn.active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+}
+
+.nav-icon {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* ── Section ── */
+.section { display: none; animation: fadeIn 0.2s ease; }
+.section.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Section label ── */
+.s-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin: 0 0 14px;
+}
+
+.s-label + .s-label { margin-top: -6px; }
+
+/* ── Card ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+
+.card.teal::before   { background: var(--teal-mid); }
+.card.purple::before { background: var(--purple-mid); }
+.card.blue::before   { background: var(--blue-mid); }
+.card.coral::before  { background: var(--coral-mid); }
+.card.amber::before  { background: var(--amber-mid); }
+.card.pink::before   { background: var(--pink-mid); }
+.card.none::before   { display: none; }
+
+.card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.card h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.zone-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 99px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.badge-teal   { background: var(--teal-bg);   color: var(--teal-dark); }
+.badge-purple { background: var(--purple-bg); color: var(--purple-dark); }
+.badge-blue   { background: var(--blue-bg);   color: var(--blue-dark); }
+.badge-coral  { background: var(--coral-bg);  color: var(--coral-dark); }
+.badge-amber  { background: var(--amber-bg);  color: var(--amber-dark); }
+.badge-pink   { background: var(--pink-bg);   color: var(--pink-dark); }
+
+/* ── Fact items ── */
+.facts { list-style: none; }
+
+.facts li {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  line-height: 1.65;
+  padding: 6px 0 6px 16px;
+  border-left: 1.5px solid var(--border);
+  margin-bottom: 4px;
+  position: relative;
+}
+
+.facts li::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: 13px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+
+.facts li b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+code.inline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--text);
+}
+
+/* ── Clinical pearl ── */
+.pearl {
+  background: var(--amber-bg);
+  border: 1px solid #F5C56A;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-top: 16px;
+}
+
+.pearl-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.pearl-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--amber-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 10px;
+  color: #fff;
+  font-weight: 700;
+}
+
+.pearl-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #854F0B;
+}
+
+.pearl p {
+  font-size: 13px;
+  color: var(--amber-dark);
+  line-height: 1.65;
+}
+
+.pearl p + p { margin-top: 8px; }
+
+.pearl b { color: #412402; font-weight: 600; }
+
+/* ── Two-col grid ── */
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 540px) {
+  .grid2 { grid-template-columns: 1fr; }
+}
+
+/* ── Transport direction visual ── */
+.transport-arrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.arrow-teal { background: var(--teal-bg); color: var(--teal-dark); }
+.arrow-coral { background: var(--coral-bg); color: var(--coral-dark); }
+
+.arrow-line {
+  flex: 1;
+  height: 2px;
+  position: relative;
+}
+
+.arrow-teal .arrow-line { background: var(--teal-mid); }
+.arrow-coral .arrow-line { background: var(--coral-mid); }
+
+.arrow-tip {
+  font-size: 13px;
+}
+
+/* ── Classification table-style ── */
+.func-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+  align-items: flex-start;
+}
+
+.func-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 7px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  margin-top: 2px;
+}
+
+.func-desc {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.func-desc b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ── Divider ── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 28px 0;
+}
+
+/* ── Section spacing helper ── */
+.mt { margin-top: 28px; }
+
+/* ── Neuron diagram SVG area ── */
+.diagram-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+
+.diagram-wrap svg {
+  display: block;
+  margin: 0 auto;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 40px 0 0;
+  font-size: 12px;
+  color: var(--text-faint);
+  border-top: 1px solid var(--border);
+  margin-top: 60px;
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-eyebrow">
+      <div class="dot"></div>
+      <span class="eyebrow-text">Neuroscience · Unit 1</span>
+    </div>
+    <h1>Neuron Structure<br><em>&amp; Function</em></h1>
+    <p class="header-sub">A comprehensive study guide covering neuronal anatomy, membrane potentials, axonal transport, and functional classification systems.</p>
+  </header>
+
+  <!-- Nav -->
+  <nav class="nav" role="tablist" aria-label="Study sections">
+    <button class="nav-btn active" onclick="show('structure', this)" role="tab" aria-selected="true">
+      <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="3" fill="#E4F5EE"/><rect x="3.5" y="3.5" width="7" height="7" rx="1.5" fill="#1D9E75"/></svg>
+      Structure
+    </button>
+    <button class="nav-btn" onclick="show('functions', this)" role="tab" aria-selected="false">
+      <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="3" fill="#EEEDFE"/><path d="M4 7h6M7 4v6" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Functions
+    </button>
+    <button class="nav-btn" onclick="show('transport', this)" role="tab" aria-selected="false">
+      <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="3" fill="#FAECE7"/><path d="M3 7h8M8.5 4.5L11 7l-2.5 2.5" stroke="#D85A30" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Axonal Transport
+    </button>
+    <button class="nav-btn" onclick="show('classification', this)" role="tab" aria-selected="false">
+      <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="3" fill="#E6F1FB"/><rect x="3" y="4" width="8" height="1.5" rx=".75" fill="#378ADD"/><rect x="3" y="6.5" width="6" height="1.5" rx=".75" fill="#378ADD"/><rect x="3" y="9" width="4" height="1.5" rx=".75" fill="#378ADD"/></svg>
+      Classification
+    </button>
+  </nav>
+
+  <!-- ════════════════════════════════════════ STRUCTURE ══ -->
+  <section class="section active" id="structure" role="tabpanel">
+
+    <!-- Neuron diagram -->
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 720 140" width="680" height="140" xmlns="http://www.w3.org/2000/svg" aria-label="Simplified neuron diagram showing dendrites, soma, axon, and terminal">
+
+        <!-- Dendrites -->
+        <line x1="60" y1="50" x2="115" y2="75" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="48" y1="72" x2="115" y2="78" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="55" y1="95" x2="115" y2="82" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="72" y1="112" x2="115" y2="86" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"/>
+        <!-- sub-branches -->
+        <line x1="60" y1="50" x2="30" y2="34" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" opacity=".7"/>
+        <line x1="60" y1="50" x2="38" y2="58" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" opacity=".7"/>
+        <line x1="48" y1="72" x2="20" y2="68" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" opacity=".7"/>
+        <line x1="55" y1="95" x2="28" y2="100" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" opacity=".7"/>
+        <line x1="72" y1="112" x2="48" y2="124" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" opacity=".7"/>
+
+        <!-- Soma -->
+        <circle cx="148" cy="76" r="34" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.5"/>
+        <!-- Nucleus -->
+        <circle cx="148" cy="76" r="14" fill="#AFA9EC" stroke="#534AB7" stroke-width="1"/>
+        <circle cx="148" cy="76" r="5" fill="#534AB7"/>
+
+        <!-- Axon hillock -->
+        <path d="M182 76 Q200 76 208 76" stroke="#185FA5" stroke-width="10" stroke-linecap="round" fill="none"/>
+
+        <!-- Axon body -->
+        <path d="M208 76 L540 76" stroke="#378ADD" stroke-width="8" stroke-linecap="round" fill="none"/>
+
+        <!-- Myelin sheaths -->
+        <rect x="240" y="68" width="40" height="16" rx="8" fill="#B5D4F4" opacity=".7"/>
+        <rect x="310" y="68" width="40" height="16" rx="8" fill="#B5D4F4" opacity=".7"/>
+        <rect x="380" y="68" width="40" height="16" rx="8" fill="#B5D4F4" opacity=".7"/>
+        <rect x="450" y="68" width="40" height="16" rx="8" fill="#B5D4F4" opacity=".7"/>
+        <rect x="500" y="68" width="36" height="16" rx="8" fill="#B5D4F4" opacity=".7"/>
+
+        <!-- Terminal branches -->
+        <line x1="540" y1="76" x2="580" y2="52" stroke="#D85A30" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="540" y1="76" x2="582" y2="76" stroke="#D85A30" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="540" y1="76" x2="580" y2="100" stroke="#D85A30" stroke-width="2.5" stroke-linecap="round"/>
+
+        <!-- Terminal bulbs -->
+        <circle cx="592" cy="48" r="10" fill="#FAECE7" stroke="#D85A30" stroke-width="1.5"/>
+        <circle cx="595" cy="76" r="10" fill="#FAECE7" stroke="#D85A30" stroke-width="1.5"/>
+        <circle cx="592" cy="104" r="10" fill="#FAECE7" stroke="#D85A30" stroke-width="1.5"/>
+
+        <!-- Labels -->
+        <text x="42" y="132" font-family="'DM Sans', sans-serif" font-size="10" fill="#085041" font-weight="600">Dendrites</text>
+        <text x="126" y="132" font-family="'DM Sans', sans-serif" font-size="10" fill="#3C3489" font-weight="600">Soma</text>
+        <text x="192" y="22" font-family="'DM Sans', sans-serif" font-size="10" fill="#0C447C" font-weight="600">Hillock</text>
+        <line x1="208" y1="26" x2="208" y2="66" stroke="#0C447C" stroke-width="1" stroke-dasharray="2,2"/>
+        <text x="325" y="52" font-family="'DM Sans', sans-serif" font-size="10" fill="#0C447C" font-weight="600">Axon (myelinated)</text>
+        <text x="564" y="132" font-family="'DM Sans', sans-serif" font-size="10" fill="#712B13" font-weight="600">Terminals</text>
+
+        <!-- Arrows for direction -->
+        <defs>
+          <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#378ADD"/>
+          </marker>
+        </defs>
+        <line x1="505" y1="58" x2="535" y2="58" stroke="#378ADD" stroke-width="1" marker-end="url(#arr)" opacity=".5"/>
+      </svg>
+    </div>
+
+    <!-- Cards -->
+    <p class="s-label">Parts of a neuron</p>
+
+    <div class="card teal">
+      <div class="card-head">
+        <h2>Dendrites</h2>
+        <span class="zone-badge badge-teal">Receptive zone</span>
+      </div>
+      <ul class="facts">
+        <li>Branching extensions from the cell body that receive incoming signals</li>
+        <li>Primary site for receiving input from other neurons</li>
+        <li>Contain <b>ligand-gated ion channels</b> and <b>G-protein-coupled receptors</b></li>
+      </ul>
+    </div>
+
+    <div class="card purple">
+      <div class="card-head">
+        <h2>Cell body <span style="font-weight:300;font-size:14px;">(soma)</span></h2>
+        <span class="zone-badge badge-purple">Integration zone</span>
+      </div>
+      <ul class="facts">
+        <li>Contains the nucleus and all major organelles</li>
+        <li>Site of <b>protein synthesis</b> — neurotransmitters, enzymes, membrane proteins</li>
+        <li>Rough ER appears as <b>Nissl bodies</b> in neurons (unique name)</li>
+        <li>Also receives synaptic input; participates in graded potentials</li>
+      </ul>
+    </div>
+
+    <div class="card blue">
+      <div class="card-head">
+        <h2>Axon</h2>
+        <span class="zone-badge badge-blue">Conducting zone</span>
+      </div>
+      <ul class="facts">
+        <li><b>Axon hillock</b> — where the cell body narrows into the axon; highest density of voltage-gated Na⁺ channels; site where action potentials are <em>initiated</em></li>
+        <li>Long cable that conducts action potentials from soma to terminal</li>
+        <li>Contains <b>microtubules</b> that serve as tracks for axonal transport</li>
+      </ul>
+    </div>
+
+    <div class="card coral">
+      <div class="card-head">
+        <h2>Axon terminal <span style="font-weight:300;font-size:14px;">(terminal bulb)</span></h2>
+        <span class="zone-badge badge-coral">Output zone</span>
+      </div>
+      <ul class="facts">
+        <li>Site of <b>neurotransmitter release</b> into the synapse</li>
+        <li>Site of <b>neurotransmitter reuptake</b> for recycling</li>
+        <li>Contains voltage-gated Ca²⁺ channels and SNARE proteins for vesicle fusion</li>
+      </ul>
+    </div>
+
+  </section>
+
+  <!-- ════════════════════════════════════════ FUNCTIONS ══ -->
+  <section class="section" id="functions" role="tabpanel">
+
+    <p class="s-label">Dendrites &amp; soma — graded potentials</p>
+
+    <div class="card purple">
+      <div class="card-head">
+        <h2>EPSPs — excitatory postsynaptic potentials</h2>
+        <span class="zone-badge badge-purple">Depolarizing</span>
+      </div>
+      <ul class="facts">
+        <li>Excitatory neurotransmitter binds ligand-gated channel → channel opens → <b>positive ions flow in</b></li>
+        <li>Inside of cell becomes more positive = <b>depolarization</b></li>
+        <li>Goal: bring membrane toward threshold to fire an action potential</li>
+      </ul>
+    </div>
+
+    <div class="card teal">
+      <div class="card-head">
+        <h2>IPSPs — inhibitory postsynaptic potentials</h2>
+        <span class="zone-badge badge-teal">Hyperpolarizing</span>
+      </div>
+      <ul class="facts">
+        <li>Inhibitory neurotransmitter binds → channel opens → <b>negative ions flow in</b></li>
+        <li>Inside of cell becomes more negative = <b>hyperpolarization</b></li>
+        <li>Moves membrane further from threshold, inhibiting action potential firing</li>
+      </ul>
+    </div>
+
+    <div class="card none">
+      <div class="card-head">
+        <h2>G-protein-coupled receptor pathway</h2>
+      </div>
+      <ul class="facts">
+        <li>Neurotransmitter → activates G-protein → second messengers → protein kinases → phosphorylate membrane proteins → ion flow → EPSP or IPSP</li>
+        <li>Slower than direct ligand-gated channels but yields the same net result</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Axon — action potential conduction</p>
+
+    <div class="grid2">
+      <div class="card blue" style="margin-bottom:0">
+        <div class="card-head">
+          <h2>Depolarizing wave</h2>
+          <span class="zone-badge badge-blue">Na⁺</span>
+        </div>
+        <ul class="facts">
+          <li>At threshold → voltage-gated <b>Na⁺ channels</b> open → Na⁺ rushes in → inside strongly positive</li>
+          <li>Positive charge flows down the axon toward the terminal</li>
+        </ul>
+      </div>
+      <div class="card coral" style="margin-bottom:0">
+        <div class="card-head">
+          <h2>Repolarizing wave</h2>
+          <span class="zone-badge badge-coral">K⁺</span>
+        </div>
+        <ul class="facts">
+          <li>After depolarization → voltage-gated <b>K⁺ channels</b> open → K⁺ flows out → inside returns negative</li>
+          <li>Negative charge follows down, restoring resting membrane potential</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Axon terminal — release &amp; termination</p>
+
+    <div class="card coral">
+      <div class="card-head">
+        <h2>Neurotransmitter release mechanism</h2>
+        <span class="zone-badge badge-coral">Ca²⁺ dependent</span>
+      </div>
+      <ul class="facts">
+        <li>Action potential arrives → voltage-gated <b>Ca²⁺ channels</b> open → Ca²⁺ enters terminal</li>
+        <li>Ca²⁺ bridges <b>v-SNAREs</b> (synaptobrevin, synaptotagmin) on vesicle with <b>t-SNAREs</b> (syntaxin, SNAP-25) on membrane</li>
+        <li>Vesicle fuses with plasma membrane → neurotransmitters released into synaptic cleft</li>
+      </ul>
+    </div>
+
+    <div class="card none">
+      <div class="card-head">
+        <h2>Neurotransmitter termination</h2>
+      </div>
+      <ul class="facts">
+        <li><b>Reuptake</b> — transporter proteins pull NT back into the axon terminal for recycling</li>
+        <li><b>Enzymatic degradation</b> — enzymes in the synapse break down the neurotransmitter</li>
+      </ul>
+      <div class="pearl">
+        <div class="pearl-head">
+          <div class="pearl-icon">Rx</div>
+          <span class="pearl-label">Clinical pearl — SSRIs</span>
+        </div>
+        <p>SSRIs (e.g., sertraline, fluoxetine, escitalopram) block <b>serotonin reuptake transporters</b> at the axon terminal → serotonin lingers in the synapse → prolonged receptor stimulation → clinical benefit in depression, anxiety, and OCD.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ════════════════════════════════════════ TRANSPORT ══ -->
+  <section class="section" id="transport" role="tabpanel">
+
+    <p class="s-label">Motor proteins on microtubules</p>
+
+    <div class="grid2">
+      <div class="card teal" style="margin-bottom:0">
+        <div class="transport-arrow arrow-teal">
+          <span>Soma</span>
+          <span class="arrow-line"></span>
+          <span class="arrow-tip">→</span>
+          <span>Terminal</span>
+        </div>
+        <div class="card-head" style="margin-bottom:10px">
+          <h2>Kinesin</h2>
+          <span class="zone-badge badge-teal">Anterograde</span>
+        </div>
+        <ul class="facts">
+          <li><b>Direction:</b> cell body → axon terminal</li>
+          <li><b>Cargo:</b> synaptic vesicles with neurotransmitters, membrane proteins, enzymes, mitochondria</li>
+        </ul>
+      </div>
+
+      <div class="card coral" style="margin-bottom:0">
+        <div class="transport-arrow arrow-coral">
+          <span>Terminal</span>
+          <span class="arrow-line"></span>
+          <span class="arrow-tip">→</span>
+          <span>Soma</span>
+        </div>
+        <div class="card-head" style="margin-bottom:10px">
+          <h2>Dynein</h2>
+          <span class="zone-badge badge-coral">Retrograde</span>
+        </div>
+        <ul class="facts">
+          <li><b>Direction:</b> axon terminal → cell body</li>
+          <li><b>Cargo:</b> spent organelles for recycling, <b>nerve growth factors</b> to signal damage/repair to nucleus</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card none mt">
+      <div class="card-head">
+        <h2>Nerve growth factor (NGF) signaling loop</h2>
+      </div>
+      <ul class="facts">
+        <li>Damage at terminal → NGF released → <b>dynein</b> carries NGF retrogradely to nucleus</li>
+        <li>NGF stimulates gene expression → new mRNA → protein production</li>
+        <li>Newly synthesized proteins packaged into vesicles → <b>kinesin</b> ships them anterogradely to repair/grow the terminal</li>
+      </ul>
+    </div>
+
+    <div class="card none">
+      <div class="pearl" style="margin-top:0">
+        <div class="pearl-head">
+          <div class="pearl-icon">Rx</div>
+          <span class="pearl-label">Clinical pearl — neurotropic viruses</span>
+        </div>
+        <p><b>Poliovirus, rabies, herpes simplex (HSV), and varicella-zoster (VZV)</b> all hijack <b>dynein (retrograde)</b> to travel from nerve terminals up to the cell body/nucleus, where they replicate using the host's nuclear machinery.</p>
+        <p style="margin-top:10px">In <b>shingles (VZV reactivation)</b>, the virus then uses <b>kinesin (anterograde)</b> to travel back down to the skin → painful vesicular rash in a dermatomal distribution.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ════════════════════════════════════════ CLASSIFICATION ══ -->
+  <section class="section" id="classification" role="tabpanel">
+
+    <p class="s-label">Structural classification</p>
+
+    <div class="grid2">
+      <div class="card purple" style="margin-bottom:0">
+        <div class="card-head">
+          <h2>Multipolar</h2>
+          <span class="zone-badge badge-purple">Most common</span>
+        </div>
+        <ul class="facts">
+          <li>3+ dendrites + 1 axon</li>
+          <li>Most common type in the CNS</li>
+          <li>Examples: <b>pyramidal cells</b> (motor cortex), <b>Purkinje cells</b> (cerebellum)</li>
+          <li>Multiple inputs needed — basal ganglia, cerebellum, sensory cortex all converge on motor cortex</li>
+        </ul>
+      </div>
+
+      <div class="card teal" style="margin-bottom:0">
+        <div class="card-head">
+          <h2>Bipolar</h2>
+          <span class="zone-badge badge-teal">Special senses</span>
+        </div>
+        <ul class="facts">
+          <li>1 dendrite + 1 axon</li>
+          <li>Found in retina, olfactory epithelium, vestibule/semicircular canals of inner ear</li>
+          <li>Generate graded potentials, <em>not</em> action potentials</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card coral mt">
+      <div class="card-head">
+        <h2>Pseudo-unipolar</h2>
+        <span class="zone-badge badge-coral">Sensory ganglia</span>
+      </div>
+      <ul class="facts">
+        <li><b>Peripheral process</b> — from periphery (e.g., skin) to cell body in ganglion</li>
+        <li><b>Central process</b> — from cell body into spinal cord or brainstem</li>
+        <li>Cell bodies cluster outside CNS in <b>ganglia</b></li>
+        <li>Key locations: <b>dorsal root ganglia</b> (spinal sensory) · <b>trigeminal ganglion</b> (CN V — face sensation, 3 divisions)</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Functional classification</p>
+
+    <div class="card blue">
+      <div class="card-head">
+        <h2>Sensory (afferent) neurons — toward CNS</h2>
+        <span class="zone-badge badge-blue">Afferent</span>
+      </div>
+      <div style="margin-top:4px;">
+        <div class="func-row"><span class="func-code">GSA</span><span class="func-desc"><b>General somatic afferent</b> — skin, skeletal muscle, joints</span></div>
+        <div class="func-row"><span class="func-code">GVA</span><span class="func-desc"><b>General visceral afferent</b> — visceral organs (heart, lungs, GI, urogenital)</span></div>
+        <div class="func-row"><span class="func-code">SSA</span><span class="func-desc"><b>Special somatic afferent</b> — vision, hearing</span></div>
+        <div class="func-row"><span class="func-code">SVA</span><span class="func-desc"><b>Special visceral afferent</b> — smell, taste</span></div>
+      </div>
+    </div>
+
+    <div class="card coral">
+      <div class="card-head">
+        <h2>Motor (efferent) neurons — away from CNS</h2>
+        <span class="zone-badge badge-coral">Efferent</span>
+      </div>
+      <div style="margin-top:4px;">
+        <div class="func-row"><span class="func-code">GSE</span><span class="func-desc"><b>General somatic efferent</b> — skeletal muscle</span></div>
+        <div class="func-row"><span class="func-code">GVE</span><span class="func-desc"><b>General visceral efferent</b> — smooth muscle, cardiac muscle, glands (autonomic)</span></div>
+        <div class="func-row"><span class="func-code">SVE</span><span class="func-desc"><b>Special visceral efferent</b> — muscles of head/neck from pharyngeal arches (CN V, VII, IX, X)</span></div>
+      </div>
+    </div>
+
+    <div class="card none">
+      <div class="card-head">
+        <h2>Interneurons — between sensory and motor</h2>
+      </div>
+      <ul class="facts">
+        <li>Relay and integration neurons; make up the <b>majority</b> of the CNS</li>
+        <li>Classic spinal reflex arc: skin stimulus → sensory neuron → <b>interneuron</b> → motor neuron → muscle contraction</li>
+        <li>Examples: <b>nucleus gracilis &amp; cuneatus</b> (dorsal column pathway), <b>thalamic relay nuclei</b></li>
+      </ul>
+    </div>
+
+  </section>
+
+  <footer class="footer">
+    <p>Neuroscience Study Guide &nbsp;·&nbsp; Unit 1: Neuron Structure &amp; Function</p>
+    <p style="margin-top:6px;">For study purposes only. Always verify with primary course materials.</p>
+  </footer>
+
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
+}
+</script>
+</body>
+</html>

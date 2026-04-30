@@ -1,0 +1,105 @@
+
+<style>
+  .notes { padding: 1rem 0; font-size: 15px; color: var(--color-text-primary); }
+  .section { margin-bottom: 1.5rem; border-radius: var(--border-radius-lg); overflow: hidden; border: 0.5px solid var(--color-border-tertiary); }
+  .section-header { padding: 10px 16px; font-size: 14px; font-weight: 500; }
+  .section-body { padding: 12px 16px; }
+  .row { display: flex; gap: 8px; margin-bottom: 6px; align-items: flex-start; }
+  .tag { font-size: 11px; font-weight: 500; padding: 2px 7px; border-radius: 4px; white-space: nowrap; margin-top: 2px; flex-shrink: 0; }
+  .tag-purple { background: #EEEDFE; color: #3C3489; }
+  .tag-teal   { background: #E1F5EE; color: #085041; }
+  .tag-amber  { background: #FAEEDA; color: #633806; }
+  .tag-coral  { background: #FAECE7; color: #712B13; }
+  .tag-blue   { background: #E6F1FB; color: #0C447C; }
+  .tag-gray   { background: #F1EFE8; color: #444441; }
+  @media (prefers-color-scheme: dark) {
+    .tag-purple { background: #26215C; color: #CECBF6; }
+    .tag-teal   { background: #04342C; color: #9FE1CB; }
+    .tag-amber  { background: #412402; color: #FAC775; }
+    .tag-coral  { background: #4A1B0C; color: #F5C4B3; }
+    .tag-blue   { background: #042C53; color: #B5D4F4; }
+    .tag-gray   { background: #2C2C2A; color: #D3D1C7; }
+  }
+  .label { font-weight: 500; margin-right: 4px; }
+  .desc { color: var(--color-text-secondary); font-size: 14px; line-height: 1.5; }
+  .sh-purple { background: #EEEDFE; color: #3C3489; }
+  .sh-teal   { background: #E1F5EE; color: #085041; }
+  .sh-amber  { background: #FAEEDA; color: #633806; }
+  .sh-coral  { background: #FAECE7; color: #712B13; }
+  .sh-blue   { background: #E6F1FB; color: #0C447C; }
+  .sh-gray   { background: #F1EFE8; color: #444441; }
+  @media (prefers-color-scheme: dark) {
+    .sh-purple { background: #3C3489; color: #CECBF6; }
+    .sh-teal   { background: #085041; color: #9FE1CB; }
+    .sh-amber  { background: #633806; color: #FAC775; }
+    .sh-coral  { background: #712B13; color: #F5C4B3; }
+    .sh-blue   { background: #0C447C; color: #B5D4F4; }
+    .sh-gray   { background: #444441; color: #D3D1C7; }
+  }
+  .divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 8px 0; }
+</style>
+
+<div class="notes">
+
+  <div class="section">
+    <div class="section-header sh-purple">Gray Horns (Unmyelinated Cell Bodies)</div>
+    <div class="section-body">
+      <div class="row"><span class="tag tag-purple">Anterior / Ventral</span><span class="desc"><span class="label">Motor.</span> Cell bodies of the somatic nervous system — controls skeletal muscles. Somatic nerve fibers exit here via the ventral ramus.</span></div>
+      <hr class="divider">
+      <div class="row"><span class="tag tag-purple">Posterior / Dorsal</span><span class="desc"><span class="label">Sensory.</span> Cell bodies that receive peripheral sensations. Sensory fibers enter here from the dorsal root ganglion.</span></div>
+      <hr class="divider">
+      <div class="row"><span class="tag tag-gray">Central canal</span><span class="desc">Located between the horns (at the central commissure). Carries cerebrospinal fluid (CSF).</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header sh-teal">White Columns (Myelinated Tracts)</div>
+    <div class="section-body">
+      <div class="row"><span class="tag tag-teal">Anterior</span><span class="desc">Carries <span class="label">touch and pressure</span> pathways.</span></div>
+      <hr class="divider">
+      <div class="row"><span class="tag tag-teal">Lateral</span><span class="desc">Carries <span class="label">pain and temperature</span> pathways.</span></div>
+      <hr class="divider">
+      <div class="row"><span class="tag tag-teal">Dorsal (Posterior)</span><span class="desc">Carries <span class="label">proprioception</span> and fine discriminative touch.</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header sh-amber">Meninges & Surrounding Spaces (inside → out)</div>
+    <div class="section-body">
+      <div class="row"><span class="tag tag-amber">Pia mater</span><span class="desc">Innermost layer. Directly adheres to the spinal cord surface.</span></div>
+      <hr class="divider">
+      <div class="row"><span class="tag tag-amber">Subarachnoid space</span><span class="desc">Space between the pia mater and arachnoid mater. Contains <span class="label">CSF</span>.</span></div>
+      <hr class="divider">
+      <div class="row"><span class="tag tag-amber">Arachnoid mater</span><span class="desc">Thin layer on the inner side of the subdural space, surrounding the subarachnoid space.</span></div>
+      <hr class="divider">
+      <div class="row"><span class="tag tag-amber">Subdural space</span><span class="desc">Thin potential space between arachnoid mater and dura mater. Contains bridging veins.</span></div>
+      <hr class="divider">
+      <div class="row"><span class="tag tag-amber">Dura mater — meningeal layer</span><span class="desc">Inner dural layer; lies just outside the subdural space, closer to the cord.</span></div>
+      <hr class="divider">
+      <div class="row"><span class="tag tag-amber">Epidural space</span><span class="desc">Between the two dural layers. Contains <span class="label">fat and blood vessels</span>.</span></div>
+      <hr class="divider">
+      <div class="row"><span class="tag tag-amber">Dura mater — periosteal layer</span><span class="desc">Outermost layer. Adheres directly to the bone of the vertebral canal.</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header sh-coral">Nerve Roots & Associated Structures</div>
+    <div class="section-body">
+      <div class="row"><span class="tag tag-coral">Dorsal root ganglion</span><span class="desc">Contains <span class="label">unipolar (first-order) neurons</span>. Receives sensory input from the periphery and relays it to the posterior gray horn.</span></div>
+      <hr class="divider">
+      <div class="row"><span class="tag tag-coral">Ventral ramus</span><span class="desc">Carries motor fibers from the anterior gray horn out to skeletal muscles.</span></div>
+      <hr class="divider">
+      <div class="row"><span class="tag tag-coral">Dorsal ramus</span><span class="desc">Branch of the spinal nerve that exits posteriorly.</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header sh-blue">Vertebral Arteries</div>
+    <div class="section-body">
+      <div class="row"><span class="tag tag-blue">Path</span><span class="desc">Run upward through the <span class="label">transverse foramen</span> of cervical vertebrae.</span></div>
+      <hr class="divider">
+      <div class="row"><span class="tag tag-blue">Destination</span><span class="desc">Fuse to form the <span class="label">basilar artery</span>, feeding the posterior portion of the Circle of Willis.</span></div>
+    </div>
+  </div>
+
+</div>

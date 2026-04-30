@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glial Cells — Unit 3 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F9F7F4;
+  --surface: #FFFFFF;
+  --surface-2: #F4F1EC;
+  --border: #E5E0D8;
+  --border-strong: #C8C0B4;
+  --text: #1A1714;
+  --text-muted: #6B6560;
+  --text-faint: #A39D97;
+
+  --teal-bg: #E4F5EE;
+  --teal-mid: #1D9E75;
+  --teal-dark: #085041;
+
+  --purple-bg: #EEEDFE;
+  --purple-mid: #534AB7;
+  --purple-dark: #3C3489;
+
+  --coral-bg: #FAECE7;
+  --coral-mid: #D85A30;
+  --coral-dark: #712B13;
+
+  --blue-bg: #E6F1FB;
+  --blue-mid: #378ADD;
+  --blue-dark: #0C447C;
+
+  --amber-bg: #FDF3E3;
+  --amber-mid: #EF9F27;
+  --amber-dark: #633806;
+
+  --green-bg: #EAF3DE;
+  --green-mid: #639922;
+  --green-dark: #27500A;
+
+  --red-bg: #FCEBEB;
+  --red-mid: #E24B4A;
+  --red-dark: #791F1F;
+
+  --pink-bg: #FBEAF0;
+  --pink-mid: #D4537E;
+  --pink-dark: #72243E;
+
+  --accent: #1D9E75;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── Header ── */
+.header {
+  padding: 56px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+
+.header-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.dot-accent {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.eyebrow-text {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(32px, 5vw, 52px);
+  line-height: 1.1;
+  color: var(--text);
+  font-weight: 400;
+  margin-bottom: 14px;
+}
+
+.header h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.header-sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 580px;
+  line-height: 1.7;
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  gap: 0;
+  margin-bottom: 40px;
+  border-bottom: 1.5px solid var(--border);
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display: none; }
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 18px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2.5px solid transparent;
+  margin-bottom: -1.5px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.nav-btn:hover { color: var(--text); }
+.nav-btn.active { color: var(--text); border-bottom-color: var(--accent); }
+
+.nav-icon {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* ── Sections ── */
+.section { display: none; animation: fadeIn 0.2s ease; }
+.section.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Section label ── */
+.s-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin: 0 0 14px;
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+
+.card.blue::before   { background: var(--blue-mid); }
+.card.teal::before   { background: var(--teal-mid); }
+.card.purple::before { background: var(--purple-mid); }
+.card.coral::before  { background: var(--coral-mid); }
+.card.amber::before  { background: var(--amber-mid); }
+.card.red::before    { background: var(--red-mid); }
+.card.green::before  { background: var(--green-mid); }
+.card.pink::before   { background: var(--pink-mid); }
+.card.none::before   { display: none; }
+
+.card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.card h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 14px;
+}
+
+.card-head h2 { margin-bottom: 0; }
+
+/* ── Zone badges ── */
+.zone-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 99px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.badge-blue   { background: var(--blue-bg);   color: var(--blue-dark); }
+.badge-teal   { background: var(--teal-bg);   color: var(--teal-dark); }
+.badge-purple { background: var(--purple-bg); color: var(--purple-dark); }
+.badge-coral  { background: var(--coral-bg);  color: var(--coral-dark); }
+.badge-amber  { background: var(--amber-bg);  color: var(--amber-dark); }
+.badge-red    { background: var(--red-bg);    color: var(--red-dark); }
+.badge-green  { background: var(--green-bg);  color: var(--green-dark); }
+.badge-pink   { background: var(--pink-bg);   color: var(--pink-dark); }
+.badge-cns    { background: var(--blue-bg);   color: var(--blue-dark); }
+.badge-pns    { background: var(--teal-bg);   color: var(--teal-dark); }
+
+/* ── Fact items ── */
+.facts { list-style: none; }
+
+.facts li {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  line-height: 1.65;
+  padding: 6px 0 6px 16px;
+  border-left: 1.5px solid var(--border);
+  margin-bottom: 4px;
+  position: relative;
+}
+
+.facts li::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: 13px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+
+.facts li b  { color: var(--text); font-weight: 600; }
+.facts li em { font-style: italic; }
+
+/* ── Key insight callout ── */
+.insight {
+  background: var(--surface-2);
+  border-left: 3px solid var(--purple-mid);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.insight b { color: var(--text); font-weight: 600; }
+.insight.teal   { border-left-color: var(--teal-mid); }
+.insight.blue   { border-left-color: var(--blue-mid); }
+.insight.coral  { border-left-color: var(--coral-mid); }
+.insight.amber  { border-left-color: var(--amber-mid); }
+.insight.red    { border-left-color: var(--red-mid); }
+.insight.green  { border-left-color: var(--green-mid); }
+
+/* ── Clinical pearl ── */
+.pearl {
+  background: var(--amber-bg);
+  border: 1px solid #F5C56A;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-top: 14px;
+}
+
+.pearl-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.pearl-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--amber-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 10px;
+  color: #fff;
+  font-weight: 700;
+}
+
+.pearl-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #854F0B;
+}
+
+.pearl p { font-size: 13px; color: var(--amber-dark); line-height: 1.65; }
+.pearl p + p { margin-top: 8px; }
+.pearl b { color: #412402; font-weight: 600; }
+
+/* ── Disease tag ── */
+.disease-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 99px;
+  background: var(--red-bg);
+  color: var(--red-dark);
+  margin-left: 6px;
+  letter-spacing: 0.03em;
+  vertical-align: middle;
+}
+
+/* ── Comparison table ── */
+.comp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.comp-table th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding: 6px 10px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.comp-table th:first-child { color: var(--text-faint); }
+
+.comp-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+  vertical-align: top;
+  line-height: 1.5;
+  font-size: 13px;
+}
+
+.comp-table td:first-child {
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  width: 34%;
+}
+
+.comp-table tr:last-child td { border-bottom: none; }
+
+/* ── Fiber type table ── */
+.fiber-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.fiber-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding: 6px 10px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.fiber-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.fiber-table td:first-child {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.fiber-table tr:last-child td { border-bottom: none; }
+
+.speed-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.speed-pip {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.speed-pip.on { background: var(--teal-mid); }
+
+/* ── Grid ── */
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 580px) {
+  .grid2, .grid3 { grid-template-columns: 1fr; }
+}
+
+/* ── Divider ── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 28px 0;
+}
+
+.mt { margin-top: 28px; }
+
+/* ── Location pill row ── */
+.loc-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.loc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  background: var(--surface);
+}
+
+.loc-pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Cycle diagram (glutamate-glutamine) ── */
+.cycle {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 14px 0;
+  overflow-x: auto;
+}
+
+.cycle-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.cycle-box {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.cycle-sub {
+  font-size: 10px;
+  color: var(--text-faint);
+  font-weight: 500;
+  text-align: center;
+}
+
+.cycle-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0 4px;
+  gap: 2px;
+  padding-bottom: 14px;
+}
+
+.cycle-arrow-line {
+  width: 28px;
+  height: 1.5px;
+  background: var(--border-strong);
+  position: relative;
+}
+
+.cycle-arrow-label {
+  font-size: 9px;
+  color: var(--text-faint);
+  white-space: nowrap;
+  font-style: italic;
+}
+
+/* ── BBB vs CSF barrier compare ── */
+.barrier-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.barrier-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.barrier-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+
+.barrier-card.blue::before  { background: var(--blue-mid); }
+.barrier-card.teal::before  { background: var(--teal-mid); }
+
+.barrier-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.barrier-layer {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12.5px;
+}
+
+.barrier-layer:last-child { border-bottom: none; }
+
+.layer-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-faint);
+  min-width: 14px;
+  margin-top: 1px;
+}
+
+.layer-text { color: var(--text-muted); line-height: 1.5; }
+.layer-text b { color: var(--text); font-weight: 600; }
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 40px 0 0;
+  font-size: 12px;
+  color: var(--text-faint);
+  border-top: 1px solid var(--border);
+  margin-top: 60px;
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-eyebrow">
+      <div class="dot-accent"></div>
+      <span class="eyebrow-text">Neuroscience · Unit 3</span>
+    </div>
+    <h1>Glial<br><em>Cells</em></h1>
+    <p class="header-sub">Nervous tissue is neurons plus glial cells. This unit covers all major glial types — their locations in the CNS and PNS, functions, and clinical relevance.</p>
+  </header>
+
+  <!-- Nav -->
+  <nav class="nav" role="tablist" aria-label="Glial cell types">
+    <button class="nav-btn active" onclick="show('astro', this)" role="tab" aria-selected="true">
+      <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="3" fill="#E6F1FB"/><circle cx="7" cy="7" r="3" fill="#378ADD"/></svg>
+      Astrocytes
+    </button>
+    <button class="nav-btn" onclick="show('satellite', this)" role="tab" aria-selected="false">
+      <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="3" fill="#E4F5EE"/><circle cx="7" cy="7" r="3" fill="#1D9E75"/></svg>
+      Satellite Cells
+    </button>
+    <button class="nav-btn" onclick="show('myelincells', this)" role="tab" aria-selected="false">
+      <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="3" fill="#EEEDFE"/><rect x="3" y="5" width="8" height="4" rx="2" fill="#534AB7"/></svg>
+      Oligos &amp; Schwann
+    </button>
+    <button class="nav-btn" onclick="show('myelin', this)" role="tab" aria-selected="false">
+      <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="3" fill="#EAF3DE"/><path d="M3 7 L5 4 L7 10 L9 5 L11 7" stroke="#639922" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      Myelin &amp; Conduction
+    </button>
+    <button class="nav-btn" onclick="show('ependymal', this)" role="tab" aria-selected="false">
+      <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="3" fill="#FBEAF0"/><rect x="3" y="6" width="8" height="5" rx="2" fill="#D4537E"/><rect x="3" y="3" width="8" height="2" rx="1" fill="#D4537E" opacity=".5"/></svg>
+      Ependymal Cells
+    </button>
+    <button class="nav-btn" onclick="show('micro', this)" role="tab" aria-selected="false">
+      <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="3" fill="#FCEBEB"/><path d="M5 4 L7 7 L9 4 M5 10 L7 7 L9 10" stroke="#E24B4A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      Microglia
+    </button>
+  </nav>
+
+
+  <!-- ══════════════════ ASTROCYTES ══════════════════ -->
+  <section class="section active" id="astro" role="tabpanel">
+
+    <div class="card blue">
+      <div class="card-head">
+        <h2>Astrocytes</h2>
+        <span class="zone-badge badge-cns">CNS only</span>
+      </div>
+      <ul class="facts">
+        <li>The most functionally <b>diverse</b> glial cells in the nervous system</li>
+        <li>Found exclusively in the <b>brain and spinal cord</b></li>
+        <li>Have multiple processes ("foot processes") radiating from the cell body, allowing them to contact both neurons and blood vessels simultaneously</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Function 1 — Blood-brain barrier (BBB)</p>
+
+    <div class="barrier-grid">
+      <div class="barrier-card blue">
+        <h3>BBB — 3-layer structure</h3>
+        <div class="barrier-layer">
+          <span class="layer-num">①</span>
+          <span class="layer-text"><b>Endothelial cells</b> — inner lining of blood vessel; joined by dense <b>tight junctions</b> that restrict permeability (this is the key barrier layer)</span>
+        </div>
+        <div class="barrier-layer">
+          <span class="layer-num">②</span>
+          <span class="layer-text"><b>Basal lamina</b> — connective tissue / protein layer just outside the endothelium</span>
+        </div>
+        <div class="barrier-layer">
+          <span class="layer-num">③</span>
+          <span class="layer-text"><b>Astrocyte foot processes</b> — wrap around the outside; secrete growth factors that stimulate more tight junction formation in endothelial cells</span>
+        </div>
+      </div>
+
+      <div class="barrier-card blue">
+        <h3>What crosses the BBB?</h3>
+        <div class="barrier-layer">
+          <span class="layer-num" style="color:var(--teal-mid);">✓</span>
+          <span class="layer-text"><b>Freely crosses:</b> O₂, CO₂, lipid-soluble molecules (some drugs, vitamins)</span>
+        </div>
+        <div class="barrier-layer">
+          <span class="layer-num" style="color:var(--amber-mid);">⇄</span>
+          <span class="layer-text"><b>Requires transport:</b> water, Na⁺, Cl⁻, glucose (GLUT1 on BBB; GLUT3 on neurons)</span>
+        </div>
+        <div class="barrier-layer">
+          <span class="layer-num" style="color:var(--red-mid);">✗</span>
+          <span class="layer-text"><b>Blocked:</b> large proteins — would cause undesired neural stimulation or inhibition</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card none">
+      <div class="card-head">
+        <h2>Where the BBB is intentionally absent</h2>
+        <span class="zone-badge badge-amber">Circumventricular organs</span>
+      </div>
+      <ul class="facts">
+        <li><b>Area postrema</b> (medulla) — samples blood for toxins, ketones, and drugs → triggers chemoreceptor trigger zone → vomiting reflex</li>
+        <li><b>Osmoreceptors</b> near hypothalamus (subfornicular organ, OVLT) — sense blood osmolarity → regulate thirst, ADH release, and water balance</li>
+        <li><b>Hypothalamic-pituitary axis</b> — releasing hormones (CRH, GHRH, GnRH) must travel from hypothalamus to anterior pituitary via the portal bloodstream</li>
+      </ul>
+      <div class="insight blue">
+        <b>Key insight:</b> Astrocytes don't just form a physical layer — they <em>chemically maintain</em> the barrier. Damage to astrocytes → fewer tight junctions → increased BBB permeability → undesired molecules reach neural tissue → dysregulated neural activity.
+      </div>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Function 2 — Potassium buffering</p>
+
+    <div class="card teal">
+      <div class="card-head">
+        <h2>Why excess extracellular K⁺ is a problem</h2>
+        <span class="zone-badge badge-teal">Spatial buffering</span>
+      </div>
+      <ul class="facts">
+        <li>During APs and at rest (via leak channels), K⁺ exits neurons; Na⁺/K⁺-ATPase recycles some, but extracellular K⁺ can still accumulate</li>
+        <li>High extracellular K⁺ → reduced concentration gradient → less K⁺ leaves → more positive charge inside → <em>initially</em> increased excitability, then inactivation of voltage-gated Na⁺ channels → <em>decreased</em> excitability</li>
+      </ul>
+      <div class="insight teal">
+        <b>Astrocyte solution:</b> Take up excess K⁺ via channels. If one astrocyte is overloaded, it passes K⁺ through <b>gap junctions</b> to neighboring astrocytes ("spatial buffering"). Can also <em>release</em> K⁺ back if local levels are depleted.
+      </div>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Function 3 — Neurotransmitter regulation</p>
+
+    <div class="card purple">
+      <div class="card-head">
+        <h2>Glutamate–glutamine cycle</h2>
+        <span class="zone-badge badge-purple">Recycling</span>
+      </div>
+
+      <!-- Cycle flow -->
+      <div class="cycle">
+        <div class="cycle-node">
+          <div class="cycle-box" style="background:var(--teal-bg);color:var(--teal-dark);">Synapse</div>
+          <div class="cycle-sub">excess glutamate</div>
+        </div>
+        <div class="cycle-arrow">
+          <div class="cycle-arrow-line"></div>
+          <div class="cycle-arrow-label">uptake</div>
+        </div>
+        <div class="cycle-node">
+          <div class="cycle-box" style="background:var(--blue-bg);color:var(--blue-dark);">Astrocyte</div>
+          <div class="cycle-sub">glutamine synthetase</div>
+        </div>
+        <div class="cycle-arrow">
+          <div class="cycle-arrow-line"></div>
+          <div class="cycle-arrow-label">export</div>
+        </div>
+        <div class="cycle-node">
+          <div class="cycle-box" style="background:var(--purple-bg);color:var(--purple-dark);">Glutamine</div>
+          <div class="cycle-sub">inert transport form</div>
+        </div>
+        <div class="cycle-arrow">
+          <div class="cycle-arrow-line"></div>
+          <div class="cycle-arrow-label">neuron uptake</div>
+        </div>
+        <div class="cycle-node">
+          <div class="cycle-box" style="background:var(--teal-bg);color:var(--teal-dark);">Vesicles</div>
+          <div class="cycle-sub">glutaminase → glutamate</div>
+        </div>
+      </div>
+
+      <div class="insight green">
+        <b>GABA connection:</b> Glutamine can also be sent to <b>GABAergic neurons</b> → glutaminase converts to glutamate → glutamate decarboxylase converts to <b>GABA</b> → packaged into vesicles. Astrocytes therefore support synthesis of <em>both</em> glutamate and GABA.
+      </div>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Function 4 — Glucose &amp; glycogen metabolism</p>
+
+    <div class="card amber">
+      <div class="card-head">
+        <h2>Lactate shuttle to neurons</h2>
+        <span class="zone-badge badge-amber">Energy reserve</span>
+      </div>
+      <ul class="facts">
+        <li>Astrocytes take up glucose via <b>GLUT1</b>; neurons use <b>GLUT3</b></li>
+        <li>Astrocytes can store glucose as <b>glycogen</b> (glycogenesis) — act as on-demand energy reserve</li>
+        <li>When neuron ATP drops: astrocyte breaks down glycogen → glucose → pyruvate → <b>lactate</b></li>
+        <li>Lactate transported out of astrocyte → into neuron → converted back to pyruvate → enters Krebs cycle → ATP production</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Function 5 — Synaptic modulation</p>
+
+    <div class="card none">
+      <h2>Synaptic enhancement</h2>
+      <ul class="facts">
+        <li>Astrocytes can <b>increase synapse formation</b> and enhance synaptic function between neurons</li>
+        <li>Exact molecular mechanism is still an active area of research</li>
+      </ul>
+    </div>
+
+  </section>
+
+
+  <!-- ══════════════════ SATELLITE CELLS ══════════════════ -->
+  <section class="section" id="satellite" role="tabpanel">
+
+    <div class="card teal">
+      <div class="card-head">
+        <h2>Satellite cells</h2>
+        <span class="zone-badge badge-pns">PNS only</span>
+      </div>
+      <ul class="facts">
+        <li>The <b>PNS equivalent of astrocytes</b> — perform most of the same core functions</li>
+        <li>Perform: <b>potassium buffering</b>, <b>neurotransmitter regulation</b>, <b>nutrient/glucose control</b></li>
+        <li>Do <em>not</em> form a blood-brain barrier equivalent (no comparable vascular wrapping role in the PNS)</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Where satellite cells are found</p>
+
+    <div class="grid2">
+      <div class="card teal" style="margin-bottom:0;">
+        <div class="card-head">
+          <h2>Dorsal root ganglia</h2>
+          <span class="zone-badge badge-teal">Sensory</span>
+        </div>
+        <ul class="facts">
+          <li>Surround cell bodies of <b>sensory neurons</b> in the dorsal root</li>
+          <li>Provide structural and metabolic support to pseudo-unipolar neurons</li>
+        </ul>
+      </div>
+
+      <div class="card teal" style="margin-bottom:0;">
+        <div class="card-head">
+          <h2>Autonomic ganglia</h2>
+          <span class="zone-badge badge-teal">Motor</span>
+        </div>
+        <ul class="facts">
+          <li>Surround cell bodies of <b>sympathetic</b> neurons (paravertebral and prevertebral ganglia)</li>
+          <li>Surround cell bodies of <b>parasympathetic</b> neurons (terminal ganglia, near target organs)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="insight teal" style="margin-top:14px;">
+      <b>Memory hook:</b> Satellite cells = astrocytes of the PNS, but without the BBB role. Everywhere there's a ganglion (a cluster of neuronal cell bodies outside the CNS), satellite cells are present to support them.
+    </div>
+
+  </section>
+
+
+  <!-- ══════════════════ OLIGOS & SCHWANN ══════════════════ -->
+  <section class="section" id="myelincells" role="tabpanel">
+
+    <p class="s-label">Myelinating glial cells — comparison</p>
+
+    <div class="card purple">
+      <div class="card-head">
+        <h2>Oligodendrocytes vs Schwann cells</h2>
+        <span class="zone-badge badge-purple">Myelinating cells</span>
+      </div>
+      <table class="comp-table">
+        <tr>
+          <th>Feature</th>
+          <th>Oligodendrocytes</th>
+          <th>Schwann cells</th>
+        </tr>
+        <tr>
+          <td>Location</td>
+          <td><span class="zone-badge badge-cns" style="font-size:9px;">CNS</span> Brain, spinal cord + cranial nerve II (optic)</td>
+          <td><span class="zone-badge badge-pns" style="font-size:9px;">PNS</span> Spinal nerves + CN III–XII</td>
+        </tr>
+        <tr>
+          <td>Axons myelinated</td>
+          <td>Up to <b>30–60 axons</b> per cell (one cell, many axons)</td>
+          <td><b>One axon</b> per cell (many Schwann cells line a single axon)</td>
+        </tr>
+        <tr>
+          <td>Regeneration after damage</td>
+          <td style="color:var(--red-dark);font-weight:500;">None</td>
+          <td style="color:var(--teal-dark);font-weight:500;">Yes — via neurolemma</td>
+        </tr>
+        <tr>
+          <td>Associated disease</td>
+          <td>Multiple sclerosis <span class="disease-tag">MS</span></td>
+          <td>Guillain-Barré syndrome <span class="disease-tag">GBS</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Schwann cell structure — how myelination works</p>
+
+    <div class="grid2">
+      <div class="card coral" style="margin-bottom:0;">
+        <div class="card-head">
+          <h2>Unmyelinated state</h2>
+        </div>
+        <ul class="facts">
+          <li>Schwann cell extends arms to <b>partially wrap</b> the axon</li>
+          <li>Incomplete coverage — axon membrane exposed along its length</li>
+          <li>Action potentials propagate continuously along every segment</li>
+        </ul>
+      </div>
+
+      <div class="card purple" style="margin-bottom:0;">
+        <div class="card-head">
+          <h2>Myelinated state</h2>
+        </div>
+        <ul class="facts">
+          <li>Schwann cell membrane wraps <b>repeatedly in concentric layers</b> around the axon</li>
+          <li><b>Myelin sheath</b> — the concentric lipid-protein layers formed by wrapping</li>
+          <li><b>Neurolemma</b> — the outermost Schwann cell membrane layer, outside the sheath; enables PNS regeneration after GBS damage</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card blue mt">
+      <div class="card-head">
+        <h2>Nodes of Ranvier</h2>
+        <span class="zone-badge badge-blue">Action potential sites</span>
+      </div>
+      <ul class="facts">
+        <li>Small <b>gaps between adjacent myelin segments</b> along the axon</li>
+        <li>Each node is densely packed with <b>voltage-gated Na⁺ and K⁺ channels</b></li>
+        <li>These gaps are the only sites where action potentials can be regenerated in myelinated axons</li>
+        <li>The basis of <b>saltatory conduction</b> — potentials "jump" from node to node</li>
+      </ul>
+    </div>
+
+    <div class="grid2">
+      <div class="pearl" style="margin-top:0;">
+        <div class="pearl-head">
+          <div class="pearl-icon">Rx</div>
+          <span class="pearl-label">Multiple sclerosis (MS)</span>
+        </div>
+        <p>Autoimmune demyelination of <b>oligodendrocytes</b> in the CNS. No regeneration possible → progressive conduction deficits. CNS axons lose insulation permanently.</p>
+      </div>
+      <div class="pearl" style="margin-top:0;">
+        <div class="pearl-head">
+          <div class="pearl-icon">Rx</div>
+          <span class="pearl-label">Guillain-Barré (GBS)</span>
+        </div>
+        <p>Autoimmune demyelination of <b>Schwann cells</b> in the PNS. Recovery <em>is</em> possible because the <b>neurolemma</b> survives and guides axon regrowth.</p>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ══════════════════ MYELIN & CONDUCTION ══════════════════ -->
+  <section class="section" id="myelin" role="tabpanel">
+
+    <div class="card green">
+      <div class="card-head">
+        <h2>What myelin is and does</h2>
+        <span class="zone-badge badge-green">Insulator</span>
+      </div>
+      <ul class="facts">
+        <li>Myelin = <b>lipid + protein</b> — a multi-layered membrane wrap around the axon</li>
+        <li>Acts as an electrical insulator, dramatically <b>increasing action potential conduction velocity</b></li>
+        <li>Concentrates ion channels at nodes of Ranvier rather than along the entire axon</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Two types of conduction</p>
+
+    <div class="grid2">
+      <div class="card green" style="margin-bottom:0;">
+        <div class="card-head">
+          <h2>Saltatory conduction</h2>
+          <span class="zone-badge badge-green">Myelinated</span>
+        </div>
+        <ul class="facts">
+          <li>AP "jumps" from one <b>node of Ranvier</b> to the next</li>
+          <li>Voltage-gated channels absent under the myelin — ions must travel down the axon to reach the next node</li>
+          <li><b>Faster</b> — fewer regeneration events required</li>
+        </ul>
+      </div>
+
+      <div class="card coral" style="margin-bottom:0;">
+        <div class="card-head">
+          <h2>Continuous conduction</h2>
+          <span class="zone-badge badge-coral">Unmyelinated</span>
+        </div>
+        <ul class="facts">
+          <li>AP propagates <b>step-by-step</b> along the entire membrane</li>
+          <li>Ion channels distributed continuously — every patch of membrane regenerates the AP</li>
+          <li><b>Slower</b> — every segment must depolarize individually</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Why myelin speeds conduction — two mechanisms</p>
+
+    <div class="grid2">
+      <div class="card purple" style="margin-bottom:0;">
+        <div class="card-head">
+          <h2>No ion channels under the sheath</h2>
+          <span class="zone-badge badge-purple">Mechanism 1</span>
+        </div>
+        <ul class="facts">
+          <li>Voltage-gated Na⁺/K⁺ channels exist <b>only at nodes</b></li>
+          <li>Ions cannot leak across myelinated regions</li>
+          <li>Ionic current flows efficiently down the axon to the next node without dissipating</li>
+        </ul>
+      </div>
+
+      <div class="card blue" style="margin-bottom:0;">
+        <div class="card-head">
+          <h2>Decreased membrane capacitance</h2>
+          <span class="zone-badge badge-blue">Mechanism 2</span>
+        </div>
+        <ul class="facts">
+          <li>Myelin reduces negative charge on the axon membrane</li>
+          <li>Fewer negative charges means fewer positive ions are "captured" as they flow forward</li>
+          <li>More ions travel onward → greater velocity</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Two factors that determine conduction velocity</p>
+
+    <div class="card none">
+      <div class="card-head">
+        <h2>Myelination + axon diameter</h2>
+      </div>
+      <div class="grid2" style="margin-bottom:16px;">
+        <div style="background:var(--surface-2);border-radius:8px;padding:14px 16px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px;">More myelin</div>
+          <div style="font-size:22px;font-weight:600;color:var(--teal-dark);font-family:'JetBrains Mono',monospace;">↑ velocity</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">Better insulation → less capacitance</div>
+        </div>
+        <div style="background:var(--surface-2);border-radius:8px;padding:14px 16px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px;">Larger diameter</div>
+          <div style="font-size:22px;font-weight:600;color:var(--blue-dark);font-family:'JetBrains Mono',monospace;">↑ velocity</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">Less resistance → faster ion flow</div>
+        </div>
+      </div>
+
+      <table class="fiber-table">
+        <tr>
+          <th>Fiber type</th>
+          <th>Myelination</th>
+          <th>Velocity</th>
+        </tr>
+        <tr>
+          <td>A fibers (Aα Aβ Aγ Aδ)</td>
+          <td>Heavily myelinated</td>
+          <td>
+            <div class="speed-bar">
+              <div class="speed-pip on"></div>
+              <div class="speed-pip on"></div>
+              <div class="speed-pip on"></div>
+              <span style="font-size:11px;color:var(--teal-dark);font-weight:600;margin-left:4px;">Fastest</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>B fibers</td>
+          <td>Moderately myelinated</td>
+          <td>
+            <div class="speed-bar">
+              <div class="speed-pip on"></div>
+              <div class="speed-pip on"></div>
+              <div class="speed-pip"></div>
+              <span style="font-size:11px;color:var(--amber-dark);font-weight:600;margin-left:4px;">Moderate</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>C fibers</td>
+          <td>Unmyelinated / minimal</td>
+          <td>
+            <div class="speed-bar">
+              <div class="speed-pip on"></div>
+              <div class="speed-pip"></div>
+              <div class="speed-pip"></div>
+              <span style="font-size:11px;color:var(--coral-dark);font-weight:600;margin-left:4px;">Slowest</span>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+  </section>
+
+
+  <!-- ══════════════════ EPENDYMAL CELLS ══════════════════ -->
+  <section class="section" id="ependymal" role="tabpanel">
+
+    <div class="card pink">
+      <div class="card-head">
+        <h2>Ependymal cells</h2>
+        <span class="zone-badge badge-cns">CNS only</span>
+      </div>
+      <ul class="facts">
+        <li>Cuboidal/columnar cells that <b>line the ventricles</b> of the brain and the central canal of the spinal cord</li>
+        <li>Key component of the <b>blood-CSF barrier</b></li>
+        <li>Have <b>cilia</b> on their apical surface to propel CSF through the ventricular system</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Blood-CSF barrier vs Blood-brain barrier</p>
+
+    <div class="barrier-grid">
+      <div class="barrier-card pink" style="border-left-color:var(--pink-mid);">
+        <h3>Blood-CSF barrier</h3>
+        <div class="barrier-layer">
+          <span class="layer-num">①</span>
+          <span class="layer-text"><b>Endothelial cells</b> — <b>fenestrated (leaky)</b> here; no tight junctions between them</span>
+        </div>
+        <div class="barrier-layer">
+          <span class="layer-num">②</span>
+          <span class="layer-text"><b>Basal lamina</b> — connective tissue, same as BBB</span>
+        </div>
+        <div class="barrier-layer">
+          <span class="layer-num">③</span>
+          <span class="layer-text"><b>Ependymal cells</b> — connected by <b>tight junctions</b>. This is the selective barrier layer</span>
+        </div>
+      </div>
+
+      <div class="barrier-card blue">
+        <h3>Blood-brain barrier (recap)</h3>
+        <div class="barrier-layer">
+          <span class="layer-num">①</span>
+          <span class="layer-text"><b>Endothelial cells</b> — tight junctions here (the main barrier)</span>
+        </div>
+        <div class="barrier-layer">
+          <span class="layer-num">②</span>
+          <span class="layer-text"><b>Basal lamina</b></span>
+        </div>
+        <div class="barrier-layer">
+          <span class="layer-num">③</span>
+          <span class="layer-text"><b>Astrocyte foot processes</b> — chemically maintain, no tight junctions</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight" style="margin-bottom:14px;">
+      <b>Key distinction:</b> In the <b>BBB</b>, tight junctions are between <em>endothelial cells</em>. In the <b>blood-CSF barrier</b>, tight junctions are between <em>ependymal cells</em> — the endothelial layer is leaky.
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Three core functions</p>
+
+    <div class="grid3">
+      <div class="card pink" style="margin-bottom:0;text-align:center;">
+        <div style="font-size:22px;margin-bottom:8px;color:var(--pink-dark);">⇄</div>
+        <div style="font-weight:600;font-size:13.5px;color:var(--text);margin-bottom:6px;">Selective transport</div>
+        <div style="font-size:12px;color:var(--text-muted);line-height:1.55;">Controls movement of ions, water, glucose, O₂, CO₂ via specific transport proteins</div>
+      </div>
+
+      <div class="card pink" style="margin-bottom:0;text-align:center;">
+        <div style="font-size:22px;margin-bottom:8px;color:var(--pink-dark);">+</div>
+        <div style="font-weight:600;font-size:13.5px;color:var(--text);margin-bottom:6px;">CSF production</div>
+        <div style="font-size:12px;color:var(--text-muted);line-height:1.55;">Secretes cerebrospinal fluid — water, Na⁺, Cl⁻, glucose, amino acids — into ventricles</div>
+      </div>
+
+      <div class="card pink" style="margin-bottom:0;text-align:center;">
+        <div style="font-size:22px;margin-bottom:8px;color:var(--pink-dark);">~</div>
+        <div style="font-weight:600;font-size:13.5px;color:var(--text);margin-bottom:6px;">CSF circulation</div>
+        <div style="font-size:12px;color:var(--text-muted);line-height:1.55;">Cilia beat to propel CSF through the ventricular system and around the brain/spinal cord</div>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ══════════════════ MICROGLIA ══════════════════ -->
+  <section class="section" id="micro" role="tabpanel">
+
+    <div class="card red">
+      <div class="card-head">
+        <h2>Microglia</h2>
+        <span class="zone-badge badge-cns">CNS only</span>
+      </div>
+      <ul class="facts">
+        <li>The <b>immune cells of the CNS</b></li>
+        <li>Originate from <b>monocytes</b> produced in the red bone marrow</li>
+        <li>Monocytes migrate to the CNS and differentiate into microglia — unique lineage from all other glia</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Activation trigger</p>
+
+    <div class="card none">
+      <div class="card-head">
+        <h2>What activates microglia</h2>
+        <span class="zone-badge badge-red">Danger signals</span>
+      </div>
+      <ul class="facts">
+        <li>Neural damage or infection → release of <b>cellular debris</b> and <b>cytokines</b></li>
+        <li>Microglia detect these signals via pattern-recognition receptors → become activated</li>
+        <li>Transition from a ramified (surveying) state to an amoeboid (active) morphology</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Functions of activated microglia</p>
+
+    <div class="card red">
+      <div class="card-head">
+        <h2>Inflammatory response</h2>
+        <span class="zone-badge badge-red">Defense</span>
+      </div>
+      <ul class="facts">
+        <li>Release <b>nitric oxide</b>, <b>reactive oxygen species (free radicals)</b>, and pro-inflammatory <b>cytokines</b></li>
+        <li>Goal: destroy pathogens causing neural damage</li>
+        <li>Side effect: can damage surrounding neural tissue and myelin → <b>bystander demyelination</b></li>
+      </ul>
+    </div>
+
+    <div class="card coral">
+      <div class="card-head">
+        <h2>Phagocytosis &amp; antigen presentation</h2>
+        <span class="zone-badge badge-coral">Adaptive immunity</span>
+      </div>
+      <ul class="facts">
+        <li>Phagocytose pathogens and cellular debris to clear the injury site</li>
+        <li>Present pathogen fragments on <b>MHC II</b> molecules on their surface</li>
+        <li>T cells cross the BBB → interact with MHC II → become activated → release cytokines → amplify and direct the immune response</li>
+      </ul>
+    </div>
+
+    <div class="card none">
+      <div class="pearl" style="margin-top:0;">
+        <div class="pearl-head">
+          <div class="pearl-icon">Rx</div>
+          <span class="pearl-label">Clinical pearl — HIV encephalitis</span>
+        </div>
+        <p>HIV preferentially attacks <b>microglia</b> in the CNS. This causes hyperactivation → excessive release of <b>nitric oxide</b> and <b>free radicals</b> → widespread demyelination of axons → <b>HIV encephalitis</b>.</p>
+        <p>This is why CNS deterioration (cognitive decline, motor deficits) can occur in advanced HIV infection even before opportunistic infections take hold.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Microglia at a glance</p>
+
+    <div class="grid3">
+      <div class="card none" style="margin-bottom:0;text-align:center;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px;">Origin</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text);">Bone marrow monocytes</div>
+      </div>
+      <div class="card none" style="margin-bottom:0;text-align:center;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px;">Location</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text);">CNS only</div>
+      </div>
+      <div class="card none" style="margin-bottom:0;text-align:center;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px;">Equivalent</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text);">Macrophage of the CNS</div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer class="footer">
+    <p>Neuroscience Study Guide &nbsp;·&nbsp; Unit 3: Glial Cells</p>
+    <p style="margin-top:6px;">For study purposes only. Always verify with primary course materials.</p>
+  </footer>
+
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
+}
+</script>
+</body>
+</html>

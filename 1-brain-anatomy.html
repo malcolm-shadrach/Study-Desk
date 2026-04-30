@@ -1,0 +1,185 @@
+
+<style>
+  .notes-wrap { padding: 1.5rem 0; font-family: var(--font-sans); }
+  .section-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: var(--border-radius-md); }
+  .badge-purple { background: #EEEDFE; color: #3C3489; }
+  .badge-teal { background: #E1F5EE; color: #085041; }
+  .badge-coral { background: #FAECE7; color: #712B13; }
+  .badge-blue { background: #E6F1FB; color: #0C447C; }
+  .badge-amber { background: #FAEEDA; color: #633806; }
+  .section-title { font-size: 16px; font-weight: 500; color: var(--color-text-primary); margin: 0; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+  .sub-box { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; }
+  .sub-label { font-size: 12px; color: var(--color-text-secondary); margin: 0 0 4px; }
+  .sub-val { font-size: 13px; color: var(--color-text-primary); margin: 0; line-height: 1.5; }
+  .structure-list { margin: 6px 0 0; padding-left: 1rem; }
+  .structure-list li { font-size: 13px; color: var(--color-text-primary); margin-bottom: 3px; }
+  .divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 12px 0; }
+  .overview-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
+  .overview-box { border-radius: var(--border-radius-md); padding: 10px; text-align: center; }
+  .ov-title { font-size: 12px; font-weight: 500; margin: 0 0 2px; }
+  .ov-sub { font-size: 11px; margin: 0; }
+  .ov-purple { background: #EEEDFE; } .ov-purple .ov-title { color: #3C3489; } .ov-purple .ov-sub { color: #534AB7; }
+  .ov-teal { background: #E1F5EE; } .ov-teal .ov-title { color: #085041; } .ov-teal .ov-sub { color: #0F6E56; }
+  .ov-coral { background: #FAECE7; } .ov-coral .ov-title { color: #712B13; } .ov-coral .ov-sub { color: #993C1D; }
+  .ov-blue { background: #E6F1FB; } .ov-blue .ov-title { color: #0C447C; } .ov-blue .ov-sub { color: #185FA5; }
+  .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+  .quick-box { border-radius: var(--border-radius-md); padding: 10px 12px; }
+  .quick-label { font-size: 12px; font-weight: 500; margin: 0 0 2px; }
+  .quick-val { font-size: 13px; margin: 0; }
+  .page-title { font-size: 20px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 4px; }
+  .page-sub { font-size: 13px; color: var(--color-text-secondary); margin: 0 0 1.5rem; }
+  .tag { display: inline-block; font-size: 11px; background: var(--color-background-secondary); color: var(--color-text-secondary); border-radius: var(--border-radius-md); padding: 2px 8px; margin-right: 4px; }
+</style>
+
+<div class="notes-wrap">
+  <h2 class="sr-only" style="position:absolute;left:-9999px;">Brain Anatomy Study Notes from Ninja Nerd</h2>
+  <p class="page-title">Brain anatomy — study notes</p>
+  <p class="page-sub">Ninja Nerd · Dissectible Model Lecture</p>
+
+  <div class="section-card">
+    <div class="section-header">
+      <span class="badge badge-purple">Overview</span>
+      <p class="section-title">Major divisions of the brain</p>
+    </div>
+    <div class="overview-grid">
+      <div class="overview-box ov-purple"><p class="ov-title">Cerebrum</p><p class="ov-sub">Decision + Action</p></div>
+      <div class="overview-box ov-blue"><p class="ov-title">Diencephalon</p><p class="ov-sub">Relay + Homeostasis</p></div>
+      <div class="overview-box ov-coral"><p class="ov-title">Brainstem</p><p class="ov-sub">Keep alive</p></div>
+      <div class="overview-box ov-teal"><p class="ov-title">Cerebellum</p><p class="ov-sub">Smooth movement</p></div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <span class="badge badge-purple">1</span>
+      <p class="section-title">Cerebrum — largest part of the brain</p>
+    </div>
+    <div class="row">
+      <div class="sub-box">
+        <p class="sub-label">Structure</p>
+        <ul class="structure-list">
+          <li>Right hemisphere</li>
+          <li>Left hemisphere</li>
+          <li>Corpus callosum (connects both)</li>
+        </ul>
+      </div>
+      <div class="sub-box">
+        <p class="sub-label">Function</p>
+        <p class="sub-val">Higher thinking, voluntary movement, language, sensation</p>
+      </div>
+    </div>
+    <hr class="divider">
+    <p class="sub-label" style="margin:0 0 6px;">Four lobes</p>
+    <div class="row">
+      <div class="sub-box"><p class="sub-label">Frontal</p><p class="sub-val">Motor control, decision-making</p></div>
+      <div class="sub-box"><p class="sub-label">Parietal</p><p class="sub-val">Sensation, spatial awareness</p></div>
+    </div>
+    <div class="row" style="margin-top:8px;">
+      <div class="sub-box"><p class="sub-label">Temporal</p><p class="sub-val">Hearing, memory</p></div>
+      <div class="sub-box"><p class="sub-label">Occipital</p><p class="sub-val">Vision</p></div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <span class="badge badge-blue">2</span>
+      <p class="section-title">Diencephalon — deep within the brain</p>
+    </div>
+    <div class="row">
+      <div class="sub-box">
+        <p class="sub-label">Thalamus</p>
+        <p class="sub-val">Relay station for sensory information — routes signals to the correct cortical area</p>
+      </div>
+      <div class="sub-box">
+        <p class="sub-label">Hypothalamus</p>
+        <p class="sub-val">Regulates temperature, hunger, thirst, sleep, and hormonal control</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <span class="badge badge-coral">3</span>
+      <p class="section-title">Brainstem — vital life functions</p>
+    </div>
+    <div class="row">
+      <div class="sub-box">
+        <p class="sub-label">Three parts</p>
+        <ul class="structure-list">
+          <li>Midbrain</li>
+          <li>Pons</li>
+          <li>Medulla oblongata</li>
+        </ul>
+      </div>
+      <div class="sub-box">
+        <p class="sub-label">Controls</p>
+        <ul class="structure-list">
+          <li>Breathing</li>
+          <li>Heart rate</li>
+          <li>Blood pressure</li>
+          <li>Brain ↔ spinal cord connection</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <span class="badge badge-teal">4</span>
+      <p class="section-title">Cerebellum — posterior (back of brain)</p>
+    </div>
+    <div class="row">
+      <div class="sub-box">
+        <p class="sub-label">Role</p>
+        <ul class="structure-list">
+          <li>Coordination of movement</li>
+          <li>Balance</li>
+          <li>Precision of motor activity</li>
+        </ul>
+      </div>
+      <div class="sub-box">
+        <p class="sub-label">Key point</p>
+        <p class="sub-val">Does not initiate movement — it fine-tunes movements initiated by the cerebrum</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <span class="badge badge-amber">5</span>
+      <p class="section-title">Internal structures (model dissection)</p>
+    </div>
+    <div class="row">
+      <div class="sub-box">
+        <p class="sub-label">Ventricles</p>
+        <p class="sub-val">Fluid-filled spaces containing CSF (cerebrospinal fluid) — cushions and protects the brain</p>
+      </div>
+      <div class="sub-box">
+        <p class="sub-label">Corpus callosum</p>
+        <p class="sub-val">Large white matter tract bridging the two hemispheres — enables left-right communication</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <span class="badge badge-purple">Quick recall</span>
+      <p class="section-title">Memory hooks</p>
+    </div>
+    <div class="quick-grid">
+      <div class="quick-box ov-purple"><p class="quick-label" style="color:#3C3489;">Cerebrum</p><p class="quick-val" style="color:#534AB7;">"Think &amp; move"</p></div>
+      <div class="quick-box ov-teal"><p class="quick-label" style="color:#085041;">Cerebellum</p><p class="quick-val" style="color:#0F6E56;">"Smooth it out"</p></div>
+      <div class="quick-box ov-coral"><p class="quick-label" style="color:#712B13;">Brainstem</p><p class="quick-val" style="color:#993C1D;">"Stay alive"</p></div>
+      <div class="quick-box ov-blue"><p class="quick-label" style="color:#0C447C;">Thalamus</p><p class="quick-val" style="color:#185FA5;">"Traffic control"</p></div>
+      <div class="quick-box ov-blue" style="grid-column: span 2;"><p class="quick-label" style="color:#0C447C;">Hypothalamus</p><p class="quick-val" style="color:#185FA5;">"Internal thermostat — hunger, temp, hormones"</p></div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top: 1.5rem;">
+    <button onclick="sendPrompt('Can you give me clinical relevance of these brain regions — e.g. what happens in stroke, TBI, or CP affecting each area?')" style="margin-right: 8px;">Clinical relevance ↗</button>
+    <button onclick="sendPrompt('Give me 10 exam-style Q&A questions on brain anatomy from these notes')">Practice questions ↗</button>
+  </div>
+</div>

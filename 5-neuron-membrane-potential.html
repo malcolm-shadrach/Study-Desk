@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Membrane Potentials — Unit 2 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F9F7F4;
+  --surface: #FFFFFF;
+  --surface-2: #F4F1EC;
+  --border: #E5E0D8;
+  --border-strong: #C8C0B4;
+  --text: #1A1714;
+  --text-muted: #6B6560;
+  --text-faint: #A39D97;
+
+  --teal-bg: #E4F5EE;
+  --teal-mid: #1D9E75;
+  --teal-dark: #085041;
+
+  --purple-bg: #EEEDFE;
+  --purple-mid: #534AB7;
+  --purple-dark: #3C3489;
+
+  --coral-bg: #FAECE7;
+  --coral-mid: #D85A30;
+  --coral-dark: #712B13;
+
+  --blue-bg: #E6F1FB;
+  --blue-mid: #378ADD;
+  --blue-dark: #0C447C;
+
+  --amber-bg: #FDF3E3;
+  --amber-mid: #EF9F27;
+  --amber-dark: #633806;
+
+  --green-bg: #EAF3DE;
+  --green-mid: #639922;
+  --green-dark: #27500A;
+
+  --red-bg: #FCEBEB;
+  --red-mid: #E24B4A;
+  --red-dark: #791F1F;
+
+  --accent: #1D9E75;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── Header ── */
+.header {
+  padding: 56px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+
+.header-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.dot-accent {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.eyebrow-text {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(32px, 5vw, 52px);
+  line-height: 1.1;
+  color: var(--text);
+  font-weight: 400;
+  margin-bottom: 14px;
+}
+
+.header h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.header-sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 560px;
+  line-height: 1.7;
+}
+
+/* ── Nav tabs ── */
+.nav {
+  display: flex;
+  gap: 0;
+  margin-bottom: 40px;
+  border-bottom: 1.5px solid var(--border);
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display: none; }
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 20px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2.5px solid transparent;
+  margin-bottom: -1.5px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.nav-btn:hover { color: var(--text); }
+.nav-btn.active { color: var(--text); border-bottom-color: var(--accent); }
+
+.nav-icon {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* ── Sections ── */
+.section { display: none; animation: fadeIn 0.2s ease; }
+.section.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Section label ── */
+.s-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin: 0 0 14px;
+}
+
+/* ── Card ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+
+.card.blue::before   { background: var(--blue-mid); }
+.card.teal::before   { background: var(--teal-mid); }
+.card.purple::before { background: var(--purple-mid); }
+.card.coral::before  { background: var(--coral-mid); }
+.card.amber::before  { background: var(--amber-mid); }
+.card.red::before    { background: var(--red-mid); }
+.card.green::before  { background: var(--green-mid); }
+.card.none::before   { display: none; }
+
+.card h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 14px;
+}
+
+.card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.card-head h2 { margin-bottom: 0; }
+
+/* ── Zone badge ── */
+.zone-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 99px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.badge-blue   { background: var(--blue-bg);   color: var(--blue-dark); }
+.badge-teal   { background: var(--teal-bg);   color: var(--teal-dark); }
+.badge-purple { background: var(--purple-bg); color: var(--purple-dark); }
+.badge-coral  { background: var(--coral-bg);  color: var(--coral-dark); }
+.badge-amber  { background: var(--amber-bg);  color: var(--amber-dark); }
+.badge-red    { background: var(--red-bg);    color: var(--red-dark); }
+.badge-green  { background: var(--green-bg);  color: var(--green-dark); }
+
+/* ── Fact items ── */
+.facts { list-style: none; }
+
+.facts li {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  line-height: 1.65;
+  padding: 6px 0 6px 16px;
+  border-left: 1.5px solid var(--border);
+  margin-bottom: 4px;
+  position: relative;
+}
+
+.facts li::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: 13px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+
+.facts li b { color: var(--text); font-weight: 600; }
+.facts li em { font-style: italic; }
+
+/* ── Voltage display ── */
+.voltage-hero {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 14px;
+  border-left: 3px solid var(--blue-mid);
+}
+
+.voltage-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--blue-dark);
+  white-space: nowrap;
+}
+
+.voltage-desc { font-size: 13.5px; color: var(--text-muted); line-height: 1.6; }
+.voltage-desc b { color: var(--text); font-weight: 600; }
+
+/* ── Nernst equation ── */
+.equation {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  color: var(--text);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+/* ── KV table ── */
+table.kv {
+  width: 100%;
+  font-size: 13px;
+  border-collapse: collapse;
+}
+
+table.kv td {
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+table.kv td:first-child {
+  color: var(--text-muted);
+  width: 44%;
+  padding-right: 12px;
+}
+
+table.kv tr:last-child td { border-bottom: none; }
+table.kv b { color: var(--text); font-weight: 600; }
+
+/* ── Step badge in table ── */
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 99px;
+  white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── Grid layouts ── */
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .grid2, .grid3 { grid-template-columns: 1fr; }
+}
+
+/* ── Divider ── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 28px 0;
+}
+
+.mt { margin-top: 28px; }
+
+/* ── Voltage scale bar ── */
+.vscale {
+  display: flex;
+  align-items: stretch;
+  height: 28px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 14px 0 6px;
+  border: 1px solid var(--border);
+}
+
+.vscale-seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* ── Stat mini cards ── */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.stat-card {
+  background: var(--surface-2);
+  border-radius: 8px;
+  padding: 12px 14px;
+  text-align: center;
+}
+
+.stat-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+
+.stat-lbl {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* ── AP graph area ── */
+.graph-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 14px;
+}
+
+.graph-wrap h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 17px;
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+
+/* ── Refractory period cards ── */
+.refract-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.refract-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.refract-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+
+.refract-card.coral::before { background: var(--coral-mid); }
+.refract-card.amber::before { background: var(--amber-mid); }
+
+.refract-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.refract-card.coral h3 { color: var(--coral-dark); }
+.refract-card.amber h3 { color: var(--amber-dark); }
+
+.refract-card p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.refract-card p b { color: var(--text); font-weight: 600; }
+
+/* ── Glossary term row ── */
+.gloss-row {
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13.5px;
+}
+
+.gloss-row:last-child { border-bottom: none; }
+
+.gloss-term {
+  font-weight: 600;
+  color: var(--text);
+  min-width: 170px;
+  flex-shrink: 0;
+}
+
+.gloss-def { color: var(--text-muted); line-height: 1.55; }
+.gloss-def b { color: var(--text); font-weight: 600; }
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 40px 0 0;
+  font-size: 12px;
+  color: var(--text-faint);
+  border-top: 1px solid var(--border);
+  margin-top: 60px;
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-eyebrow">
+      <div class="dot-accent"></div>
+      <span class="eyebrow-text">Neuroscience · Unit 2</span>
+    </div>
+    <h1>Membrane<br><em>Potentials</em></h1>
+    <p class="header-sub">Resting membrane potential, graded potentials, and the action potential — from ion gradients to neurotransmitter release.</p>
+  </header>
+
+  <!-- Nav -->
+  <nav class="nav" role="tablist" aria-label="Study sections">
+    <button class="nav-btn active" onclick="show('rmp', this)" role="tab" aria-selected="true">
+      <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="3" fill="#E6F1FB"/><line x1="3" y1="7" x2="11" y2="7" stroke="#378ADD" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Resting Potential
+    </button>
+    <button class="nav-btn" onclick="show('graded', this)" role="tab" aria-selected="false">
+      <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="3" fill="#EEEDFE"/><path d="M3 9 L6 5 L11 5" stroke="#534AB7" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Graded Potentials
+    </button>
+    <button class="nav-btn" onclick="show('action', this)" role="tab" aria-selected="false">
+      <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="3" fill="#E4F5EE"/><path d="M2 8 L5 8 L6.5 3 L8.5 11 L10 8 L12 8" stroke="#1D9E75" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Action Potential
+    </button>
+    <button class="nav-btn" onclick="show('glossary', this)" role="tab" aria-selected="false">
+      <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="3" fill="#FDF3E3"/><rect x="3" y="4" width="8" height="1.4" rx=".7" fill="#EF9F27"/><rect x="3" y="6.8" width="6" height="1.4" rx=".7" fill="#EF9F27"/><rect x="3" y="9" width="4" height="1.4" rx=".7" fill="#EF9F27"/></svg>
+      Key Terms
+    </button>
+  </nav>
+
+  <!-- ════════ RESTING MEMBRANE POTENTIAL ════════ -->
+  <section class="section active" id="rmp" role="tabpanel">
+
+    <div class="voltage-hero">
+      <div class="voltage-num">−70 mV</div>
+      <div class="voltage-desc">
+        <b>Resting membrane potential (RMP)</b> — the voltage difference across the cell membrane when the neuron is at rest. Present in <em>all</em> cells, not just neurons. Range: −70 to −90 mV; −70 mV is the standard textbook value.
+      </div>
+    </div>
+
+    <p class="s-label">Three contributors to RMP</p>
+
+    <div class="grid3" style="margin-bottom:14px;">
+      <div class="card blue" style="margin-bottom:0;">
+        <div class="card-head">
+          <h2>Na⁺/K⁺ ATPase</h2>
+          <span class="zone-badge badge-blue">Pump</span>
+        </div>
+        <ul class="facts">
+          <li>Pumps <b>3 Na⁺ out</b> and <b>2 K⁺ in</b></li>
+          <li>Net loss of cations → slight negative interior (≈ −5 mV contribution)</li>
+          <li>Also establishes the concentration gradients that drive the other two mechanisms</li>
+        </ul>
+      </div>
+
+      <div class="card teal" style="margin-bottom:0;">
+        <div class="card-head">
+          <h2>Leaky K⁺ channels</h2>
+          <span class="zone-badge badge-teal">Always open</span>
+        </div>
+        <ul class="facts">
+          <li>K⁺ is concentrated <em>inside</em> (by pump), so it leaks <em>out</em> down its gradient</li>
+          <li>Negative anions (proteins, phosphates) left behind</li>
+          <li>Largest contributor → pulls voltage toward ≈ −90 mV</li>
+        </ul>
+      </div>
+
+      <div class="card coral" style="margin-bottom:0;">
+        <div class="card-head">
+          <h2>Leaky Na⁺ channels</h2>
+          <span class="zone-badge badge-coral">Always open</span>
+        </div>
+        <ul class="facts">
+          <li>Na⁺ concentrated <em>outside</em>, so it leaks <em>in</em></li>
+          <li>Cell is far more permeable to K⁺ than Na⁺</li>
+          <li>Partially counteracts K⁺ leak → raises voltage back from −90 to ≈ −70 mV</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Nernst potential equation</p>
+
+    <div class="card none">
+      <div class="card-head">
+        <h2>E<sub style="font-family:'DM Sans'">ion</sub> — equilibrium potential</h2>
+        <span class="zone-badge badge-blue">Quantitative</span>
+      </div>
+      <div class="equation">E<sub>ion</sub> = (61.5 / z) × log([ion]<sub>out</sub> / [ion]<sub>in</sub>)</div>
+      <table class="kv">
+        <tr>
+          <td>When to use</td>
+          <td>When net ion movement = 0; concentration gradient force is exactly balanced by electrostatic force</td>
+        </tr>
+        <tr>
+          <td>E<sub>K⁺</sub> result</td>
+          <td><b>≈ −90 mV</b> &nbsp;(K⁺: 5 mM outside / 150 mM inside)</td>
+        </tr>
+        <tr>
+          <td>E<sub>Na⁺</sub> result</td>
+          <td><b>≈ +70 mV</b> &nbsp;(Na⁺: 140 mM outside / 10 mM inside)</td>
+        </tr>
+        <tr>
+          <td>Combined RMP</td>
+          <td>Weighted by permeability (~90% K⁺, ~10% Na⁺) → <b>≈ −70 mV</b></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Visual permeability bar -->
+    <div style="margin-top:6px;">
+      <p style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;">Membrane permeability weighting</p>
+      <div class="vscale">
+        <div class="vscale-seg" style="width:90%;background:var(--teal-bg);color:var(--teal-dark);">K⁺ 90%</div>
+        <div class="vscale-seg" style="width:10%;background:var(--blue-bg);color:var(--blue-dark);">Na⁺ 10%</div>
+      </div>
+      <p style="font-size:11px;color:var(--text-faint);margin-top:4px;">High K⁺ permeability explains why RMP (−70 mV) sits closer to E<sub>K⁺</sub> (−90 mV) than to E<sub>Na⁺</sub> (+70 mV).</p>
+    </div>
+
+  </section>
+
+  <!-- ════════ GRADED POTENTIALS ════════ -->
+  <section class="section" id="graded" role="tabpanel">
+
+    <div class="voltage-hero" style="border-left-color:var(--purple-mid);">
+      <div class="voltage-num" style="color:var(--purple-dark);">−55 mV</div>
+      <div class="voltage-desc">
+        <b>Threshold.</b> Graded potentials move RMP (−70 mV) either toward or away from this value to control whether an action potential fires at the axon hillock.
+      </div>
+    </div>
+
+    <p class="s-label">EPSP vs IPSP</p>
+
+    <div class="grid2" style="margin-bottom:14px;">
+      <div class="card teal" style="margin-bottom:0;">
+        <div class="card-head">
+          <h2>EPSP</h2>
+          <span class="zone-badge badge-teal">Excitatory</span>
+        </div>
+        <ul class="facts">
+          <li><b>Depolarizes</b> the cell — inside becomes more positive</li>
+          <li>Moves RMP <em>toward</em> threshold: −70 → −55 mV</li>
+          <li>Example neurotransmitter: <b>glutamate</b></li>
+          <li>Opens ligand-gated channels → Na⁺ / Ca²⁺ enter → interior becomes positive</li>
+        </ul>
+      </div>
+
+      <div class="card coral" style="margin-bottom:0;">
+        <div class="card-head">
+          <h2>IPSP</h2>
+          <span class="zone-badge badge-coral">Inhibitory</span>
+        </div>
+        <ul class="facts">
+          <li><b>Hyperpolarizes</b> the cell — inside becomes more negative</li>
+          <li>Moves RMP <em>away</em> from threshold: −70 → −90 mV</li>
+          <li>Example neurotransmitter: <b>GABA</b></li>
+          <li>Opens ligand-gated channels → Cl⁻ enters <em>or</em> K⁺ exits → interior more negative</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Summation — how EPSPs accumulate to reach threshold</p>
+
+    <div class="grid2">
+      <div class="card purple" style="margin-bottom:0;">
+        <div class="card-head">
+          <h2>Temporal summation</h2>
+          <span class="zone-badge badge-purple">Time</span>
+        </div>
+        <ul class="facts">
+          <li>One presynaptic neuron fires <em>repeatedly</em> on one postsynaptic neuron</li>
+          <li>EPSPs arrive in quick succession and <b>stack over time</b></li>
+          <li>Cumulative depolarization eventually reaches −55 mV threshold</li>
+        </ul>
+      </div>
+
+      <div class="card blue" style="margin-bottom:0;">
+        <div class="card-head">
+          <h2>Spatial summation</h2>
+          <span class="zone-badge badge-blue">Space</span>
+        </div>
+        <ul class="facts">
+          <li>Multiple presynaptic neurons fire <em>simultaneously</em> on one postsynaptic neuron</li>
+          <li>Their individual EPSPs <b>add together</b> at the soma</li>
+          <li>Combined depolarization reaches −55 mV threshold</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Visual voltage scale showing RMP → threshold -->
+    <div style="margin-top:20px;">
+      <p style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;">Voltage context</p>
+      <div style="display:flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;height:28px;">
+        <div style="flex:2;background:var(--blue-bg);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--blue-dark);">Hyperpolarized −90 mV</div>
+        <div style="flex:2;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--text-muted);">RMP −70 mV</div>
+        <div style="flex:1.5;background:var(--purple-bg);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--purple-dark);">Threshold −55</div>
+        <div style="flex:2;background:var(--teal-bg);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--teal-dark);">AP fires → +30 mV</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ════════ ACTION POTENTIAL ════════ -->
+  <section class="section" id="action" role="tabpanel">
+
+    <div class="voltage-hero" style="border-left-color:var(--teal-mid);">
+      <div class="voltage-num" style="color:var(--teal-dark);">+30 mV</div>
+      <div class="voltage-desc">
+        <b>Action potential peak.</b> Initiated at the axon hillock where voltage-gated Na⁺ channels are densest. A depolarizing wave propagates down the axon to the terminal.
+      </div>
+    </div>
+
+    <!-- Voltage stat cards -->
+    <div class="stat-row" style="margin-bottom:20px;">
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--blue-dark);">−70</div>
+        <div class="stat-lbl">RMP (mV)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--purple-dark);">−55</div>
+        <div class="stat-lbl">Threshold (mV)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--teal-dark);">+30</div>
+        <div class="stat-lbl">Peak (mV)</div>
+      </div>
+    </div>
+
+    <!-- AP Graph -->
+    <div class="graph-wrap">
+      <h2>Action potential waveform</h2>
+      <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" aria-label="Action potential graph showing phases from resting potential to hyperpolarization">
+
+        <!-- Grid lines -->
+        <line x1="64" y1="40"  x2="600" y2="40"  stroke="#E5E0D8" stroke-width="0.8"/>
+        <line x1="64" y1="90"  x2="600" y2="90"  stroke="#534AB7" stroke-width="0.8" stroke-dasharray="5,3" opacity=".6"/>
+        <line x1="64" y1="118" x2="600" y2="118" stroke="#378ADD" stroke-width="0.8" stroke-dasharray="5,3" opacity=".6"/>
+        <line x1="64" y1="152" x2="600" y2="152" stroke="#E5E0D8" stroke-width="0.8"/>
+
+        <!-- Axes -->
+        <line x1="64" y1="15"  x2="64"  y2="185" stroke="#C8C0B4" stroke-width="1"/>
+        <line x1="64" y1="185" x2="605" y2="185" stroke="#C8C0B4" stroke-width="1"/>
+
+        <!-- Y-axis labels -->
+        <text x="56" y="44"  text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="10" fill="#6B6560">+30</text>
+        <text x="56" y="94"  text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="10" fill="#534AB7">−55</text>
+        <text x="56" y="122" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="10" fill="#378ADD">−70</text>
+        <text x="56" y="156" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="10" fill="#6B6560">−90</text>
+        <text x="20" y="110" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#A39D97" transform="rotate(-90 20 110)">Voltage (mV)</text>
+        <text x="330" y="198" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#A39D97">Time</text>
+
+        <!-- Reference line labels -->
+        <text x="598" y="87"  text-anchor="end" font-family="'DM Sans',sans-serif" font-size="9" fill="#534AB7" font-weight="600">threshold</text>
+        <text x="598" y="115" text-anchor="end" font-family="'DM Sans',sans-serif" font-size="9" fill="#378ADD" font-weight="600">RMP</text>
+
+        <!-- AP curve -->
+        <polyline
+          points="64,118 140,118 175,90 205,40 265,40 300,152 350,152 390,118"
+          fill="none" stroke="#1D9E75" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+
+        <!-- Phase shaded regions -->
+        <!-- Rising -->
+        <path d="M175,90 L205,40 L265,40 L265,118 L175,118 Z" fill="#E4F5EE" opacity=".35"/>
+        <!-- Repolarization -->
+        <path d="M265,40 L300,152 L350,152 L265,152 Z" fill="#FAECE7" opacity=".25"/>
+        <!-- Hyperpolarization dip -->
+        <path d="M300,152 L350,152 L390,118 L380,152 Z" fill="#FAEEDA" opacity=".3"/>
+
+        <!-- Phase labels -->
+        <text x="155" y="82" font-family="'DM Sans',sans-serif" font-size="9.5" fill="#085041" font-weight="600">rising</text>
+        <text x="222" y="32" font-family="'DM Sans',sans-serif" font-size="9.5" fill="#085041" font-weight="600">peak (+30 mV)</text>
+        <text x="265" y="82" font-family="'DM Sans',sans-serif" font-size="9.5" fill="#712B13" font-weight="600">repolarization</text>
+        <text x="295" y="168" font-family="'DM Sans',sans-serif" font-size="9.5" fill="#633806" font-weight="600">hyperpolarization</text>
+        <text x="82" y="112" font-family="'DM Sans',sans-serif" font-size="9.5" fill="#0C447C" font-weight="600">RMP</text>
+
+        <!-- Absolute refractory bracket -->
+        <line x1="205" y1="177" x2="350" y2="177" stroke="#D85A30" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="205" y1="173" x2="205" y2="181" stroke="#D85A30" stroke-width="1.3"/>
+        <line x1="350" y1="173" x2="350" y2="181" stroke="#D85A30" stroke-width="1.3"/>
+        <text x="275" y="175" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="9" fill="#D85A30" font-weight="600" dy="-3">absolute refractory</text>
+
+        <!-- Relative refractory bracket -->
+        <line x1="350" y1="177" x2="390" y2="177" stroke="#BA7517" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="390" y1="173" x2="390" y2="181" stroke="#BA7517" stroke-width="1.3"/>
+        <text x="370" y="175" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="9" fill="#BA7517" font-weight="600" dy="-3">relative</text>
+
+        <!-- Stimulus arrow -->
+        <line x1="140" y1="90" x2="140" y2="125" stroke="#534AB7" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <circle cx="140" cy="118" r="3" fill="#534AB7"/>
+        <text x="144" y="108" font-family="'DM Sans',sans-serif" font-size="9" fill="#3C3489" font-weight="600">stimulus</text>
+
+        <!-- Ion annotations -->
+        <text x="185" y="68" font-family="'DM Sans',sans-serif" font-size="9" fill="#085041">Na⁺ in</text>
+        <text x="270" y="110" font-family="'DM Sans',sans-serif" font-size="9" fill="#712B13">K⁺ out</text>
+      </svg>
+    </div>
+
+    <p class="s-label">Step-by-step sequence</p>
+
+    <div class="card none">
+      <table class="kv">
+        <tr>
+          <td><span class="step-badge" style="background:var(--purple-bg);color:var(--purple-dark);">① RMP</span></td>
+          <td>Cell sits at <b>−70 mV</b>. Voltage-gated Na⁺ channels closed — activation gate shut, inactivation gate open.</td>
+        </tr>
+        <tr>
+          <td><span class="step-badge" style="background:var(--blue-bg);color:var(--blue-dark);">② Threshold −55</span></td>
+          <td>Enough EPSPs depolarize the axon hillock. <b>Activation gates</b> of voltage-gated Na⁺ channels open.</td>
+        </tr>
+        <tr>
+          <td><span class="step-badge" style="background:var(--teal-bg);color:var(--teal-dark);">③ Rising phase</span></td>
+          <td><b>Na⁺ floods in</b> rapidly. Voltage rises from −55 → +30 mV (depolarization).</td>
+        </tr>
+        <tr>
+          <td><span class="step-badge" style="background:var(--teal-bg);color:var(--teal-dark);">④ Peak +30</span></td>
+          <td><b>Inactivation gates</b> of Na⁺ channels close. Voltage-gated K⁺ channels begin to open.</td>
+        </tr>
+        <tr>
+          <td><span class="step-badge" style="background:var(--blue-bg);color:var(--blue-dark);">⑤ Repolarization</span></td>
+          <td><b>K⁺ rushes out</b> → voltage falls from +30 → −90 mV.</td>
+        </tr>
+        <tr>
+          <td><span class="step-badge" style="background:var(--amber-bg);color:var(--amber-dark);">⑥ Hyperpolarization</span></td>
+          <td>Voltage-gated K⁺ channels are slow to close → brief overshoot to ≈ <b>−90 mV</b>.</td>
+        </tr>
+        <tr>
+          <td><span class="step-badge" style="background:var(--blue-bg);color:var(--blue-dark);">⑦ Return to RMP</span></td>
+          <td>Na⁺/K⁺ ATPases + leaky channels restore <b>−70 mV</b>. All channels reset to resting state.</td>
+        </tr>
+      </table>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Na⁺ channel gate states</p>
+
+    <div class="card blue">
+      <div class="card-head">
+        <h2>Voltage-gated Na⁺ channel — three states</h2>
+        <span class="zone-badge badge-blue">Gates</span>
+      </div>
+      <table class="kv">
+        <tr>
+          <td>At rest (−70 mV)</td>
+          <td>Activation gate <b>closed</b> &nbsp;·&nbsp; inactivation gate <b>open</b> &nbsp;·&nbsp; Na⁺ cannot flow</td>
+        </tr>
+        <tr>
+          <td>Stimulated (−55 mV)</td>
+          <td>Activation gate <b>opens</b> &nbsp;·&nbsp; inactivation gate begins closing &nbsp;·&nbsp; Na⁺ rushes in</td>
+        </tr>
+        <tr>
+          <td>Peak (+30 mV)</td>
+          <td>Activation gate open &nbsp;·&nbsp; inactivation gate <b>fully closed</b> &nbsp;·&nbsp; Na⁺ entry halted</td>
+        </tr>
+      </table>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Axon terminal — Ca²⁺ and neurotransmitter release</p>
+
+    <div class="card teal">
+      <div class="card-head">
+        <h2>Ca²⁺-triggered exocytosis</h2>
+        <span class="zone-badge badge-teal">Output</span>
+      </div>
+      <ul class="facts">
+        <li>+30 mV at terminal → voltage-gated <b>Ca²⁺ channels</b> open → Ca²⁺ enters</li>
+        <li>Ca²⁺ binds <b>SNARE proteins</b> → synaptic vesicles fuse with plasma membrane</li>
+        <li>Neurotransmitters released into synaptic cleft via <b>exocytosis</b></li>
+        <li>Repolarization (−90 mV) closes Ca²⁺ channels → release terminated</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Refractory periods</p>
+
+    <div class="refract-grid">
+      <div class="refract-card coral">
+        <h3>Absolute refractory period</h3>
+        <p>Spans from peak (+30 mV) until return to RMP. Inactivation gates are closed — <b>no stimulus can trigger another action potential</b>, no matter how strong. Sets a maximum firing frequency.</p>
+      </div>
+      <div class="refract-card amber">
+        <h3>Relative refractory period</h3>
+        <p>During hyperpolarization (≈ −90 mV). An action potential <em>is</em> possible but requires a <b>stronger-than-normal stimulus</b> to reach threshold from the more negative starting point.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ════════ GLOSSARY ════════ -->
+  <section class="section" id="glossary" role="tabpanel">
+
+    <p class="s-label">Key terms quick reference</p>
+
+    <div class="card none">
+      <div class="gloss-row">
+        <span class="gloss-term">Depolarization</span>
+        <span class="gloss-def">Inside becomes more positive (e.g., −70 → +30 mV)</span>
+      </div>
+      <div class="gloss-row">
+        <span class="gloss-term">Repolarization</span>
+        <span class="gloss-def">Inside returns from positive back toward RMP (negative)</span>
+      </div>
+      <div class="gloss-row">
+        <span class="gloss-term">Hyperpolarization</span>
+        <span class="gloss-def">Inside becomes more negative than RMP (e.g., −70 → −90 mV)</span>
+      </div>
+      <div class="gloss-row">
+        <span class="gloss-term">Ligand-gated channel</span>
+        <span class="gloss-def">Opens when a neurotransmitter (ligand) binds — used in graded potentials at dendrites and soma</span>
+      </div>
+      <div class="gloss-row">
+        <span class="gloss-term">Voltage-gated channel</span>
+        <span class="gloss-def">Opens at a specific voltage: <b>Na⁺</b> at −55 mV · <b>K⁺</b> at +30 mV · <b>Ca²⁺</b> at +30 mV</span>
+      </div>
+      <div class="gloss-row">
+        <span class="gloss-term">Presynaptic neuron</span>
+        <span class="gloss-def">The neuron sending the signal (upstream of the synapse)</span>
+      </div>
+      <div class="gloss-row">
+        <span class="gloss-term">Postsynaptic neuron</span>
+        <span class="gloss-def">The neuron receiving the signal (downstream of the synapse)</span>
+      </div>
+      <div class="gloss-row">
+        <span class="gloss-term">Axon hillock</span>
+        <span class="gloss-def">Trigger zone where action potentials are initiated; highest density of voltage-gated Na⁺ channels</span>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Voltage milestones at a glance</p>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--text-muted);">−90</div>
+        <div class="stat-lbl">Hyperpolar. (mV)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--blue-dark);">−70</div>
+        <div class="stat-lbl">RMP (mV)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--purple-dark);">−55</div>
+        <div class="stat-lbl">Threshold (mV)</div>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--teal-dark);">+30</div>
+        <div class="stat-lbl">AP Peak (mV)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--blue-dark);">E<sub>K⁺</sub> −90</div>
+        <div class="stat-lbl">Nernst K⁺ (mV)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--coral-dark);">E<sub>Na⁺</sub> +70</div>
+        <div class="stat-lbl">Nernst Na⁺ (mV)</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <p class="s-label">Channel trigger voltages</p>
+
+    <div class="grid3">
+      <div class="card teal" style="margin-bottom:0;text-align:center;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:500;color:var(--teal-dark);margin-bottom:6px;">−55 mV</div>
+        <div style="font-size:12px;font-weight:600;color:var(--teal-dark);">Na⁺ opens</div>
+        <div style="font-size:11px;color:var(--text-faint);margin-top:3px;">Rising phase begins</div>
+      </div>
+      <div class="card coral" style="margin-bottom:0;text-align:center;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:500;color:var(--coral-dark);margin-bottom:6px;">+30 mV</div>
+        <div style="font-size:12px;font-weight:600;color:var(--coral-dark);">K⁺ opens / Na⁺ inactivates</div>
+        <div style="font-size:11px;color:var(--text-faint);margin-top:3px;">Repolarization begins</div>
+      </div>
+      <div class="card blue" style="margin-bottom:0;text-align:center;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:500;color:var(--blue-dark);margin-bottom:6px;">+30 mV</div>
+        <div style="font-size:12px;font-weight:600;color:var(--blue-dark);">Ca²⁺ opens</div>
+        <div style="font-size:11px;color:var(--text-faint);margin-top:3px;">NT release triggered</div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer class="footer">
+    <p>Neuroscience Study Guide &nbsp;·&nbsp; Unit 2: Membrane Potentials</p>
+    <p style="margin-top:6px;">For study purposes only. Always verify with primary course materials.</p>
+  </footer>
+
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
+}
+</script>
+</body>
+</html>
