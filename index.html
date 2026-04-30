@@ -32,9 +32,9 @@
     /* ── HEADER ── */
     header {
       padding: 2rem 2.5rem 1.5rem;
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      gap: 1rem;
       border-bottom: 1px solid var(--border);
       background: var(--surface);
       position: sticky; top: 0; z-index: 100;
@@ -53,12 +53,14 @@
       cursor: pointer;
       transition: all 0.2s;
       white-space: nowrap;
+      justify-self: start;
     }
     .back-btn:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
     .back-btn.visible { display: flex; }
 
     .header-title {
-      flex: 1;
+      text-align: center;
+      grid-column: 2;
     }
     .header-title h1 {
       font-family: 'DM Serif Display', serif;
@@ -468,54 +470,30 @@
 </main>
 
 <script>
-// ─────────────────────────────────────────────
-//  CONTENT CONFIGURATION
-//  → Replace the placeholder paths with your real HTML file paths
-//    relative to index.html in your GitHub repo.
-//    e.g.  "neurology/notes/lecture1.html"
-// ─────────────────────────────────────────────
 const content = {
   "neuro-notes-list": [
-    { label: "Anatomy of the Brain", path: "neurology/1-brain-anatomy.html" },
-    { label: "Ventricles", path: "neurology/2-ventricles.html" },
-    { label: "Spinal Cord", path: "neurology/3-spinal-cord.html" },
-    { label: "Neuron Structure and Function", path: "neurology/4-neuron-structure-and-function.html" },
-    { label: "Membrane Potential", path: "neurology/5-neuron-membrane-potential.html" },
-    { label: "Glial Cells", path: "neurology/6-glial-cells.html" },
-    { label: "Frontal Lobe", path: "neurology/7-frontal-lobe.html" },
-    // add more here…
+    { label: "Anatomy of the Brain",            path: "neurology/1-brain-anatomy.html" },
+    { label: "Ventricles",                       path: "neurology/2-ventricles.html" },
+    { label: "Spinal Cord",                      path: "neurology/3-spinal-cord.html" },
+    { label: "Neuron Structure and Function",    path: "neurology/4-neuron-structure-and-function.html" },
+    { label: "Membrane Potential",               path: "neurology/5-neuron-membrane-potential.html" },
+    { label: "Glial Cells",                      path: "neurology/6-glial-cells.html" },
+    { label: "Frontal Lobe",                     path: "neurology/7-frontal-lobe.html" },
   ],
   "neuro-quiz-list": [
-    { label: "Anatomy of the Brain",  path: "neurology/q1-brain-anatomy.html" },
-    { label: "Ventricles", path: "neurology/q2-ventricles.html" },
+    { label: "Anatomy of the Brain", path: "neurology/q1-brain-anatomy.html" },
+    { label: "Ventricles",           path: "neurology/q2-ventricles.html" },
   ],
-  "ortho-notes-list": [
-    { label: "Lecture 1 — Musculoskeletal Anatomy", path: "orthopedics/notes/lecture1.html" },
-  ],
-  "ortho-quiz-list": [
-    { label: "Quiz 1 — Fractures &amp; Fixation", path: "orthopedics/quiz/quiz1.html" },
-  ],
-  "peds-notes-list": [
-    { label: "Lecture 1 — Developmental Milestones", path: "pediatrics/notes/lecture1.html" },
-  ],
-  "peds-quiz-list": [
-    { label: "Quiz 1 — Neurodevelopmental Disorders", path: "pediatrics/quiz/quiz1.html" },
-  ],
-  "geron-notes-list": [
-    { label: "Lecture 1 — Aging &amp; Physiology", path: "gerontology/notes/lecture1.html" },
-  ],
-  "geron-quiz-list": [
-    { label: "Quiz 1 — Common Geriatric Conditions", path: "gerontology/quiz/quiz1.html" },
-  ],
-  "ot-notes-list": [
-    { label: "Lecture 1 — Foundations of OT", path: "ot/notes/lecture1.html" },
-  ],
-  "ot-quiz-list": [
-    { label: "Quiz 1 — ADL Assessment", path: "ot/quiz/quiz1.html" },
-  ],
+  "ortho-notes-list": [],
+  "ortho-quiz-list":  [],
+  "peds-notes-list":  [],
+  "peds-quiz-list":   [],
+  "geron-notes-list": [],
+  "geron-quiz-list":  [],
+  "ot-notes-list":    [],
+  "ot-quiz-list":     [],
 };
 
-// Breadcrumb labels for each screen
 const screenLabels = {
   "screen-home":        "Home",
   "screen-study":       "Study",
@@ -536,9 +514,6 @@ const screenLabels = {
   "screen-ot-quiz":     "Study → OT → Quiz",
 };
 
-// ─────────────────────────────────────────────
-//  NAVIGATION ENGINE
-// ─────────────────────────────────────────────
 let history = ["screen-home"];
 
 function buildContentLists() {
