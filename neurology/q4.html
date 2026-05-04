@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neuroscience Quiz — Neurons</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161e;
+    --surface2: #1a1e2a;
+    --border: rgba(255,255,255,0.07);
+    --border-hover: rgba(255,255,255,0.14);
+    --text: #e8eaf0;
+    --muted: #7a8099;
+    --accent: #6ee7c0;
+    --accent-dim: rgba(110,231,192,0.12);
+    --accent2: #f0855a;
+    --accent2-dim: rgba(240,133,90,0.12);
+    --correct: #5dd98f;
+    --correct-dim: rgba(93,217,143,0.12);
+    --wrong: #e05c6a;
+    --wrong-dim: rgba(224,92,106,0.12);
+    --blue: #7eb8f7;
+    --blue-dim: rgba(126,184,247,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Animated neural background */
+  .neural-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .neural-bg svg {
+    width: 100%; height: 100%;
+    opacity: 0.04;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 5rem;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .header-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+  }
+  .header h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .header p {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 99px;
+    height: 6px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--blue));
+    border-radius: 99px;
+    transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+    width: 0%;
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    font-family: 'DM Mono', monospace;
+    animation: fadeUp 0.6s 0.15s ease both;
+  }
+
+  /* Category badge */
+  .category-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 99px;
+    border: 0.5px solid;
+    margin-bottom: 1rem;
+  }
+  .cat-structure { color: var(--blue); border-color: rgba(126,184,247,0.3); background: var(--blue-dim); }
+  .cat-function { color: var(--accent); border-color: rgba(110,231,192,0.3); background: var(--accent-dim); }
+  .cat-transport { color: var(--accent2); border-color: rgba(240,133,90,0.3); background: var(--accent2-dim); }
+  .cat-classification { color: #c4a7f5; border-color: rgba(196,167,245,0.3); background: rgba(196,167,245,0.1); }
+  .cat-clinical { color: #f5c96a; border-color: rgba(245,201,106,0.3); background: rgba(245,201,106,0.1); }
+
+  /* Question card */
+  .question-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.45s ease both;
+    transition: border-color 0.3s;
+  }
+  .question-card:hover {
+    border-color: var(--border-hover);
+  }
+  .question-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+  .question-text {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+  }
+
+  /* Options */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 0.5px solid var(--border);
+    background: var(--surface2);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    text-align: left;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    width: 100%;
+  }
+  .option:hover:not(:disabled) {
+    border-color: var(--border-hover);
+    background: rgba(255,255,255,0.04);
+    transform: translateX(3px);
+  }
+  .option-letter {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+    flex-shrink: 0;
+    transition: all 0.18s;
+  }
+  .option.correct {
+    border-color: var(--correct);
+    background: var(--correct-dim);
+    color: var(--correct);
+  }
+  .option.correct .option-letter {
+    background: var(--correct);
+    color: #0d0f14;
+  }
+  .option.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-dim);
+    color: var(--wrong);
+  }
+  .option.wrong .option-letter {
+    background: var(--wrong);
+    color: #fff;
+  }
+  .option.reveal {
+    border-color: rgba(110,231,192,0.4);
+    background: rgba(110,231,192,0.06);
+    color: var(--accent);
+  }
+  .option.reveal .option-letter {
+    background: var(--accent);
+    color: #0d0f14;
+  }
+  .option:disabled { cursor: default; transform: none; }
+
+  /* Explanation */
+  .explanation {
+    margin-top: 1.25rem;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.65;
+    display: none;
+    animation: fadeUp 0.3s ease both;
+  }
+  .explanation.correct-exp {
+    background: var(--correct-dim);
+    border-left: 3px solid var(--correct);
+    color: #a8f0c6;
+  }
+  .explanation.wrong-exp {
+    background: var(--wrong-dim);
+    border-left: 3px solid var(--wrong);
+    color: #f0b0b8;
+  }
+  .explanation b { color: var(--text); font-weight: 600; }
+
+  /* Navigation */
+  .nav {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    gap: 10px;
+  }
+  .btn {
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s;
+    border: none;
+  }
+  .btn-ghost {
+    background: transparent;
+    border: 0.5px solid var(--border-hover);
+    color: var(--muted);
+  }
+  .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
+  .btn-primary {
+    background: var(--accent);
+    color: #0d0f14;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.35; cursor: default; transform: none; }
+
+  /* Results */
+  #results-screen {
+    display: none;
+    text-align: center;
+    animation: fadeUp 0.5s ease both;
+  }
+  .score-ring {
+    width: 160px;
+    height: 160px;
+    margin: 0 auto 2rem;
+    position: relative;
+  }
+  .score-ring svg { transform: rotate(-90deg); }
+  .score-ring-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .score-pct {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.5rem;
+    line-height: 1;
+  }
+  .score-sub {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+  .result-label {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+  .result-sub {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 2rem;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+  .stat-box {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem 1rem;
+  }
+  .stat-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-lbl {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+  .review-list {
+    text-align: left;
+    margin-bottom: 2rem;
+  }
+  .review-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 0;
+    border-bottom: 0.5px solid var(--border);
+    font-size: 14px;
+  }
+  .review-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .dot-correct { background: var(--correct); }
+  .dot-wrong { background: var(--wrong); }
+  .review-q { color: var(--text); font-weight: 500; }
+  .review-ans { color: var(--muted); margin-top: 2px; font-size: 13px; }
+  .review-ans span { color: var(--correct); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Scroll to top */
+  html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+
+<!-- Ambient background -->
+<div class="neural-bg">
+  <svg viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg">
+    <line x1="100" y1="350" x2="400" y2="200" stroke="white" stroke-width="1"/>
+    <line x1="400" y1="200" x2="700" y2="350" stroke="white" stroke-width="1"/>
+    <line x1="700" y1="350" x2="1000" y2="180" stroke="white" stroke-width="1"/>
+    <line x1="700" y1="350" x2="900" y2="500" stroke="white" stroke-width="1"/>
+    <line x1="400" y1="200" x2="300" y2="80" stroke="white" stroke-width="1"/>
+    <line x1="400" y1="200" x2="200" y2="120" stroke="white" stroke-width="1"/>
+    <line x1="1000" y1="180" x2="1150" y2="300" stroke="white" stroke-width="1"/>
+    <line x1="1000" y1="180" x2="1100" y2="80" stroke="white" stroke-width="1"/>
+    <circle cx="100" cy="350" r="5" fill="white"/>
+    <circle cx="400" cy="200" r="8" fill="white"/>
+    <circle cx="700" cy="350" r="8" fill="white"/>
+    <circle cx="1000" cy="180" r="6" fill="white"/>
+    <circle cx="300" cy="80" r="4" fill="white"/>
+    <circle cx="200" cy="120" r="4" fill="white"/>
+    <circle cx="900" cy="500" r="5" fill="white"/>
+    <circle cx="1150" cy="300" r="4" fill="white"/>
+    <circle cx="1100" cy="80" r="4" fill="white"/>
+    <line x1="200" y1="120" x2="300" y2="80" stroke="white" stroke-width="0.5"/>
+    <line x1="900" y1="500" x2="1150" y2="300" stroke="white" stroke-width="0.5"/>
+  </svg>
+</div>
+
+<div class="container" id="quiz-screen">
+  <div class="header">
+    <div class="header-label">Neuroscience · Unit 1</div>
+    <h1>Structure &amp; Function<br>of <em>Neurons</em></h1>
+    <p>25 questions across 5 categories — test your mastery</p>
+  </div>
+
+  <div class="progress-meta">
+    <span id="q-counter">Question 1 of 25</span>
+    <span id="score-tracker">Score: 0</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+
+  <div id="question-area"></div>
+
+  <div class="nav">
+    <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()" disabled>Next →</button>
+  </div>
+</div>
+
+<div class="container" id="results-screen">
+  <div class="header">
+    <div class="header-label">Quiz Complete</div>
+    <h1>Your <em>Results</em></h1>
+  </div>
+
+  <div class="score-ring">
+    <svg width="160" height="160" viewBox="0 0 160 160">
+      <circle cx="80" cy="80" r="68" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="10"/>
+      <circle cx="80" cy="80" r="68" fill="none" stroke="url(#scoreGrad)" stroke-width="10" stroke-linecap="round"
+              stroke-dasharray="427" stroke-dashoffset="427" id="score-circle" style="transition:stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1)"/>
+      <defs>
+        <linearGradient id="scoreGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#6ee7c0"/>
+          <stop offset="100%" stop-color="#7eb8f7"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="score-ring-text">
+      <div class="score-pct" id="result-pct" style="color:var(--accent)">0%</div>
+      <div class="score-sub">score</div>
+    </div>
+  </div>
+
+  <div class="result-label" id="result-label"></div>
+  <div class="result-sub" id="result-sub"></div>
+
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="stat-val" id="r-correct" style="color:var(--correct)">0</div>
+      <div class="stat-lbl">correct</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val" id="r-wrong" style="color:var(--wrong)">0</div>
+      <div class="stat-lbl">incorrect</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val" id="r-total" style="color:var(--blue)">25</div>
+      <div class="stat-lbl">total</div>
+    </div>
+  </div>
+
+  <div class="review-list" id="review-list"></div>
+
+  <button class="btn btn-primary" style="width:100%;padding:14px;" onclick="restartQuiz()">↺ Retake Quiz</button>
+</div>
+
+<script>
+const questions = [
+  // ── STRUCTURE ──
+  {
+    cat: "structure", catLabel: "Neuron Structure",
+    q: "Which part of the neuron is considered the 'receptive zone' that receives incoming signals from other neurons?",
+    opts: ["Axon hillock", "Axon terminal", "Dendrites", "Cell body"],
+    ans: 2,
+    exp: "<b>Dendrites</b> are the branching extensions of a neuron that serve as the primary receptive zone. They receive neurotransmitter signals from presynaptic neurons via specialized channels and receptors on their membrane."
+  },
+  {
+    cat: "structure", catLabel: "Neuron Structure",
+    q: "The axon hillock is specifically important because it contains a high concentration of which type of channel?",
+    opts: ["Ligand-gated calcium channels", "Voltage-gated sodium channels", "Voltage-gated potassium channels", "G-protein-coupled receptors"],
+    ans: 1,
+    exp: "The <b>axon hillock</b> has a very high density of <b>voltage-gated sodium channels</b>. This is why action potentials are initiated (generated) here — once the depolarization threshold is reached, Na⁺ rushes in and the action potential fires from this point and travels down the axon."
+  },
+  {
+    cat: "structure", catLabel: "Neuron Structure",
+    q: "What is the specialized name for the rough endoplasmic reticulum found within neurons?",
+    opts: ["Schwann bodies", "Nissl bodies", "Ranvier nodes", "Golgi complexes"],
+    ans: 1,
+    exp: "<b>Nissl bodies</b> is the specialized term for the rough endoplasmic reticulum inside neurons. This is where mRNA is translated into proteins — neurotransmitters, enzymes, and membrane proteins are all synthesized here."
+  },
+  {
+    cat: "structure", catLabel: "Neuron Structure",
+    q: "Which structural component of the neuron is described as the 'secretory region'?",
+    opts: ["Dendrites", "Axon hillock", "Soma", "Axon terminal"],
+    ans: 3,
+    exp: "The <b>axon terminal</b> (also called synaptic terminal, terminal bulb, or synaptic bulb) is the secretory region of the neuron. This is where neurotransmitters are packaged into vesicles, released into the synapse, and where reuptake proteins recycle neurotransmitters."
+  },
+  {
+    cat: "structure", catLabel: "Neuron Structure",
+    q: "Which organelle is responsible for modifying and packaging proteins into vesicles after they are synthesized by the rough ER in the cell body?",
+    opts: ["Mitochondria", "Lysosome", "Golgi apparatus", "Smooth ER"],
+    ans: 2,
+    exp: "After the rough ER (Nissl bodies) translates mRNA into proteins, vesicles bud off and travel to the <b>Golgi apparatus</b>, which modifies and repackages them into vesicles that can be transported to the axon terminal via anterograde axonal transport."
+  },
+
+  // ── FUNCTION ──
+  {
+    cat: "function", catLabel: "Neuron Function",
+    q: "When an excitatory neurotransmitter opens a ligand-gated channel and allows positive ions to flow into the cell, what is this change called?",
+    opts: ["Hyperpolarization", "Repolarization", "Depolarization (EPSP)", "Inhibitory postsynaptic potential"],
+    ans: 2,
+    exp: "Influx of positive ions makes the inside of the cell more positive (less negative). This is called <b>depolarization</b>, and the event is called an <b>EPSP (excitatory postsynaptic potential)</b>. The goal of EPSPs is to bring the membrane toward the threshold to trigger an action potential."
+  },
+  {
+    cat: "function", catLabel: "Neuron Function",
+    q: "When an inhibitory neurotransmitter causes negative ions to flow into the cell, making it more negative than resting membrane potential, this is called:",
+    opts: ["Depolarization", "Hyperpolarization (IPSP)", "Repolarization", "An action potential"],
+    ans: 1,
+    exp: "<b>Hyperpolarization</b> occurs when the inside of the cell becomes more negative than its resting state. This constitutes an <b>IPSP (inhibitory postsynaptic potential)</b>, which moves the cell further away from threshold and makes it harder to fire an action potential."
+  },
+  {
+    cat: "function", catLabel: "Neuron Function",
+    q: "EPSPs and IPSPs mediated by ligand-gated channels and G-protein-coupled receptors are collectively called:",
+    opts: ["Action potentials", "Graded potentials", "Resting potentials", "Compound potentials"],
+    ans: 1,
+    exp: "These small, variable changes in membrane voltage are called <b>graded potentials</b>. They are 'graded' because their magnitude varies with the strength of the stimulus. They occur in the dendrites and cell body and collectively determine whether the neuron will reach threshold and fire an action potential."
+  },
+  {
+    cat: "function", catLabel: "Neuron Function",
+    q: "During an action potential, the depolarizing phase is caused by which ion movement?",
+    opts: ["K⁺ flowing into the cell", "Na⁺ flowing into the cell", "Ca²⁺ flowing into the cell", "Cl⁻ flowing out of the cell"],
+    ans: 1,
+    exp: "Voltage-gated <b>Na⁺ (sodium) channels</b> open when the axon reaches threshold. Sodium ions rush into the axon, making the inside strongly positive. This positive charge flows down the axon toward the terminal — this is the depolarizing wave of the action potential."
+  },
+  {
+    cat: "function", catLabel: "Neuron Function",
+    q: "Which channel is responsible for the repolarizing phase of the action potential?",
+    opts: ["Voltage-gated Na⁺ channels", "Ligand-gated Ca²⁺ channels", "Voltage-gated K⁺ channels", "SNARE protein complexes"],
+    ans: 2,
+    exp: "After depolarization, <b>voltage-gated K⁺ (potassium) channels</b> open. Potassium floods OUT of the cell, making the inside negative again. This negative charge flows down the axon as the repolarizing wave, restoring resting membrane potential and allowing the cell to recover."
+  },
+  {
+    cat: "function", catLabel: "Neuron Function",
+    q: "What triggers the opening of voltage-gated calcium channels at the axon terminal?",
+    opts: ["Binding of a neurotransmitter", "The arrival of the depolarizing action potential", "Activation of a G-protein", "Binding of SNARE proteins"],
+    ans: 1,
+    exp: "When the <b>depolarizing action potential</b> reaches the axon terminal, the change in voltage opens <b>voltage-gated Ca²⁺ channels</b>. Calcium ions rush in and act as the trigger for neurotransmitter release by linking vesicular and plasma membrane SNARE proteins."
+  },
+  {
+    cat: "function", catLabel: "Neuron Function",
+    q: "Which SNARE proteins are located on the synaptic vesicle membrane (v-SNAREs)?",
+    opts: ["Syntaxin and SNAP-25", "Synaptobrevin and synaptotagmin", "Kinesin and dynein", "Syntaxin and synaptobrevin"],
+    ans: 1,
+    exp: "<b>Synaptobrevin</b> and <b>synaptotagmin</b> are the v-SNAREs on the vesicle membrane. The t-SNAREs (syntaxin and SNAP-25) are on the axon terminal plasma membrane. Calcium bridges the two, causing the vesicle to fuse with the plasma membrane and release neurotransmitters."
+  },
+  {
+    cat: "function", catLabel: "Neuron Function",
+    q: "What are the two main ways by which neurotransmitters are removed from the synapse after they have exerted their effect?",
+    opts: ["Diffusion and absorption", "Reuptake and degradation", "Phosphorylation and recycling", "Endocytosis and exocytosis"],
+    ans: 1,
+    exp: "Neurotransmitters are removed by two mechanisms: (1) <b>Reuptake</b> — reuptake proteins on the axon terminal pull the NT back in for recycling into vesicles. (2) <b>Enzymatic degradation</b> — enzymes in the synapse break down the neurotransmitter. Both mechanisms terminate the signal."
+  },
+
+  // ── AXONAL TRANSPORT ──
+  {
+    cat: "transport", catLabel: "Axonal Transport",
+    q: "Kinesin is a motor protein that moves cargo in which direction?",
+    opts: ["Retrograde — from terminal to cell body", "Anterograde — from cell body to terminal", "Lateral — between axon branches", "Bidirectional — both directions equally"],
+    ans: 1,
+    exp: "<b>Kinesin</b> is the anterograde motor protein, moving cargo from the <b>cell body → axon terminal</b>. It transports vesicles containing neurotransmitters, membrane proteins, enzymes, and mitochondria that are needed at the terminal for synaptic activity."
+  },
+  {
+    cat: "transport", catLabel: "Axonal Transport",
+    q: "Which motor protein is responsible for retrograde axonal transport?",
+    opts: ["Kinesin", "Myosin", "Dynein", "Actin"],
+    ans: 2,
+    exp: "<b>Dynein</b> is the minus-end-directed motor protein responsible for <b>retrograde transport</b> (axon terminal → cell body). It carries spent organelles for recycling, degradation products, and critically, <b>nerve growth factors (NGF)</b> that signal the nucleus about damage or metabolic needs."
+  },
+  {
+    cat: "transport", catLabel: "Axonal Transport",
+    q: "Nerve growth factor (NGF) transported retrogradely to the cell body functions to:",
+    opts: ["Directly release neurotransmitters at the synapse", "Stimulate gene expression to increase protein production for repair and growth", "Open voltage-gated sodium channels at the hillock", "Inhibit action potential generation"],
+    ans: 1,
+    exp: "When NGF is transported retrograde by dynein to the cell body, it reaches the nucleus and <b>stimulates specific genes</b>, increasing mRNA transcription and translation. This ramps up protein synthesis — producing more vesicles, membrane proteins, and other components — which are then sent anterogradely down to repair or grow the terminal."
+  },
+  {
+    cat: "transport", catLabel: "Axonal Transport",
+    q: "Which of the following viruses is known to use retrograde axonal transport (via dynein) to travel from nerve terminals to the cell body nucleus?",
+    opts: ["Influenza virus", "SARS-CoV-2", "Herpes simplex virus", "Rhinovirus"],
+    ans: 2,
+    exp: "<b>Herpes simplex virus</b> (along with rabies, poliovirus, and varicella-zoster virus) hijacks <b>dynein</b> to travel retrograde from the nerve terminal to the cell body. There, it can use the cell's nuclear machinery to replicate, destroying the neuron or establishing latency."
+  },
+  {
+    cat: "transport", catLabel: "Axonal Transport",
+    q: "In shingles (caused by varicella-zoster virus reactivation), which motor protein carries viral particles from the cell body back down to the skin via the axon terminal?",
+    opts: ["Dynein", "Kinesin", "Myosin II", "Titin"],
+    ans: 1,
+    exp: "After reactivating in the cell body/nucleus, VZV uses <b>kinesin</b> (anterograde transport) to travel back down the axon to the axon terminal. From there it spreads to skin tissue, causing the characteristic painful dermatomal rash of <b>shingles</b>."
+  },
+
+  // ── CLASSIFICATION ──
+  {
+    cat: "classification", catLabel: "Neuron Classification",
+    q: "A neuron with 3 or more dendritic extensions, a cell body, and one axon is classified as:",
+    opts: ["Bipolar", "Pseudo-unipolar", "Multipolar", "Anaxonic"],
+    ans: 2,
+    exp: "<b>Multipolar neurons</b> have three or more dendritic extensions plus one axon. They are the most common type in the CNS. Examples include pyramidal cells in the motor cortex and Purkinje cells in the cerebellum — both of which need to integrate input from many different neural sources."
+  },
+  {
+    cat: "classification", catLabel: "Neuron Classification",
+    q: "Bipolar neurons, which generate graded potentials rather than action potentials, are primarily found in which locations?",
+    opts: ["Dorsal root ganglia and trigeminal ganglia", "Retina, olfactory epithelium, and inner ear", "Spinal cord anterior horn and basal ganglia", "Motor cortex and cerebellum"],
+    ans: 1,
+    exp: "<b>Bipolar neurons</b> are found in special sensory organs: the <b>retina</b> (vision), <b>olfactory epithelium</b> (smell), and the <b>vestibule/semicircular canals</b> of the inner ear (balance/hearing). They have one dendrite and one axon, and they generate graded potentials rather than classic action potentials."
+  },
+  {
+    cat: "classification", catLabel: "Neuron Classification",
+    q: "Pseudo-unipolar neurons found in the dorsal root ganglia have two processes. What are they correctly called?",
+    opts: ["Dendrite and axon", "Peripheral process and central process", "Afferent limb and efferent limb", "Presynaptic and postsynaptic process"],
+    ans: 1,
+    exp: "Pseudo-unipolar neurons lack a conventional dendrite. Instead they have a <b>peripheral process</b> (travels to the periphery, e.g., skin, to pick up sensations) and a <b>central process</b> (travels into the spinal cord or brainstem to relay the signal). The cell body sits in the dorsal root ganglion outside the CNS."
+  },
+  {
+    cat: "classification", catLabel: "Neuron Classification",
+    q: "The trigeminal nerve (CN V) uses pseudo-unipolar neurons whose cell bodies are located in the trigeminal ganglion. The central processes of these neurons synapse in which structure?",
+    opts: ["Nucleus gracilis", "The thalamus", "The trigeminal nucleus in the brainstem", "The dorsal root ganglion"],
+    ans: 2,
+    exp: "Pseudo-unipolar neurons of the trigeminal ganglion carry facial sensation. Their peripheral processes pick up sensations from the three divisions (ophthalmic, maxillary, mandibular), and their central processes synapse in the <b>trigeminal nucleus</b> located within the brainstem."
+  },
+
+  // ── CLINICAL ──
+  {
+    cat: "clinical", catLabel: "Clinical Application",
+    q: "SSRIs like Prozac, Zoloft, and Lexapro work by blocking which specific structure at the axon terminal?",
+    opts: ["Voltage-gated Ca²⁺ channels", "Ligand-gated ion channels on the postsynaptic cell", "Serotonin reuptake proteins", "SNARE protein complexes"],
+    ans: 2,
+    exp: "SSRIs (selective serotonin reuptake inhibitors) block <b>serotonin reuptake proteins</b> on the presynaptic axon terminal. This prevents serotonin (5-HT) from being taken back into the terminal, leaving it in the synapse longer and continuously stimulating the postsynaptic cell — improving mood in depression, anxiety, and OCD."
+  },
+  {
+    cat: "clinical", catLabel: "Clinical Application",
+    q: "In terms of functional classification, sensory neurons that carry signals from the skin and skeletal muscles TO the CNS are called:",
+    opts: ["General visceral afferent (GVA)", "General somatic efferent (GSE)", "General somatic afferent (GSA)", "Special visceral efferent (SVE)"],
+    ans: 2,
+    exp: "<b>General somatic afferent (GSA)</b> fibers carry sensory (afferent = toward CNS) signals from somatic structures — skin, skeletal muscle, joints, and ligaments. In contrast, GVA carries visceral sensation, GSE carries motor signals to skeletal muscle, and SVE carries motor to pharyngeal arch muscles."
+  },
+  {
+    cat: "clinical", catLabel: "Clinical Application",
+    q: "Special visceral efferent (SVE) fibers supply muscles derived from pharyngeal arches. Which cranial nerves are primarily responsible for SVE fibers?",
+    opts: ["CN I, II, III, IV", "CN V, VII, IX, X", "CN VIII, XI, XII", "CN III, IV, VI"],
+    ans: 1,
+    exp: "<b>CN V (trigeminal)</b> supplies the 1st pharyngeal arch, <b>CN VII (facial)</b> the 2nd, <b>CN IX (glossopharyngeal)</b> the 3rd, and <b>CN X (vagus)</b> the 4th and 6th arches. These nerves carry SVE fibers to muscles of mastication, facial expression, and the pharynx/larynx."
+  }
+];
+
+let current = 0;
+let score = 0;
+let answered = [];
+let userAnswers = [];
+
+function renderQuestion() {
+  const q = questions[current];
+  const letters = ['A','B','C','D'];
+  const catColors = {
+    structure: 'cat-structure',
+    function: 'cat-function',
+    transport: 'cat-transport',
+    classification: 'cat-classification',
+    clinical: 'cat-clinical'
+  };
+
+  const html = `
+    <div class="question-card">
+      <span class="category-badge ${catColors[q.cat]}">${q.catLabel}</span>
+      <div class="question-num">Q${current+1} of ${questions.length}</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options">
+        ${q.opts.map((o,i) => `
+          <button class="option" id="opt-${i}" onclick="selectAnswer(${i})">
+            <span class="option-letter">${letters[i]}</span>
+            <span>${o}</span>
+          </button>
+        `).join('')}
+      </div>
+      <div class="explanation" id="explanation"></div>
+    </div>
+  `;
+
+  document.getElementById('question-area').innerHTML = html;
+  document.getElementById('next-btn').disabled = true;
+  updateProgress();
+}
+
+function selectAnswer(idx) {
+  if (answered[current]) return;
+  answered[current] = true;
+  userAnswers[current] = idx;
+
+  const q = questions[current];
+  const opts = document.querySelectorAll('.option');
+  const exp = document.getElementById('explanation');
+
+  opts.forEach(o => o.disabled = true);
+
+  if (idx === q.ans) {
+    score++;
+    opts[idx].classList.add('correct');
+    exp.className = 'explanation correct-exp';
+    exp.innerHTML = '✓ Correct! ' + q.exp;
+  } else {
+    opts[idx].classList.add('wrong');
+    opts[q.ans].classList.add('reveal');
+    exp.className = 'explanation wrong-exp';
+    exp.innerHTML = '✗ Incorrect. ' + q.exp;
+  }
+
+  exp.style.display = 'block';
+  document.getElementById('next-btn').disabled = false;
+  document.getElementById('score-tracker').textContent = `Score: ${score}`;
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) {
+    showResults();
+  } else {
+    renderQuestion();
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+}
+
+function updateProgress() {
+  const pct = (current / questions.length) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('q-counter').textContent = `Question ${current+1} of ${questions.length}`;
+  document.getElementById('score-tracker').textContent = `Score: ${score}`;
+}
+
+function showResults() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  const rs = document.getElementById('results-screen');
+  rs.style.display = 'block';
+
+  const pct = Math.round((score / questions.length) * 100);
+  const circumference = 427;
+  const offset = circumference - (pct / 100) * circumference;
+
+  setTimeout(() => {
+    document.getElementById('score-circle').style.strokeDashoffset = offset;
+    document.getElementById('result-pct').textContent = pct + '%';
+  }, 100);
+
+  document.getElementById('r-correct').textContent = score;
+  document.getElementById('r-wrong').textContent = questions.length - score;
+  document.getElementById('r-total').textContent = questions.length;
+
+  let label, sub;
+  if (pct >= 90) { label = 'Outstanding!'; sub = 'You have a deep understanding of neuron structure and function.'; }
+  else if (pct >= 75) { label = 'Well done!'; sub = 'Strong grasp of the content — review any missed questions.'; }
+  else if (pct >= 60) { label = 'Good effort!'; sub = 'A solid foundation. Revisit the weaker areas to sharpen your knowledge.'; }
+  else { label = 'Keep studying!'; sub = 'Go back through the notes and try again — you\'ve got this.'; }
+
+  document.getElementById('result-label').textContent = label;
+  document.getElementById('result-sub').textContent = sub;
+
+  const reviewHtml = questions.map((q, i) => {
+    const correct = userAnswers[i] === q.ans;
+    return `
+      <div class="review-item">
+        <div class="review-dot ${correct ? 'dot-correct' : 'dot-wrong'}"></div>
+        <div>
+          <div class="review-q">${q.q}</div>
+          <div class="review-ans">Correct answer: <span>${q.opts[q.ans]}</span></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  document.getElementById('review-list').innerHTML = reviewHtml;
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function restartQuiz() {
+  current = 0; score = 0; answered = []; userAnswers = [];
+  document.getElementById('results-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'block';
+  renderQuestion();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+renderQuestion();
+</script>
+</body>
+</html>
