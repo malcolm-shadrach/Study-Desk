@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Membrane Potentials — Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F9F7F4;
+  --surface: #FFFFFF;
+  --surface-2: #F4F1EC;
+  --border: #E5E0D8;
+  --border-strong: #C8C0B4;
+  --text: #1A1714;
+  --text-muted: #6B6560;
+  --text-faint: #A39D97;
+  --teal-bg: #E4F5EE; --teal-mid: #1D9E75; --teal-dark: #085041;
+  --purple-bg: #EEEDFE; --purple-mid: #534AB7; --purple-dark: #3C3489;
+  --coral-bg: #FAECE7; --coral-mid: #D85A30; --coral-dark: #712B13;
+  --blue-bg: #E6F1FB; --blue-mid: #378ADD; --blue-dark: #0C447C;
+  --amber-bg: #FDF3E3; --amber-mid: #EF9F27; --amber-dark: #633806;
+  --green-bg: #EAF3DE; --green-mid: #639922; --green-dark: #27500A;
+  --red-bg: #FCEBEB; --red-mid: #E24B4A; --red-dark: #791F1F;
+  --accent: #1D9E75;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.page { max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+
+/* Header */
+.header { padding: 52px 0 36px; border-bottom: 1px solid var(--border); margin-bottom: 36px; }
+.header-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.dot-accent { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+.eyebrow-text { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+.header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(30px, 5vw, 48px); line-height: 1.1; font-weight: 400; margin-bottom: 12px; }
+.header h1 em { font-style: italic; color: var(--accent); }
+.header-sub { font-size: 14px; color: var(--text-muted); max-width: 520px; line-height: 1.7; }
+
+/* Score bar */
+.scorebar {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 14px 20px; margin-bottom: 28px; gap: 16px; flex-wrap: wrap;
+}
+.score-stat { text-align: center; }
+.score-val { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 500; }
+.score-lbl { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-top: 2px; }
+.progress-wrap { flex: 1; min-width: 160px; }
+.progress-label { font-size: 11px; color: var(--text-faint); margin-bottom: 6px; display: flex; justify-content: space-between; }
+.progress-track { height: 6px; background: var(--surface-2); border-radius: 99px; overflow: hidden; border: 1px solid var(--border); }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.4s ease; }
+
+/* Category tabs */
+.cat-nav { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
+.cat-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+  padding: 6px 14px; border-radius: 99px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text-muted); cursor: pointer;
+  transition: all 0.15s; white-space: nowrap;
+}
+.cat-btn:hover { border-color: var(--border-strong); color: var(--text); }
+.cat-btn.active { background: var(--text); color: var(--surface); border-color: var(--text); }
+
+/* Question card */
+.q-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  margin-bottom: 18px; overflow: hidden; transition: box-shadow 0.2s;
+  position: relative;
+}
+.q-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+}
+.q-card.cat-rmp::before { background: var(--blue-mid); }
+.q-card.cat-graded::before { background: var(--purple-mid); }
+.q-card.cat-action::before { background: var(--teal-mid); }
+.q-card.cat-nernst::before { background: var(--coral-mid); }
+.q-card.cat-channels::before { background: var(--amber-mid); }
+
+.q-header { padding: 18px 22px 14px; cursor: pointer; user-select: none; }
+.q-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.q-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-faint); }
+.q-cat-badge {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 99px;
+}
+.badge-rmp    { background: var(--blue-bg);   color: var(--blue-dark); }
+.badge-graded { background: var(--purple-bg); color: var(--purple-dark); }
+.badge-action { background: var(--teal-bg);   color: var(--teal-dark); }
+.badge-nernst { background: var(--coral-bg);  color: var(--coral-dark); }
+.badge-channels { background: var(--amber-bg); color: var(--amber-dark); }
+.q-type-badge {
+  font-size: 10px; font-weight: 500; color: var(--text-faint);
+  border: 1px solid var(--border); border-radius: 99px; padding: 2px 8px; margin-left: auto;
+}
+
+.q-text { font-size: 15px; font-weight: 500; line-height: 1.5; color: var(--text); }
+.q-text code { font-family: 'JetBrains Mono', monospace; font-size: 13px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+
+/* Options */
+.q-options { padding: 0 22px 18px; display: flex; flex-direction: column; gap: 8px; }
+.opt-btn {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 11px 14px; border-radius: 9px;
+  border: 1px solid var(--border); background: var(--bg);
+  cursor: pointer; text-align: left; font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px; color: var(--text-muted); line-height: 1.5;
+  transition: all 0.15s; width: 100%;
+}
+.opt-btn:hover:not(:disabled) { border-color: var(--border-strong); background: var(--surface); color: var(--text); }
+.opt-key {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+  min-width: 22px; height: 22px; border-radius: 5px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px; color: var(--text-muted); transition: all 0.15s;
+}
+.opt-btn.correct { background: var(--teal-bg); border-color: var(--teal-mid); color: var(--teal-dark); }
+.opt-btn.correct .opt-key { background: var(--teal-mid); color: #fff; border-color: var(--teal-mid); }
+.opt-btn.wrong { background: var(--red-bg); border-color: var(--red-mid); color: var(--red-dark); }
+.opt-btn.wrong .opt-key { background: var(--red-mid); color: #fff; border-color: var(--red-mid); }
+.opt-btn.missed { background: var(--amber-bg); border-color: var(--amber-mid); color: var(--amber-dark); }
+.opt-btn.missed .opt-key { background: var(--amber-mid); color: #fff; border-color: var(--amber-mid); }
+.opt-btn:disabled { cursor: default; }
+
+/* Explanation */
+.q-explanation {
+  margin: 4px 22px 18px; padding: 14px 16px; border-radius: 9px;
+  background: var(--surface-2); border-left: 3px solid var(--accent);
+  font-size: 13px; color: var(--text-muted); line-height: 1.65;
+  display: none;
+}
+.q-explanation.show { display: block; animation: fadeSlide 0.25s ease; }
+.q-explanation b { color: var(--text); font-weight: 600; }
+.q-explanation .expl-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; }
+
+@keyframes fadeSlide { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* True/False */
+.tf-row { display: flex; gap: 10px; }
+.tf-btn {
+  flex: 1; padding: 11px; border-radius: 9px; border: 1px solid var(--border);
+  background: var(--bg); font-family: 'DM Sans', sans-serif; font-size: 14px;
+  font-weight: 500; cursor: pointer; transition: all 0.15s; color: var(--text-muted);
+}
+.tf-btn:hover:not(:disabled) { border-color: var(--border-strong); background: var(--surface); color: var(--text); }
+.tf-btn.correct { background: var(--teal-bg); border-color: var(--teal-mid); color: var(--teal-dark); }
+.tf-btn.wrong   { background: var(--red-bg);  border-color: var(--red-mid);  color: var(--red-dark); }
+.tf-btn.missed  { background: var(--amber-bg); border-color: var(--amber-mid); color: var(--amber-dark); }
+.tf-btn:disabled { cursor: default; }
+
+/* Fill-in-blank */
+.fib-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.fib-input {
+  font-family: 'JetBrains Mono', monospace; font-size: 14px;
+  padding: 9px 14px; border-radius: 9px; border: 1px solid var(--border);
+  background: var(--bg); color: var(--text); flex: 1; min-width: 160px;
+  outline: none; transition: border-color 0.15s;
+}
+.fib-input:focus { border-color: var(--accent); }
+.fib-input.correct { background: var(--teal-bg); border-color: var(--teal-mid); color: var(--teal-dark); }
+.fib-input.wrong   { background: var(--red-bg);  border-color: var(--red-mid);  color: var(--red-dark); }
+.fib-submit {
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  padding: 9px 18px; border-radius: 9px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); cursor: pointer; transition: all 0.15s;
+  white-space: nowrap;
+}
+.fib-submit:hover:not(:disabled) { background: var(--text); color: var(--surface); border-color: var(--text); }
+.fib-submit:disabled { opacity: 0.5; cursor: default; }
+.fib-hint { font-size: 12px; color: var(--text-faint); margin-top: 6px; }
+
+/* Status icon on card */
+.q-status {
+  width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; margin-left: auto; flex-shrink: 0; transition: all 0.2s;
+}
+.q-status.correct-s { background: var(--teal-mid); border-color: var(--teal-mid); color: #fff; }
+.q-status.wrong-s   { background: var(--red-mid);  border-color: var(--red-mid);  color: #fff; }
+
+/* Section divider */
+.sec-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-faint); margin: 32px 0 14px; display: flex; align-items: center; gap: 10px;
+}
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* Results panel */
+.results-panel {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 32px; text-align: center; margin-bottom: 28px; display: none;
+}
+.results-panel.show { display: block; animation: fadeSlide 0.3s ease; }
+.results-score { font-family: 'DM Serif Display', serif; font-size: 56px; font-weight: 400; line-height: 1; margin-bottom: 8px; }
+.results-grade { font-size: 18px; font-weight: 500; margin-bottom: 16px; }
+.results-msg { font-size: 14px; color: var(--text-muted); max-width: 400px; margin: 0 auto 24px; line-height: 1.7; }
+.results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px; }
+.results-cell { background: var(--surface-2); border-radius: 9px; padding: 14px; }
+.results-cell-val { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 500; }
+.results-cell-lbl { font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-faint); margin-top: 3px; }
+.btn-restart {
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  padding: 10px 24px; border-radius: 99px;
+  background: var(--text); color: var(--surface); border: none; cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn-restart:hover { opacity: 0.82; }
+
+/* Submit all */
+.submit-row { display: flex; justify-content: center; margin: 28px 0; gap: 12px; flex-wrap: wrap; }
+.btn-submit-all {
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+  padding: 12px 32px; border-radius: 99px;
+  background: var(--accent); color: #fff; border: none; cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn-submit-all:hover { opacity: 0.88; }
+.btn-submit-all:disabled { opacity: 0.5; cursor: default; }
+.btn-reset-all {
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+  padding: 12px 28px; border-radius: 99px;
+  background: var(--surface); color: var(--text); border: 1px solid var(--border); cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-reset-all:hover { border-color: var(--border-strong); }
+
+/* Footer */
+.footer { text-align: center; padding: 40px 0 0; font-size: 12px; color: var(--text-faint); border-top: 1px solid var(--border); margin-top: 60px; }
+
+@media (max-width: 600px) {
+  .results-grid { grid-template-columns: 1fr 1fr; }
+  .scorebar { justify-content: center; }
+  .score-stat { min-width: 70px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <div class="header-eyebrow">
+      <div class="dot-accent"></div>
+      <span class="eyebrow-text">Neuroscience · Unit 2</span>
+    </div>
+    <h1>Membrane Potentials<br><em>Quiz</em></h1>
+    <p class="header-sub">30 questions across resting potential, graded potentials, action potentials, Nernst equation, and channel mechanics. Answer all, then submit.</p>
+  </header>
+
+  <!-- Score bar -->
+  <div class="scorebar">
+    <div class="score-stat">
+      <div class="score-val" id="val-score" style="color:var(--teal-dark);">—</div>
+      <div class="score-lbl">Score</div>
+    </div>
+    <div class="score-stat">
+      <div class="score-val" id="val-correct" style="color:var(--teal-dark);">0</div>
+      <div class="score-lbl">Correct</div>
+    </div>
+    <div class="score-stat">
+      <div class="score-val" id="val-wrong" style="color:var(--red-dark);">0</div>
+      <div class="score-lbl">Wrong</div>
+    </div>
+    <div class="score-stat">
+      <div class="score-val" id="val-remaining" style="color:var(--text-muted);">30</div>
+      <div class="score-lbl">Remaining</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Progress</span>
+        <span id="prog-text">0 / 30</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category filter -->
+  <div class="cat-nav">
+    <button class="cat-btn active" onclick="filterCat('all', this)">All (30)</button>
+    <button class="cat-btn" onclick="filterCat('cat-rmp', this)">Resting Potential (8)</button>
+    <button class="cat-btn" onclick="filterCat('cat-graded', this)">Graded Potentials (7)</button>
+    <button class="cat-btn" onclick="filterCat('cat-action', this)">Action Potential (9)</button>
+    <button class="cat-btn" onclick="filterCat('cat-nernst', this)">Nernst Equation (3)</button>
+    <button class="cat-btn" onclick="filterCat('cat-channels', this)">Channel Mechanics (3)</button>
+  </div>
+
+  <!-- Results panel (shown after submit) -->
+  <div class="results-panel" id="results-panel">
+    <div class="results-score" id="res-score"></div>
+    <div class="results-grade" id="res-grade"></div>
+    <p class="results-msg" id="res-msg"></p>
+    <div class="results-grid">
+      <div class="results-cell">
+        <div class="results-cell-val" style="color:var(--teal-dark);" id="res-correct"></div>
+        <div class="results-cell-lbl">Correct</div>
+      </div>
+      <div class="results-cell">
+        <div class="results-cell-val" style="color:var(--red-dark);" id="res-wrong"></div>
+        <div class="results-cell-lbl">Wrong</div>
+      </div>
+      <div class="results-cell">
+        <div class="results-cell-val" id="res-pct"></div>
+        <div class="results-cell-lbl">Accuracy</div>
+      </div>
+    </div>
+    <button class="btn-restart" onclick="resetAll()">Try again</button>
+  </div>
+
+  <!-- ══════════ QUESTIONS ══════════ -->
+
+  <div class="sec-label">Resting Membrane Potential</div>
+
+  <!-- Q1 MCQ -->
+  <div class="q-card cat-rmp" id="q1">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q1</span>
+        <span class="q-cat-badge badge-rmp">Resting Potential</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st1"></div>
+      </div>
+      <div class="q-text">What is the standard textbook value for the resting membrane potential of a neuron?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(1,'A','A')"><span class="opt-key">A</span>−55 mV</button>
+      <button class="opt-btn" onclick="answerMCQ(1,'B','A')"><span class="opt-key">B</span>+30 mV</button>
+      <button class="opt-btn" onclick="answerMCQ(1,'C','A')"><span class="opt-key">C</span>−70 mV</button>
+      <button class="opt-btn" onclick="answerMCQ(1,'D','A')"><span class="opt-key">D</span>−90 mV</button>
+    </div>
+    <div class="q-explanation" id="ex1"><div class="expl-label">Explanation</div>The resting membrane potential is <b>−70 mV</b> (range −70 to −90 mV). −55 mV is the threshold, +30 mV is the action potential peak, and −90 mV is the Nernst equilibrium potential for K⁺.</div>
+  </div>
+
+  <!-- Q2 TF -->
+  <div class="q-card cat-rmp" id="q2">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q2</span>
+        <span class="q-cat-badge badge-rmp">Resting Potential</span>
+        <span class="q-type-badge">True / False</span>
+        <div class="q-status" id="st2"></div>
+      </div>
+      <div class="q-text">Resting membrane potential exists only in neurons, not in other cell types.</div>
+    </div>
+    <div class="q-options">
+      <div class="tf-row">
+        <button class="tf-btn" onclick="answerTF(2, true, false)">True</button>
+        <button class="tf-btn" onclick="answerTF(2, false, false)">False</button>
+      </div>
+    </div>
+    <div class="q-explanation" id="ex2"><div class="expl-label">Explanation</div><b>False.</b> Resting membrane potential exists in <b>all cells</b>, not just neurons. It is especially well-studied in neurons and muscle cells, but every cell with a plasma membrane maintains some resting voltage.</div>
+  </div>
+
+  <!-- Q3 MCQ -->
+  <div class="q-card cat-rmp" id="q3">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q3</span>
+        <span class="q-cat-badge badge-rmp">Resting Potential</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st3"></div>
+      </div>
+      <div class="q-text">The Na⁺/K⁺ ATPase pump moves ions in which ratio?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(3,'A','B')"><span class="opt-key">A</span>2 Na⁺ out / 3 K⁺ in</button>
+      <button class="opt-btn" onclick="answerMCQ(3,'B','B')"><span class="opt-key">B</span>3 Na⁺ out / 2 K⁺ in</button>
+      <button class="opt-btn" onclick="answerMCQ(3,'C','B')"><span class="opt-key">C</span>3 Na⁺ in / 2 K⁺ out</button>
+      <button class="opt-btn" onclick="answerMCQ(3,'D','B')"><span class="opt-key">D</span>2 Na⁺ in / 3 K⁺ out</button>
+    </div>
+    <div class="q-explanation" id="ex3"><div class="expl-label">Explanation</div>The Na⁺/K⁺ ATPase pumps <b>3 Na⁺ out</b> and <b>2 K⁺ in</b> per cycle, using one ATP. This net loss of positive charges slightly hyperpolarizes the cell (≈ −5 mV contribution) and establishes concentration gradients for both ions.</div>
+  </div>
+
+  <!-- Q4 MCQ -->
+  <div class="q-card cat-rmp" id="q4">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q4</span>
+        <span class="q-cat-badge badge-rmp">Resting Potential</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st4"></div>
+      </div>
+      <div class="q-text">Which channel type is the largest contributor to bringing the resting membrane potential to approximately −90 mV (before Na⁺ leakage raises it back)?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(4,'A','C')"><span class="opt-key">A</span>Voltage-gated Na⁺ channels</button>
+      <button class="opt-btn" onclick="answerMCQ(4,'B','C')"><span class="opt-key">B</span>Voltage-gated K⁺ channels</button>
+      <button class="opt-btn" onclick="answerMCQ(4,'C','C')"><span class="opt-key">C</span>Leaky K⁺ channels</button>
+      <button class="opt-btn" onclick="answerMCQ(4,'D','C')"><span class="opt-key">D</span>Leaky Na⁺ channels</button>
+    </div>
+    <div class="q-explanation" id="ex4"><div class="expl-label">Explanation</div><b>Leaky K⁺ channels</b> are always open and allow K⁺ to leak out down its concentration gradient (K⁺ is concentrated inside by the Na⁺/K⁺ ATPase). As K⁺ exits, it leaves negatively charged anions (proteins, phosphates) behind, pulling voltage toward ≈ −90 mV.</div>
+  </div>
+
+  <!-- Q5 TF -->
+  <div class="q-card cat-rmp" id="q5">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q5</span>
+        <span class="q-cat-badge badge-rmp">Resting Potential</span>
+        <span class="q-type-badge">True / False</span>
+        <div class="q-status" id="st5"></div>
+      </div>
+      <div class="q-text">At rest, the cell membrane is more permeable to Na⁺ than to K⁺.</div>
+    </div>
+    <div class="q-options">
+      <div class="tf-row">
+        <button class="tf-btn" onclick="answerTF(5, true, false)">True</button>
+        <button class="tf-btn" onclick="answerTF(5, false, false)">False</button>
+      </div>
+    </div>
+    <div class="q-explanation" id="ex5"><div class="expl-label">Explanation</div><b>False.</b> At rest, the cell is significantly more permeable to <b>K⁺</b> than Na⁺ (~90% K⁺, ~10% Na⁺). This is why the RMP (−70 mV) sits closer to the K⁺ equilibrium potential (−90 mV) than the Na⁺ equilibrium potential (+70 mV).</div>
+  </div>
+
+  <!-- Q6 MCQ -->
+  <div class="q-card cat-rmp" id="q6">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q6</span>
+        <span class="q-cat-badge badge-rmp">Resting Potential</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st6"></div>
+      </div>
+      <div class="q-text">What is the approximate concentration of K⁺ <em>outside</em> the cell (used in Nernst calculations)?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(6,'A','B')"><span class="opt-key">A</span>150 mM</button>
+      <button class="opt-btn" onclick="answerMCQ(6,'B','B')"><span class="opt-key">B</span>5 mM</button>
+      <button class="opt-btn" onclick="answerMCQ(6,'C','B')"><span class="opt-key">C</span>140 mM</button>
+      <button class="opt-btn" onclick="answerMCQ(6,'D','B')"><span class="opt-key">D</span>10 mM</button>
+    </div>
+    <div class="q-explanation" id="ex6"><div class="expl-label">Explanation</div>K⁺ outside ≈ <b>5 mM</b>; K⁺ inside ≈ 150 mM. The Na⁺/K⁺ ATPase concentrates K⁺ inside, so extracellular K⁺ is much lower. (140 mM and 10 mM refer to Na⁺ outside and inside, respectively.)</div>
+  </div>
+
+  <!-- Q7 MCQ -->
+  <div class="q-card cat-rmp" id="q7">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q7</span>
+        <span class="q-cat-badge badge-rmp">Resting Potential</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st7"></div>
+      </div>
+      <div class="q-text">The anions (proteins and phosphates) left behind when K⁺ leaks out of the cell cannot exit because they are:</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(7,'A','D')"><span class="opt-key">A</span>Actively pumped back in by ATPases</button>
+      <button class="opt-btn" onclick="answerMCQ(7,'B','D')"><span class="opt-key">B</span>Too small to pass through ion channels</button>
+      <button class="opt-btn" onclick="answerMCQ(7,'C','D')"><span class="opt-key">C</span>Positively charged and repelled by the membrane</button>
+      <button class="opt-btn" onclick="answerMCQ(7,'D','D')"><span class="opt-key">D</span>Too large and too negatively charged to cross the membrane</button>
+    </div>
+    <div class="q-explanation" id="ex7"><div class="expl-label">Explanation</div>These anions (proteins with many amino-acid negative charges, and phosphates) are <b>too large and too negatively charged</b> to exit through channels. They remain trapped intracellularly, making the inside progressively more negative as K⁺ leaves.</div>
+  </div>
+
+  <!-- Q8 TF -->
+  <div class="q-card cat-rmp" id="q8">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q8</span>
+        <span class="q-cat-badge badge-rmp">Resting Potential</span>
+        <span class="q-type-badge">True / False</span>
+        <div class="q-status" id="st8"></div>
+      </div>
+      <div class="q-text">Leaky Na⁺ channels at rest cause Na⁺ to move <em>into</em> the cell, making the inside slightly more positive.</div>
+    </div>
+    <div class="q-options">
+      <div class="tf-row">
+        <button class="tf-btn" onclick="answerTF(8, true, true)">True</button>
+        <button class="tf-btn" onclick="answerTF(8, false, true)">False</button>
+      </div>
+    </div>
+    <div class="q-explanation" id="ex8"><div class="expl-label">Explanation</div><b>True.</b> Na⁺ is concentrated outside (140 mM) relative to inside (10 mM), so it moves <em>in</em> through leaky Na⁺ channels down its concentration gradient. This partially counteracts K⁺ leakage, raising RMP from ≈ −90 mV back to ≈ −70 mV.</div>
+  </div>
+
+  <div class="sec-label">Graded Potentials</div>
+
+  <!-- Q9 MCQ -->
+  <div class="q-card cat-graded" id="q9">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q9</span>
+        <span class="q-cat-badge badge-graded">Graded Potentials</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st9"></div>
+      </div>
+      <div class="q-text">What is the approximate threshold potential at which voltage-gated Na⁺ channels in the axon hillock open?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(9,'A','C')"><span class="opt-key">A</span>−70 mV</button>
+      <button class="opt-btn" onclick="answerMCQ(9,'B','C')"><span class="opt-key">B</span>−90 mV</button>
+      <button class="opt-btn" onclick="answerMCQ(9,'C','C')"><span class="opt-key">C</span>−55 mV</button>
+      <button class="opt-btn" onclick="answerMCQ(9,'D','C')"><span class="opt-key">D</span>+30 mV</button>
+    </div>
+    <div class="q-explanation" id="ex9"><div class="expl-label">Explanation</div>The threshold potential is <b>≈ −55 mV</b>. EPSPs must depolarize the axon hillock from RMP (−70 mV) to this voltage to trigger an action potential by opening voltage-gated Na⁺ channels.</div>
+  </div>
+
+  <!-- Q10 MCQ -->
+  <div class="q-card cat-graded" id="q10">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q10</span>
+        <span class="q-cat-badge badge-graded">Graded Potentials</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st10"></div>
+      </div>
+      <div class="q-text">Which neurotransmitter is classically associated with generating an EPSP in the central nervous system?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(10,'A','C')"><span class="opt-key">A</span>GABA</button>
+      <button class="opt-btn" onclick="answerMCQ(10,'B','C')"><span class="opt-key">B</span>Glycine</button>
+      <button class="opt-btn" onclick="answerMCQ(10,'C','C')"><span class="opt-key">C</span>Glutamate</button>
+      <button class="opt-btn" onclick="answerMCQ(10,'D','C')"><span class="opt-key">D</span>Dopamine</button>
+    </div>
+    <div class="q-explanation" id="ex10"><div class="expl-label">Explanation</div><b>Glutamate</b> is the primary excitatory neurotransmitter in the CNS. It binds to ligand-gated channels, opening them to let Na⁺ and Ca²⁺ enter, depolarizing the postsynaptic cell toward threshold. GABA is the primary inhibitory transmitter.</div>
+  </div>
+
+  <!-- Q11 MCQ -->
+  <div class="q-card cat-graded" id="q11">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q11</span>
+        <span class="q-cat-badge badge-graded">Graded Potentials</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st11"></div>
+      </div>
+      <div class="q-text">GABA binding to its ligand-gated channel causes which ion movement to generate an IPSP?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(11,'A','D')"><span class="opt-key">A</span>Na⁺ enters the cell</button>
+      <button class="opt-btn" onclick="answerMCQ(11,'B','D')"><span class="opt-key">B</span>Ca²⁺ enters the cell</button>
+      <button class="opt-btn" onclick="answerMCQ(11,'C','D')"><span class="opt-key">C</span>K⁺ enters the cell</button>
+      <button class="opt-btn" onclick="answerMCQ(11,'D','D')"><span class="opt-key">D</span>Cl⁻ enters or K⁺ exits the cell</button>
+    </div>
+    <div class="q-explanation" id="ex11"><div class="expl-label">Explanation</div>GABA opens ligand-gated channels that allow <b>Cl⁻ to enter</b> (adding negative charge) or <b>K⁺ to exit</b> (removing positive charge). Both effects make the inside more negative, hyperpolarizing the cell from −70 mV toward −90 mV — an IPSP.</div>
+  </div>
+
+  <!-- Q12 TF -->
+  <div class="q-card cat-graded" id="q12">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q12</span>
+        <span class="q-cat-badge badge-graded">Graded Potentials</span>
+        <span class="q-type-badge">True / False</span>
+        <div class="q-status" id="st12"></div>
+      </div>
+      <div class="q-text">Temporal summation involves multiple presynaptic neurons firing simultaneously onto one postsynaptic neuron.</div>
+    </div>
+    <div class="q-options">
+      <div class="tf-row">
+        <button class="tf-btn" onclick="answerTF(12, true, false)">True</button>
+        <button class="tf-btn" onclick="answerTF(12, false, false)">False</button>
+      </div>
+    </div>
+    <div class="q-explanation" id="ex12"><div class="expl-label">Explanation</div><b>False.</b> That describes <b>spatial</b> summation. Temporal summation is when <b>one</b> presynaptic neuron fires <em>repeatedly</em> in quick succession, and those EPSPs stack over time to reach threshold.</div>
+  </div>
+
+  <!-- Q13 MCQ -->
+  <div class="q-card cat-graded" id="q13">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q13</span>
+        <span class="q-cat-badge badge-graded">Graded Potentials</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st13"></div>
+      </div>
+      <div class="q-text">An IPSP hyperpolarizes the postsynaptic cell. Which voltage does the cell reach during a typical IPSP?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(13,'A','B')"><span class="opt-key">A</span>−55 mV</button>
+      <button class="opt-btn" onclick="answerMCQ(13,'B','B')"><span class="opt-key">B</span>−90 mV</button>
+      <button class="opt-btn" onclick="answerMCQ(13,'C','B')"><span class="opt-key">C</span>+30 mV</button>
+      <button class="opt-btn" onclick="answerMCQ(13,'D','B')"><span class="opt-key">D</span>0 mV</button>
+    </div>
+    <div class="q-explanation" id="ex13"><div class="expl-label">Explanation</div>An IPSP moves the cell from RMP (−70 mV) to approximately <b>−90 mV</b>, making it harder to excite. The cell is now 35 mV away from threshold (−55 mV) instead of 15 mV.</div>
+  </div>
+
+  <!-- Q14 MCQ -->
+  <div class="q-card cat-graded" id="q14">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q14</span>
+        <span class="q-cat-badge badge-graded">Graded Potentials</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st14"></div>
+      </div>
+      <div class="q-text">Ligand-gated ion channels at the synapse open when:</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(14,'A','B')"><span class="opt-key">A</span>The membrane voltage reaches a specific threshold</button>
+      <button class="opt-btn" onclick="answerMCQ(14,'B','B')"><span class="opt-key">B</span>A neurotransmitter binds to the receptor site on the channel</button>
+      <button class="opt-btn" onclick="answerMCQ(14,'C','B')"><span class="opt-key">C</span>Ca²⁺ enters the axon terminal</button>
+      <button class="opt-btn" onclick="answerMCQ(14,'D','B')"><span class="opt-key">D</span>The Na⁺/K⁺ ATPase is inhibited</button>
+    </div>
+    <div class="q-explanation" id="ex14"><div class="expl-label">Explanation</div>Ligand-gated channels open when a <b>neurotransmitter (ligand) binds</b> to the channel's receptor pocket — not in response to voltage. This is distinct from voltage-gated channels (Na⁺, K⁺, Ca²⁺) which open at specific membrane voltages.</div>
+  </div>
+
+  <!-- Q15 TF -->
+  <div class="q-card cat-graded" id="q15">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q15</span>
+        <span class="q-cat-badge badge-graded">Graded Potentials</span>
+        <span class="q-type-badge">True / False</span>
+        <div class="q-status" id="st15"></div>
+      </div>
+      <div class="q-text">If a graded potential (EPSP) does not reach threshold, an action potential will still fire (sub-threshold stimuli still produce APs).</div>
+    </div>
+    <div class="q-options">
+      <div class="tf-row">
+        <button class="tf-btn" onclick="answerTF(15, true, false)">True</button>
+        <button class="tf-btn" onclick="answerTF(15, false, false)">False</button>
+      </div>
+    </div>
+    <div class="q-explanation" id="ex15"><div class="expl-label">Explanation</div><b>False.</b> The action potential obeys an <b>all-or-none</b> principle. If the EPSP does not reach the threshold voltage (≈ −55 mV), voltage-gated Na⁺ channels at the axon hillock do not open and no action potential fires.</div>
+  </div>
+
+  <div class="sec-label">Action Potential</div>
+
+  <!-- Q16 MCQ -->
+  <div class="q-card cat-action" id="q16">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q16</span>
+        <span class="q-cat-badge badge-action">Action Potential</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st16"></div>
+      </div>
+      <div class="q-text">What is the anatomical "trigger zone" where action potentials are initiated in a neuron?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(16,'A','C')"><span class="opt-key">A</span>Axon terminal</button>
+      <button class="opt-btn" onclick="answerMCQ(16,'B','C')"><span class="opt-key">B</span>Dendrite</button>
+      <button class="opt-btn" onclick="answerMCQ(16,'C','C')"><span class="opt-key">C</span>Axon hillock</button>
+      <button class="opt-btn" onclick="answerMCQ(16,'D','C')"><span class="opt-key">D</span>Cell body (soma)</button>
+    </div>
+    <div class="q-explanation" id="ex16"><div class="expl-label">Explanation</div>The <b>axon hillock</b> is the trigger zone — the narrowing point between the cell body and the axon where voltage-gated Na⁺ channels are most concentrated. Once threshold is reached here, an action potential is initiated.</div>
+  </div>
+
+  <!-- Q17 MCQ -->
+  <div class="q-card cat-action" id="q17">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q17</span>
+        <span class="q-cat-badge badge-action">Action Potential</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st17"></div>
+      </div>
+      <div class="q-text">During the rising phase of an action potential, Na⁺ floods into the cell. At approximately what voltage does the inactivation gate of voltage-gated Na⁺ channels close, stopping Na⁺ influx?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(17,'A','D')"><span class="opt-key">A</span>−55 mV</button>
+      <button class="opt-btn" onclick="answerMCQ(17,'B','D')"><span class="opt-key">B</span>−70 mV</button>
+      <button class="opt-btn" onclick="answerMCQ(17,'C','D')"><span class="opt-key">C</span>0 mV</button>
+      <button class="opt-btn" onclick="answerMCQ(17,'D','D')"><span class="opt-key">D</span>+30 mV</button>
+    </div>
+    <div class="q-explanation" id="ex17"><div class="expl-label">Explanation</div>At <b>+30 mV</b> (the action potential peak), the inactivation gate of voltage-gated Na⁺ channels closes completely, preventing further Na⁺ entry. Simultaneously, this voltage opens voltage-gated K⁺ channels, beginning repolarization.</div>
+  </div>
+
+  <!-- Q18 MCQ -->
+  <div class="q-card cat-action" id="q18">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q18</span>
+        <span class="q-cat-badge badge-action">Action Potential</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st18"></div>
+      </div>
+      <div class="q-text">Repolarization of the action potential occurs primarily because:</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(18,'A','B')"><span class="opt-key">A</span>Na⁺ channels reopen and Na⁺ exits the cell</button>
+      <button class="opt-btn" onclick="answerMCQ(18,'B','B')"><span class="opt-key">B</span>Voltage-gated K⁺ channels open and K⁺ exits the cell</button>
+      <button class="opt-btn" onclick="answerMCQ(18,'C','B')"><span class="opt-key">C</span>Cl⁻ enters the cell through leaky channels</button>
+      <button class="opt-btn" onclick="answerMCQ(18,'D','B')"><span class="opt-key">D</span>The Na⁺/K⁺ ATPase rapidly pumps Na⁺ out</button>
+    </div>
+    <div class="q-explanation" id="ex18"><div class="expl-label">Explanation</div>At +30 mV, <b>voltage-gated K⁺ channels open</b> and K⁺ exits the cell down its concentration gradient, carrying positive charge out and driving the membrane voltage from +30 mV back toward (and slightly past) RMP.</div>
+  </div>
+
+  <!-- Q19 TF -->
+  <div class="q-card cat-action" id="q19">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q19</span>
+        <span class="q-cat-badge badge-action">Action Potential</span>
+        <span class="q-type-badge">True / False</span>
+        <div class="q-status" id="st19"></div>
+      </div>
+      <div class="q-text">During the absolute refractory period, a strong enough stimulus can still trigger a second action potential.</div>
+    </div>
+    <div class="q-options">
+      <div class="tf-row">
+        <button class="tf-btn" onclick="answerTF(19, true, false)">True</button>
+        <button class="tf-btn" onclick="answerTF(19, false, false)">False</button>
+      </div>
+    </div>
+    <div class="q-explanation" id="ex19"><div class="expl-label">Explanation</div><b>False.</b> During the absolute refractory period (peak to RMP), the inactivation gates of Na⁺ channels are <b>physically closed</b> — no stimulus, however strong, can open them. A second AP is impossible until the cell returns to RMP and channels reset.</div>
+  </div>
+
+  <!-- Q20 MCQ -->
+  <div class="q-card cat-action" id="q20">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q20</span>
+        <span class="q-cat-badge badge-action">Action Potential</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st20"></div>
+      </div>
+      <div class="q-text">Why does the membrane transiently hyperpolarize to ≈ −90 mV at the end of an action potential?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(20,'A','C')"><span class="opt-key">A</span>Extra Na⁺ is pumped out rapidly by ATPases</button>
+      <button class="opt-btn" onclick="answerMCQ(20,'B','C')"><span class="opt-key">B</span>Cl⁻ floods into the cell through newly opened channels</button>
+      <button class="opt-btn" onclick="answerMCQ(20,'C','C')"><span class="opt-key">C</span>Voltage-gated K⁺ channels are slow to close, allowing excess K⁺ to exit</button>
+      <button class="opt-btn" onclick="answerMCQ(20,'D','C')"><span class="opt-key">D</span>The Na⁺/K⁺ ATPase overshoots during recovery</button>
+    </div>
+    <div class="q-explanation" id="ex20"><div class="expl-label">Explanation</div>Voltage-gated K⁺ channels are <b>slow to close</b> even after RMP is restored, so more K⁺ than usual exits, temporarily overshooting to ≈ −90 mV (hyperpolarization). The three resting mechanisms (ATPase + leaky channels) then return voltage to −70 mV.</div>
+  </div>
+
+  <!-- Q21 MCQ -->
+  <div class="q-card cat-action" id="q21">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q21</span>
+        <span class="q-cat-badge badge-action">Action Potential</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st21"></div>
+      </div>
+      <div class="q-text">What is the role of Ca²⁺ entering the axon terminal during an action potential?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(21,'A','C')"><span class="opt-key">A</span>It depolarizes the terminal to open Na⁺ channels</button>
+      <button class="opt-btn" onclick="answerMCQ(21,'B','C')"><span class="opt-key">B</span>It directly hyperpolarizes the postsynaptic cell</button>
+      <button class="opt-btn" onclick="answerMCQ(21,'C','C')"><span class="opt-key">C</span>It triggers fusion of synaptic vesicles with the cell membrane via SNARE proteins</button>
+      <button class="opt-btn" onclick="answerMCQ(21,'D','C')"><span class="opt-key">D</span>It closes the voltage-gated K⁺ channels</button>
+    </div>
+    <div class="q-explanation" id="ex21"><div class="expl-label">Explanation</div>Ca²⁺ enters through voltage-gated Ca²⁺ channels at +30 mV and binds <b>SNARE proteins</b> on both the synaptic vesicle and the plasma membrane. This links and fuses them, causing <b>exocytosis</b> of neurotransmitters into the synaptic cleft.</div>
+  </div>
+
+  <!-- Q22 MCQ -->
+  <div class="q-card cat-action" id="q22">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q22</span>
+        <span class="q-cat-badge badge-action">Action Potential</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st22"></div>
+      </div>
+      <div class="q-text">During the relative refractory period, what is true about triggering another action potential?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(22,'A','D')"><span class="opt-key">A</span>It is completely impossible</button>
+      <button class="opt-btn" onclick="answerMCQ(22,'B','D')"><span class="opt-key">B</span>It requires less stimulus than normal because the cell is hyperpolarized</button>
+      <button class="opt-btn" onclick="answerMCQ(22,'C','D')"><span class="opt-key">C</span>It occurs spontaneously without any stimulus</button>
+      <button class="opt-btn" onclick="answerMCQ(22,'D','D')"><span class="opt-key">D</span>It is possible but requires a stronger-than-normal stimulus</button>
+    </div>
+    <div class="q-explanation" id="ex22"><div class="expl-label">Explanation</div>During the relative refractory period, the cell is hyperpolarized (≈ −90 mV). An AP <em>is</em> possible, but the stimulus must be <b>stronger than normal</b> — it must first bring the cell from −90 mV back to RMP, and then from RMP to threshold (−55 mV).</div>
+  </div>
+
+  <!-- Q23 TF -->
+  <div class="q-card cat-action" id="q23">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q23</span>
+        <span class="q-cat-badge badge-action">Action Potential</span>
+        <span class="q-type-badge">True / False</span>
+        <div class="q-status" id="st23"></div>
+      </div>
+      <div class="q-text">The action potential propagates in both directions along the axon simultaneously.</div>
+    </div>
+    <div class="q-options">
+      <div class="tf-row">
+        <button class="tf-btn" onclick="answerTF(23, true, false)">True</button>
+        <button class="tf-btn" onclick="answerTF(23, false, false)">False</button>
+      </div>
+    </div>
+    <div class="q-explanation" id="ex23"><div class="expl-label">Explanation</div><b>False.</b> The action potential propagates <b>unidirectionally</b> from the axon hillock toward the axon terminal. The absolute refractory period behind the wave prevents the AP from traveling backward — channels just fired are inactivated and cannot be re-triggered immediately.</div>
+  </div>
+
+  <!-- Q24 MCQ -->
+  <div class="q-card cat-action" id="q24">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q24</span>
+        <span class="q-cat-badge badge-action">Action Potential</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st24"></div>
+      </div>
+      <div class="q-text">Which correctly lists the sequence of events in an action potential?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(24,'A','B')"><span class="opt-key">A</span>K⁺ exits → Na⁺ enters → repolarization → hyperpolarization</button>
+      <button class="opt-btn" onclick="answerMCQ(24,'B','B')"><span class="opt-key">B</span>Na⁺ enters → K⁺ exits → repolarization → hyperpolarization → return to RMP</button>
+      <button class="opt-btn" onclick="answerMCQ(24,'C','B')"><span class="opt-key">C</span>Na⁺ enters → Ca²⁺ exits → K⁺ enters → return to RMP</button>
+      <button class="opt-btn" onclick="answerMCQ(24,'D','B')"><span class="opt-key">D</span>Hyperpolarization → Na⁺ enters → K⁺ exits → return to RMP</button>
+    </div>
+    <div class="q-explanation" id="ex24"><div class="expl-label">Explanation</div>The correct order is: threshold reached → <b>Na⁺ enters</b> (depolarization/rising phase, −55 → +30 mV) → <b>K⁺ exits</b> (repolarization, +30 → −90 mV with brief hyperpolarization) → leaky channels and ATPase restore <b>RMP (−70 mV)</b>.</div>
+  </div>
+
+  <div class="sec-label">Nernst Equation</div>
+
+  <!-- Q25 MCQ -->
+  <div class="q-card cat-nernst" id="q25">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q25</span>
+        <span class="q-cat-badge badge-nernst">Nernst Equation</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st25"></div>
+      </div>
+      <div class="q-text">In the Nernst equation <code>E = (61.5 / z) × log([ion]out / [ion]in)</code>, what does the variable <em>z</em> represent?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(25,'A','B')"><span class="opt-key">A</span>The temperature in Kelvin</button>
+      <button class="opt-btn" onclick="answerMCQ(25,'B','B')"><span class="opt-key">B</span>The valence (charge) of the ion</button>
+      <button class="opt-btn" onclick="answerMCQ(25,'C','B')"><span class="opt-key">C</span>The Faraday constant</button>
+      <button class="opt-btn" onclick="answerMCQ(25,'D','B')"><span class="opt-key">D</span>The universal gas constant</button>
+    </div>
+    <div class="q-explanation" id="ex25"><div class="expl-label">Explanation</div>In the Nernst equation, <b>z = valence (charge) of the ion</b>. For K⁺ and Na⁺, z = +1; for Ca²⁺, z = +2; for Cl⁻, z = −1. 61.5 is a constant derived from RT/F at body temperature.</div>
+  </div>
+
+  <!-- Q26 MCQ -->
+  <div class="q-card cat-nernst" id="q26">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q26</span>
+        <span class="q-cat-badge badge-nernst">Nernst Equation</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st26"></div>
+      </div>
+      <div class="q-text">The Nernst equilibrium potential for K⁺ (E<sub>K⁺</sub>) is approximately:</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(26,'A','C')"><span class="opt-key">A</span>+70 mV</button>
+      <button class="opt-btn" onclick="answerMCQ(26,'B','C')"><span class="opt-key">B</span>−55 mV</button>
+      <button class="opt-btn" onclick="answerMCQ(26,'C','C')"><span class="opt-key">C</span>−90 mV</button>
+      <button class="opt-btn" onclick="answerMCQ(26,'D','C')"><span class="opt-key">D</span>−70 mV</button>
+    </div>
+    <div class="q-explanation" id="ex26"><div class="expl-label">Explanation</div>E<sub>K⁺</sub> ≈ <b>−90 mV</b> (K⁺: 5 mM outside / 150 mM inside). E<sub>Na⁺</sub> ≈ +70 mV. The actual RMP (−70 mV) falls between these, weighted toward E<sub>K⁺</sub> because the membrane is ~90% permeable to K⁺.</div>
+  </div>
+
+  <!-- Q27 MCQ -->
+  <div class="q-card cat-nernst" id="q27">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q27</span>
+        <span class="q-cat-badge badge-nernst">Nernst Equation</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st27"></div>
+      </div>
+      <div class="q-text">The Nernst potential is used when an ion has reached electrochemical equilibrium. What does this mean?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(27,'A','C')"><span class="opt-key">A</span>The ion has completely stopped moving across the membrane</button>
+      <button class="opt-btn" onclick="answerMCQ(27,'B','C')"><span class="opt-key">B</span>The concentration gradient of the ion has been eliminated</button>
+      <button class="opt-btn" onclick="answerMCQ(27,'C','C')"><span class="opt-key">C</span>The force of the concentration gradient equals and opposes the electrostatic force — net movement is zero</button>
+      <button class="opt-btn" onclick="answerMCQ(27,'D','C')"><span class="opt-key">D</span>The ion is pumped equally in both directions by ATPases</button>
+    </div>
+    <div class="q-explanation" id="ex27"><div class="expl-label">Explanation</div>Electrochemical equilibrium means the <b>concentration gradient driving the ion one way</b> is exactly balanced by the <b>electrostatic gradient pulling it the other way</b>. Net movement = 0. For K⁺, this occurs at −90 mV; ions still move in both directions, but at equal rates.</div>
+  </div>
+
+  <div class="sec-label">Channel Mechanics</div>
+
+  <!-- Q28 MCQ -->
+  <div class="q-card cat-channels" id="q28">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q28</span>
+        <span class="q-cat-badge badge-channels">Channel Mechanics</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st28"></div>
+      </div>
+      <div class="q-text">At resting membrane potential (−70 mV), the voltage-gated Na⁺ channel is in which state?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(28,'A','D')"><span class="opt-key">A</span>Activation gate open, inactivation gate open</button>
+      <button class="opt-btn" onclick="answerMCQ(28,'B','D')"><span class="opt-key">B</span>Activation gate open, inactivation gate closed</button>
+      <button class="opt-btn" onclick="answerMCQ(28,'C','D')"><span class="opt-key">C</span>Activation gate closed, inactivation gate closed</button>
+      <button class="opt-btn" onclick="answerMCQ(28,'D','D')"><span class="opt-key">D</span>Activation gate closed, inactivation gate open</button>
+    </div>
+    <div class="q-explanation" id="ex28"><div class="expl-label">Explanation</div>At rest: activation gate (outside) = <b>closed</b>; inactivation gate (inside) = <b>open</b>. The channel is <em>ready</em> to be triggered but not conducting. At threshold: activation opens. At +30 mV: inactivation gate closes (absolute refractory). At return to RMP: reset to resting state.</div>
+  </div>
+
+  <!-- Q29 TF -->
+  <div class="q-card cat-channels" id="q29">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q29</span>
+        <span class="q-cat-badge badge-channels">Channel Mechanics</span>
+        <span class="q-type-badge">True / False</span>
+        <div class="q-status" id="st29"></div>
+      </div>
+      <div class="q-text">Voltage-gated Ca²⁺ channels in the axon terminal open at the same voltage (+30 mV) as voltage-gated K⁺ channels during an action potential.</div>
+    </div>
+    <div class="q-options">
+      <div class="tf-row">
+        <button class="tf-btn" onclick="answerTF(29, true, true)">True</button>
+        <button class="tf-btn" onclick="answerTF(29, false, true)">False</button>
+      </div>
+    </div>
+    <div class="q-explanation" id="ex29"><div class="expl-label">Explanation</div><b>True.</b> Both voltage-gated K⁺ channels and voltage-gated Ca²⁺ channels (in the axon terminal) open at <b>+30 mV</b>. K⁺ exits to repolarize the cell; Ca²⁺ enters the terminal to trigger neurotransmitter release via SNARE-mediated exocytosis.</div>
+  </div>
+
+  <!-- Q30 MCQ -->
+  <div class="q-card cat-channels" id="q30">
+    <div class="q-header">
+      <div class="q-meta">
+        <span class="q-num">Q30</span>
+        <span class="q-cat-badge badge-channels">Channel Mechanics</span>
+        <span class="q-type-badge">Multiple choice</span>
+        <div class="q-status" id="st30"></div>
+      </div>
+      <div class="q-text">Which of the following correctly describes the state of the voltage-gated Na⁺ channel at the PEAK (+30 mV) of the action potential?</div>
+    </div>
+    <div class="q-options">
+      <button class="opt-btn" onclick="answerMCQ(30,'A','B')"><span class="opt-key">A</span>Activation gate closed, inactivation gate open — channel is ready to fire again</button>
+      <button class="opt-btn" onclick="answerMCQ(30,'B','B')"><span class="opt-key">B</span>Activation gate open, inactivation gate closed — Na⁺ cannot enter despite open activation gate</button>
+      <button class="opt-btn" onclick="answerMCQ(30,'C','B')"><span class="opt-key">C</span>Both gates closed — channel is in a neutral standby state</button>
+      <button class="opt-btn" onclick="answerMCQ(30,'D','B')"><span class="opt-key">D</span>Both gates open — Na⁺ is freely flowing into the cell</button>
+    </div>
+    <div class="q-explanation" id="ex30"><div class="expl-label">Explanation</div>At peak (+30 mV): activation gate = <b>open</b>, inactivation gate = <b>fully closed</b>. Na⁺ cannot enter even though the activation gate is open — the inactivation gate physically blocks the channel pore. This is the hallmark of the absolute refractory period.</div>
+  </div>
+
+  <!-- Submit -->
+  <div class="submit-row">
+    <button class="btn-submit-all" id="submit-btn" onclick="submitAll()">Submit all answers</button>
+    <button class="btn-reset-all" onclick="resetAll()">Reset quiz</button>
+  </div>
+
+  <footer class="footer">
+    <p>Neuroscience Study Guide &nbsp;·&nbsp; Unit 2: Membrane Potentials</p>
+    <p style="margin-top:6px;">For study purposes only. Always verify with primary course materials.</p>
+  </footer>
+
+</div>
+
+<script>
+const state = {
+  answers: {},
+  correct: 0,
+  wrong: 0,
+  submitted: false
+};
+
+const TOTAL = 30;
+
+function updateScorebar() {
+  const answered = Object.keys(state.answers).length;
+  const remaining = TOTAL - answered;
+  document.getElementById('val-correct').textContent = state.correct;
+  document.getElementById('val-wrong').textContent = state.wrong;
+  document.getElementById('val-remaining').textContent = remaining;
+  const pct = Math.round(answered / TOTAL * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('prog-text').textContent = answered + ' / ' + TOTAL;
+  if (state.submitted && answered === TOTAL) {
+    const score = Math.round(state.correct / TOTAL * 100);
+    document.getElementById('val-score').textContent = score + '%';
+  }
+}
+
+function markStatus(qNum, isCorrect) {
+  const el = document.getElementById('st' + qNum);
+  if (isCorrect) {
+    el.textContent = '✓';
+    el.className = 'q-status correct-s';
+  } else {
+    el.textContent = '✗';
+    el.className = 'q-status wrong-s';
+  }
+}
+
+function showExplanation(qNum) {
+  const ex = document.getElementById('ex' + qNum);
+  if (ex) ex.classList.add('show');
+}
+
+function disableOptions(qNum) {
+  const card = document.getElementById('q' + qNum);
+  card.querySelectorAll('button').forEach(b => b.disabled = true);
+}
+
+function answerMCQ(qNum, chosen, correct) {
+  if (state.answers[qNum] !== undefined) return;
+  state.answers[qNum] = chosen;
+  const isCorrect = chosen === correct;
+  if (isCorrect) state.correct++; else state.wrong++;
+  const card = document.getElementById('q' + qNum);
+  const btns = card.querySelectorAll('.opt-btn');
+  btns.forEach(btn => {
+    const key = btn.querySelector('.opt-key').textContent;
+    if (key === correct) btn.classList.add('correct');
+    else if (key === chosen && !isCorrect) btn.classList.add('wrong');
+    btn.disabled = true;
+  });
+  markStatus(qNum, isCorrect);
+  showExplanation(qNum);
+  updateScorebar();
+}
+
+function answerTF(qNum, chosen, correct) {
+  if (state.answers[qNum] !== undefined) return;
+  state.answers[qNum] = chosen;
+  const isCorrect = chosen === correct;
+  if (isCorrect) state.correct++; else state.wrong++;
+  const card = document.getElementById('q' + qNum);
+  const btns = card.querySelectorAll('.tf-btn');
+  btns.forEach(btn => {
+    const val = btn.textContent.trim() === 'True';
+    if (val === correct) btn.classList.add('correct');
+    else if (val === chosen && !isCorrect) btn.classList.add('wrong');
+    btn.disabled = true;
+  });
+  markStatus(qNum, isCorrect);
+  showExplanation(qNum);
+  updateScorebar();
+}
+
+function submitAll() {
+  if (state.submitted) return;
+  state.submitted = true;
+  document.getElementById('submit-btn').disabled = true;
+
+  // Show all explanations for unanswered
+  for (let i = 1; i <= TOTAL; i++) {
+    if (state.answers[i] === undefined) {
+      showExplanation(i);
+      disableOptions(i);
+      const st = document.getElementById('st' + i);
+      st.textContent = '—';
+      st.style.borderColor = 'var(--amber-mid)';
+    }
+  }
+
+  const score = Math.round(state.correct / TOTAL * 100);
+  document.getElementById('val-score').textContent = score + '%';
+  updateScorebar();
+
+  // Results panel
+  const panel = document.getElementById('results-panel');
+  panel.classList.add('show');
+  document.getElementById('res-score').textContent = score + '%';
+  document.getElementById('res-score').style.color =
+    score >= 80 ? 'var(--teal-dark)' : score >= 60 ? 'var(--amber-dark)' : 'var(--red-dark)';
+
+  let grade, msg;
+  if (score === 100) { grade = 'Perfect score!'; msg = 'Outstanding! You have mastered every concept in membrane potentials — from Nernst equations to channel gate states. Excellent work.'; }
+  else if (score >= 90) { grade = 'Excellent'; msg = 'Near-perfect performance. Review any missed questions and you are fully ready for your exam.'; }
+  else if (score >= 80) { grade = 'Very Good'; msg = 'Strong understanding of the material. A few concepts need a quick review — focus on the questions you missed.'; }
+  else if (score >= 70) { grade = 'Good'; msg = 'Solid foundation, but some areas need more study. Review the explanations for missed questions and revisit the study guide sections.'; }
+  else if (score >= 60) { grade = 'Fair'; msg = 'You understand the basics, but several key concepts need reinforcement. Go back through the study guide before your exam.'; }
+  else { grade = 'Needs Review'; msg = 'This material needs more study time. Go through the study guide section by section and retake the quiz after reviewing.'; }
+
+  document.getElementById('res-grade').textContent = grade;
+  document.getElementById('res-msg').textContent = msg;
+  document.getElementById('res-correct').textContent = state.correct;
+  document.getElementById('res-wrong').textContent = TOTAL - state.correct;
+  document.getElementById('res-pct').textContent = score + '%';
+
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function resetAll() {
+  state.answers = {};
+  state.correct = 0;
+  state.wrong = 0;
+  state.submitted = false;
+
+  document.getElementById('val-score').textContent = '—';
+  document.getElementById('val-correct').textContent = '0';
+  document.getElementById('val-wrong').textContent = '0';
+  document.getElementById('val-remaining').textContent = TOTAL;
+  document.getElementById('progress-fill').style.width = '0%';
+  document.getElementById('prog-text').textContent = '0 / ' + TOTAL;
+  document.getElementById('submit-btn').disabled = false;
+  document.getElementById('results-panel').classList.remove('show');
+
+  for (let i = 1; i <= TOTAL; i++) {
+    const card = document.getElementById('q' + i);
+    card.querySelectorAll('button').forEach(b => {
+      b.disabled = false;
+      b.classList.remove('correct', 'wrong', 'missed');
+    });
+    const st = document.getElementById('st' + i);
+    st.textContent = '';
+    st.className = 'q-status';
+    st.style.borderColor = '';
+    const ex = document.getElementById('ex' + i);
+    if (ex) ex.classList.remove('show');
+  }
+
+  filterCat('all', document.querySelector('.cat-btn.active'));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function filterCat(cat, btn) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.q-card').forEach(card => {
+    if (cat === 'all' || card.classList.contains(cat)) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  document.querySelectorAll('.sec-label').forEach(lbl => {
+    lbl.style.display = cat === 'all' ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
