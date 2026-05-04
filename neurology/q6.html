@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glial Cells — Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F9F7F4;
+  --surface: #FFFFFF;
+  --surface-2: #F4F1EC;
+  --border: #E5E0D8;
+  --border-strong: #C8C0B4;
+  --text: #1A1714;
+  --text-muted: #6B6560;
+  --text-faint: #A39D97;
+
+  --teal-bg: #E4F5EE;
+  --teal-mid: #1D9E75;
+  --teal-dark: #085041;
+
+  --purple-bg: #EEEDFE;
+  --purple-mid: #534AB7;
+  --purple-dark: #3C3489;
+
+  --coral-bg: #FAECE7;
+  --coral-mid: #D85A30;
+  --coral-dark: #712B13;
+
+  --blue-bg: #E6F1FB;
+  --blue-mid: #378ADD;
+  --blue-dark: #0C447C;
+
+  --amber-bg: #FDF3E3;
+  --amber-mid: #EF9F27;
+  --amber-dark: #633806;
+
+  --green-bg: #EAF3DE;
+  --green-mid: #639922;
+  --green-dark: #27500A;
+
+  --red-bg: #FCEBEB;
+  --red-mid: #E24B4A;
+  --red-dark: #791F1F;
+
+  --pink-bg: #FBEAF0;
+  --pink-mid: #D4537E;
+  --pink-dark: #72243E;
+
+  --accent: #1D9E75;
+  --accent-dark: #085041;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ── Layout ── */
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── Header ── */
+.header {
+  padding: 52px 0 36px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 36px;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+.eyebrow-text {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(28px, 5vw, 46px);
+  line-height: 1.1;
+  font-weight: 400;
+  margin-bottom: 12px;
+}
+
+.header h1 em { font-style: italic; color: var(--accent); }
+
+.header-sub {
+  font-size: 14px;
+  color: var(--text-muted);
+  max-width: 520px;
+  line-height: 1.7;
+}
+
+/* ── Progress ── */
+.progress-wrap {
+  margin-bottom: 32px;
+}
+
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.progress-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.progress-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.progress-track {
+  height: 4px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 99px;
+  transition: width 0.5s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── Category pill ── */
+.category-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 99px;
+  margin-bottom: 20px;
+}
+
+.pill-teal    { background: var(--teal-bg);   color: var(--teal-dark); }
+.pill-blue    { background: var(--blue-bg);   color: var(--blue-dark); }
+.pill-purple  { background: var(--purple-bg); color: var(--purple-dark); }
+.pill-green   { background: var(--green-bg);  color: var(--green-dark); }
+.pill-coral   { background: var(--coral-bg);  color: var(--coral-dark); }
+.pill-red     { background: var(--red-bg);    color: var(--red-dark); }
+.pill-amber   { background: var(--amber-bg);  color: var(--amber-dark); }
+.pill-pink    { background: var(--pink-bg);   color: var(--pink-dark); }
+
+/* ── Question card ── */
+.q-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 32px 28px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  animation: slideIn 0.3s cubic-bezier(.4,0,.2,1);
+}
+
+.q-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  border-radius: 4px 0 0 4px;
+}
+
+.q-card.teal::before   { background: var(--teal-mid); }
+.q-card.blue::before   { background: var(--blue-mid); }
+.q-card.purple::before { background: var(--purple-mid); }
+.q-card.green::before  { background: var(--green-mid); }
+.q-card.coral::before  { background: var(--coral-mid); }
+.q-card.red::before    { background: var(--red-mid); }
+.q-card.amber::before  { background: var(--amber-mid); }
+.q-card.pink::before   { background: var(--pink-mid); }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.q-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-bottom: 14px;
+  letter-spacing: 0.05em;
+}
+
+.q-text {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(17px, 3vw, 21px);
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--text);
+  margin-bottom: 28px;
+}
+
+/* ── Options ── */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 18px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  text-align: left;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  width: 100%;
+  position: relative;
+}
+
+.option:hover:not(:disabled) {
+  border-color: var(--border-strong);
+  background: var(--surface);
+  transform: translateY(-1px);
+}
+
+.option:disabled { cursor: default; transform: none; }
+
+.opt-letter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--border);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.opt-text { flex: 1; }
+
+/* Correct / incorrect states */
+.option.correct {
+  border-color: var(--teal-mid);
+  background: var(--teal-bg);
+  color: var(--teal-dark);
+}
+
+.option.correct .opt-letter {
+  background: var(--teal-mid);
+  color: #fff;
+}
+
+.option.incorrect {
+  border-color: var(--red-mid);
+  background: var(--red-bg);
+  color: var(--red-dark);
+}
+
+.option.incorrect .opt-letter {
+  background: var(--red-mid);
+  color: #fff;
+}
+
+.option.dimmed {
+  opacity: 0.45;
+}
+
+/* ── Feedback ── */
+.feedback {
+  margin-top: 18px;
+  border-radius: 10px;
+  padding: 16px 18px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  display: none;
+  animation: fadeUp 0.25s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.feedback.show { display: block; }
+
+.feedback.correct-fb {
+  background: var(--teal-bg);
+  border: 1px solid #9FE1CB;
+  color: var(--teal-dark);
+}
+
+.feedback.incorrect-fb {
+  background: var(--red-bg);
+  border: 1px solid #F7C1C1;
+  color: var(--red-dark);
+}
+
+.fb-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+}
+
+.fb-icon {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+
+.fb-icon.ok  { background: var(--teal-mid); }
+.fb-icon.err { background: var(--red-mid); }
+
+.fb-body { font-size: 13px; }
+.fb-body b { font-weight: 600; }
+.fb-body em { font-style: italic; }
+
+/* ── Nav buttons ── */
+.q-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+}
+
+.btn-primary {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.btn-primary:hover { background: #333; }
+
+.btn-ghost {
+  background: var(--surface);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.btn-ghost:hover { border-color: var(--border-strong); color: var(--text); }
+
+.btn:disabled { opacity: 0.35; cursor: default; }
+
+.btn-accent {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-accent:hover { background: var(--accent-dark); }
+
+/* score badge in nav */
+.live-score {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-faint);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 14px;
+  white-space: nowrap;
+}
+
+.live-score span { color: var(--teal-dark); font-weight: 600; }
+
+/* ── Results page ── */
+.results {
+  display: none;
+  animation: slideIn 0.4s ease;
+}
+
+.results.show { display: block; }
+
+.score-ring-wrap {
+  text-align: center;
+  padding: 48px 0 36px;
+}
+
+.score-ring {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.score-ring svg { display: block; }
+
+.score-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-pct {
+  font-family: 'DM Serif Display', serif;
+  font-size: 40px;
+  line-height: 1;
+  color: var(--text);
+}
+
+.score-pct-sym { font-size: 22px; }
+
+.score-label {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-top: 3px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.score-msg {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.score-sub { font-size: 14px; color: var(--text-muted); }
+
+.results-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 28px 0;
+}
+
+.stat-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  text-align: center;
+}
+
+.stat-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.stat-lbl { font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.07em; }
+
+.stat-box.correct .stat-val { color: var(--teal-dark); }
+.stat-box.incorrect .stat-val { color: var(--red-dark); }
+.stat-box.neutral .stat-val { color: var(--blue-dark); }
+
+/* Review section */
+.review-header {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin: 32px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.review-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.review-icon {
+  width: 22px; height: 22px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 11px; font-weight: 700; color: #fff;
+  margin-top: 1px;
+}
+
+.review-icon.ok  { background: var(--teal-mid); }
+.review-icon.err { background: var(--red-mid); }
+
+.review-qtext {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.review-answer {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.review-answer b { color: var(--text); font-weight: 600; }
+
+.results-btns {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+/* ── Quiz shell ── */
+#quiz-shell { display: block; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="eyebrow">
+      <div class="dot"></div>
+      <span class="eyebrow-text">Unit 3 · Neuroscience</span>
+    </div>
+    <h1>Glial Cells <em>Quiz</em></h1>
+    <p class="header-sub">35 questions spanning all six cell types — one question at a time. Pick the best answer, then read the explanation.</p>
+  </div>
+
+  <!-- QUIZ SHELL -->
+  <div id="quiz-shell">
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span class="progress-label">Progress</span>
+        <span class="progress-count" id="prog-count">1 / 35</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="prog-fill" style="width: 2.86%;"></div>
+      </div>
+    </div>
+
+    <div id="q-area"></div>
+
+    <div class="q-nav">
+      <div class="live-score">Score <span id="live-score">0</span> / <span id="live-total">0</span></div>
+      <button class="btn btn-primary" id="next-btn" style="display:none;" onclick="nextQ()">Next question →</button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results" id="results">
+    <div class="score-ring-wrap">
+      <div class="score-ring">
+        <svg width="160" height="160" viewBox="0 0 160 160">
+          <circle cx="80" cy="80" r="66" fill="none" stroke="#E5E0D8" stroke-width="12"/>
+          <circle id="ring-circle" cx="80" cy="80" r="66" fill="none" stroke="#1D9E75" stroke-width="12"
+            stroke-linecap="round" stroke-dasharray="414.69" stroke-dashoffset="414.69"
+            transform="rotate(-90 80 80)" style="transition: stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)"/>
+        </svg>
+        <div class="score-center">
+          <div class="score-pct"><span id="res-pct">0</span><span class="score-pct-sym">%</span></div>
+          <div class="score-label">Score</div>
+        </div>
+      </div>
+      <div class="score-msg" id="res-msg">Well done!</div>
+      <div class="score-sub" id="res-sub"></div>
+    </div>
+
+    <div class="results-stats">
+      <div class="stat-box correct">
+        <div class="stat-val" id="res-correct">0</div>
+        <div class="stat-lbl">Correct</div>
+      </div>
+      <div class="stat-box incorrect">
+        <div class="stat-val" id="res-wrong">0</div>
+        <div class="stat-lbl">Incorrect</div>
+      </div>
+      <div class="stat-box neutral">
+        <div class="stat-val">35</div>
+        <div class="stat-lbl">Total</div>
+      </div>
+    </div>
+
+    <div class="review-header">Question review</div>
+    <div id="review-list"></div>
+
+    <div class="results-btns">
+      <button class="btn btn-ghost" onclick="restartQuiz()">↺ Restart quiz</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const Q = [
+  // ── ASTROCYTES ──────────────────────────────────────────
+  {
+    cat: 'Astrocytes', color: 'blue',
+    q: 'In which part of the nervous system are astrocytes exclusively found?',
+    opts: ['Peripheral nervous system only', 'Both CNS and PNS equally', 'Central nervous system only', 'Only in the spinal cord'],
+    ans: 2,
+    explain: '<b>Astrocytes are CNS-only.</b> They are found in the brain and spinal cord. Their PNS equivalent is the satellite cell. Astrocytes are the most functionally diverse glial cells in the nervous system.'
+  },
+  {
+    cat: 'Astrocytes — BBB', color: 'blue',
+    q: 'What are the three layers of the blood-brain barrier, in order from innermost (blood side) to outermost?',
+    opts: [
+      'Astrocyte foot processes → basal lamina → endothelial cells',
+      'Endothelial cells → basal lamina → astrocyte foot processes',
+      'Basal lamina → endothelial cells → astrocyte foot processes',
+      'Endothelial cells → astrocyte foot processes → basal lamina'
+    ],
+    ans: 1,
+    explain: 'The correct order is <b>endothelial cells</b> (with tight junctions) → <b>basal lamina</b> (connective tissue/protein) → <b>astrocyte foot processes</b> (outermost). The tight junctions between endothelial cells are the primary selective barrier.'
+  },
+  {
+    cat: 'Astrocytes — BBB', color: 'blue',
+    q: 'What is the active role astrocytes play in maintaining the blood-brain barrier — beyond just being a physical layer?',
+    opts: [
+      'They directly produce the tight junction proteins themselves',
+      'They secrete growth factors that stimulate endothelial cells to produce more tight junctions',
+      'They phagocytose any molecules that cross the endothelium',
+      'They replace damaged endothelial cells when the barrier is breached'
+    ],
+    ans: 1,
+    explain: 'Astrocytes <b>secrete growth factors</b> that signal endothelial cells to form more tight junctions. This is why astrocyte damage is so critical — fewer growth factors → fewer tight junctions → increased BBB permeability → undesired molecules reach neural tissue → dysregulated neural activity.'
+  },
+  {
+    cat: 'Astrocytes — BBB', color: 'blue',
+    q: 'Which of the following molecules can freely diffuse across the blood-brain barrier WITHOUT needing a transport protein?',
+    opts: [
+      'Glucose and sodium ions',
+      'Water and chloride ions',
+      'Oxygen and carbon dioxide',
+      'Large plasma proteins'
+    ],
+    ans: 2,
+    explain: '<b>O₂ and CO₂</b> are respiratory gases that are lipid-soluble and small — they freely diffuse across the BBB. Glucose requires GLUT transporters (GLUT1 on the BBB, GLUT3 on neurons). Na⁺, Cl⁻, and water need specific carriers. Large proteins are blocked entirely.'
+  },
+  {
+    cat: 'Astrocytes — BBB', color: 'blue',
+    q: 'The area postrema in the medulla has an intentionally absent blood-brain barrier. What is the physiological purpose of this?',
+    opts: [
+      'To allow hormones from the pituitary to reach the medulla directly',
+      'To sample blood for toxins and drugs, then trigger the vomiting reflex',
+      'To permit ADH release in response to blood osmolarity changes',
+      'To allow cerebrospinal fluid to enter the bloodstream'
+    ],
+    ans: 1,
+    explain: 'The <b>area postrema</b> samples blood for toxins, ketones, and drugs. It signals the chemoreceptor trigger zone, which then triggers vomiting — a protective mechanism to expel ingested toxins. This requires that the BBB be absent so blood-borne signals can be sensed.'
+  },
+  {
+    cat: 'Astrocytes — BBB', color: 'blue',
+    q: 'Which BBB-absent region near the hypothalamus is responsible for sensing blood osmolarity and regulating thirst and ADH release?',
+    opts: [
+      'Area postrema and nucleus solitarius',
+      'Subfornicular organ and OVLT (organum vasculosum of the lamina terminalis)',
+      'Pineal gland and choroid plexus',
+      'Locus coeruleus and raphe nucleus'
+    ],
+    ans: 1,
+    explain: 'The <b>subfornicular organ</b> and <b>OVLT</b> (organum vasculosum of the lamina terminalis) are circumventricular organs near the hypothalamus. They sample blood osmolarity and signal the hypothalamus to regulate thirst and stimulate posterior pituitary ADH release.'
+  },
+  {
+    cat: 'Astrocytes — BBB', color: 'blue',
+    q: 'Why is the BBB intentionally absent between the hypothalamus and the anterior pituitary?',
+    opts: [
+      'To allow immune cells to patrol the pituitary',
+      'So that releasing hormones (CRH, GHRH, GnRH) can travel through the portal bloodstream to reach the anterior pituitary',
+      'To allow glucose to enter the pituitary directly from the blood',
+      'To enable dopamine from the hypothalamus to inhibit prolactin without a carrier'
+    ],
+    ans: 1,
+    explain: 'The <b>hypothalamic-pituitary axis</b> requires releasing hormones (CRH, GHRH, GnRH) to circulate via the hypothalamo-hypophyseal portal blood to reach the anterior pituitary. A BBB here would block this hormonal signaling.'
+  },
+  {
+    cat: 'Astrocytes — K⁺ buffering', color: 'teal',
+    q: 'Potassium ions accumulate in the extracellular space after repeated action potentials. What is the initial consequence if astrocytes do NOT remove this excess K⁺?',
+    opts: [
+      'The resting membrane potential becomes more negative, making neurons harder to fire',
+      'The K⁺ concentration gradient driving K⁺ out of the cell decreases, causing increased intracellular positive charge and initially increased excitability',
+      'Sodium channels open spontaneously due to the high extracellular K⁺',
+      'Myelin sheaths dissolve in the high-K⁺ environment'
+    ],
+    ans: 1,
+    explain: 'High extracellular K⁺ → <b>reduced concentration gradient</b> → less K⁺ exits neurons → more positive charge accumulates inside the cell → <b>initially increased excitability</b>. Eventually, prolonged positivity inactivates voltage-gated Na⁺ channels, causing a paradoxical decreased excitability.'
+  },
+  {
+    cat: 'Astrocytes — K⁺ buffering', color: 'teal',
+    q: 'When a single astrocyte becomes overloaded with K⁺ it has absorbed from the extracellular space, what does it do with the excess?',
+    opts: [
+      'Releases it back into the bloodstream via foot processes',
+      'Converts K⁺ into Na⁺ using an enzyme',
+      'Passes K⁺ through gap junctions to neighboring astrocytes (spatial buffering)',
+      'Stores it permanently in lysosomes'
+    ],
+    ans: 2,
+    explain: 'Astrocytes are connected by <b>gap junctions</b>, allowing them to perform "spatial buffering." Excess K⁺ absorbed by one astrocyte is passed to neighboring astrocytes, distributing the ion load across the astrocyte network so no single cell becomes overloaded.'
+  },
+  {
+    cat: 'Astrocytes — Neurotransmitter', color: 'purple',
+    q: 'An astrocyte takes up excess glutamate from the synapse. What enzyme converts this glutamate into glutamine inside the astrocyte?',
+    opts: [
+      'Glutaminase',
+      'Glutamate decarboxylase',
+      'Glutamine synthetase',
+      'GABA transaminase'
+    ],
+    ans: 2,
+    explain: '<b>Glutamine synthetase</b> in astrocytes converts glutamate → glutamine. Glutamine is a metabolically inert transport form. It is then exported to neurons, where <b>glutaminase</b> converts it back to glutamate, which can be packaged into vesicles or further converted to GABA.'
+  },
+  {
+    cat: 'Astrocytes — Neurotransmitter', color: 'purple',
+    q: 'How do astrocytes support GABA synthesis in GABAergic neurons?',
+    opts: [
+      'Astrocytes synthesize GABA directly and transfer it to the neuron',
+      'Astrocytes export glutamine → neuron converts it to glutamate via glutaminase → glutamate decarboxylase converts it to GABA',
+      'Astrocytes provide GABA precursor directly via exocytosis',
+      'Astrocytes activate GABA receptors on the presynaptic membrane'
+    ],
+    ans: 1,
+    explain: 'The full GABA synthesis pathway via astrocytes: astrocyte converts glutamate → <b>glutamine</b> (via glutamine synthetase) → exports glutamine to GABAergic neuron → <b>glutaminase</b> converts glutamine to glutamate → <b>glutamate decarboxylase</b> converts glutamate to GABA → packaged into vesicles.'
+  },
+  {
+    cat: 'Astrocytes — Metabolism', color: 'amber',
+    q: 'Which glucose transporter is expressed on the blood-brain barrier (endothelial cells/astrocyte foot processes), and which is expressed on neurons?',
+    opts: [
+      'GLUT2 on BBB; GLUT4 on neurons',
+      'GLUT1 on BBB; GLUT3 on neurons',
+      'GLUT3 on BBB; GLUT1 on neurons',
+      'GLUT4 on BBB; GLUT2 on neurons'
+    ],
+    ans: 1,
+    explain: '<b>GLUT1</b> is expressed on the blood-brain barrier (including astrocyte foot processes) to transport glucose from blood into the CNS. <b>GLUT3</b> is expressed on neurons to take up glucose from the extracellular space. This distinction is a classic exam point.'
+  },
+  {
+    cat: 'Astrocytes — Metabolism', color: 'amber',
+    q: 'When neuronal ATP drops, astrocytes activate the lactate shuttle. What is the correct order of this pathway?',
+    opts: [
+      'Glycogen → glucose → lactate → neuron → pyruvate → Krebs cycle → ATP',
+      'Lactate → glycogen → glucose → neuron → pyruvate → Krebs cycle → ATP',
+      'Glucose → glycogen → lactate → neuron → acetyl-CoA → ATP',
+      'Glycogen → lactate → glucose → neuron → Krebs cycle → ATP'
+    ],
+    ans: 0,
+    explain: 'The astrocyte-neuron lactate shuttle: astrocyte breaks down <b>glycogen → glucose → pyruvate → lactate</b>. Lactate is transported out of the astrocyte and into the neuron, where it is converted back to <b>pyruvate → acetyl-CoA → Krebs cycle → ATP</b>. Astrocytes serve as glycogen reserves for neurons.'
+  },
+
+  // ── SATELLITE CELLS ───────────────────────────────────────
+  {
+    cat: 'Satellite Cells', color: 'teal',
+    q: 'Satellite cells are best described as the PNS equivalent of which CNS glial cell?',
+    opts: ['Microglia', 'Oligodendrocytes', 'Ependymal cells', 'Astrocytes'],
+    ans: 3,
+    explain: '<b>Satellite cells</b> are the PNS counterpart of astrocytes. They perform similar functions — potassium buffering, neurotransmitter regulation, nutrient/glucose control — but do not have an equivalent blood-brain barrier role. They are found surrounding neuronal cell bodies in ganglia.'
+  },
+  {
+    cat: 'Satellite Cells', color: 'teal',
+    q: 'In which two PNS locations are satellite cells found surrounding neuronal cell bodies?',
+    opts: [
+      'Neuromuscular junctions and Schwann cell nodes',
+      'Dorsal root ganglia and autonomic ganglia',
+      'Cranial nerve nuclei and spinal cord dorsal horn',
+      'Sympathetic chains and peripheral nerve trunks'
+    ],
+    ans: 1,
+    explain: 'Satellite cells surround cell bodies in: (1) <b>Dorsal root ganglia (DRG)</b> — sensory neuron cell bodies in the dorsal root; and (2) <b>Autonomic ganglia</b> — including paravertebral and prevertebral ganglia (sympathetic) and terminal ganglia near target organs (parasympathetic).'
+  },
+  {
+    cat: 'Satellite Cells', color: 'teal',
+    q: 'Which function do satellite cells NOT perform, in contrast to astrocytes?',
+    opts: [
+      'Potassium buffering around ganglionic neurons',
+      'Neurotransmitter regulation',
+      'Formation of a blood-brain-like barrier',
+      'Nutrient and glucose control for cell bodies'
+    ],
+    ans: 2,
+    explain: 'Satellite cells do NOT form a blood-brain barrier equivalent. They have no comparable role wrapping blood vessels in the PNS. All other functions — potassium buffering, neurotransmitter regulation, and nutrient/glucose control — are shared with astrocytes.'
+  },
+
+  // ── OLIGODENDROCYTES & SCHWANN ────────────────────────────
+  {
+    cat: 'Oligodendrocytes & Schwann', color: 'purple',
+    q: 'Which glial cell myelinates axons in the CNS, and which myelinates axons in the PNS?',
+    opts: [
+      'Schwann cells in CNS; oligodendrocytes in PNS',
+      'Oligodendrocytes in CNS; Schwann cells in PNS',
+      'Satellite cells in CNS; oligodendrocytes in PNS',
+      'Ependymal cells in CNS; Schwann cells in PNS'
+    ],
+    ans: 1,
+    explain: '<b>Oligodendrocytes</b> myelinate axons in the CNS (brain, spinal cord) and also cranial nerve II (optic nerve, which is technically CNS tissue). <b>Schwann cells</b> myelinate axons in the PNS — the spinal nerves and cranial nerves III through XII.'
+  },
+  {
+    cat: 'Oligodendrocytes & Schwann', color: 'purple',
+    q: 'One oligodendrocyte can myelinate up to 30–60 axons. How many axons does one Schwann cell myelinate?',
+    opts: [
+      '10–20 axons',
+      '5–10 axons per cell',
+      'One segment of one axon (many Schwann cells line a single axon)',
+      'One entire axon from soma to terminal'
+    ],
+    ans: 2,
+    explain: 'One <b>Schwann cell</b> myelinates one segment of one axon — multiple Schwann cells are needed to cover the entire length of an axon. This is the opposite of oligodendrocytes, which can reach out and myelinate up to 30–60 different axons simultaneously.'
+  },
+  {
+    cat: 'Oligodendrocytes & Schwann', color: 'purple',
+    q: 'Why can PNS axons regenerate after demyelination (as in GBS) while CNS axons cannot recover after oligodendrocyte damage (as in MS)?',
+    opts: [
+      'CNS axons are shorter so they have less capacity to regenerate',
+      'Schwann cells possess a neurolemma — their outermost cell membrane layer — that survives damage and guides axon regrowth; oligodendrocytes lack this feature',
+      'The PNS has a more robust immune response that repairs damage',
+      'CNS neurons are post-mitotic and therefore cannot grow new axons'
+    ],
+    ans: 1,
+    explain: 'The <b>neurolemma</b> is the outermost Schwann cell membrane layer, located outside the myelin sheath. It survives Schwann cell damage and acts as a scaffold to guide axon regrowth and remyelination. Oligodendrocytes lack this neurolemma and so cannot regenerate after CNS demyelination.'
+  },
+  {
+    cat: 'Oligodendrocytes & Schwann', color: 'purple',
+    q: 'Demyelination of oligodendrocytes in the CNS leads to which disease?',
+    opts: ['Guillain-Barré syndrome', 'Amyotrophic lateral sclerosis', 'Multiple sclerosis', 'Myasthenia gravis'],
+    ans: 2,
+    explain: '<b>Multiple sclerosis (MS)</b> results from autoimmune demyelination of oligodendrocytes in the CNS. No regeneration is possible, leading to progressive conduction deficits. Demyelination of <em>Schwann cells</em> in the PNS causes Guillain-Barré syndrome (GBS), which can recover due to the neurolemma.'
+  },
+  {
+    cat: 'Oligodendrocytes & Schwann', color: 'purple',
+    q: 'In the process of myelination, what specifically is the "neurolemma" of a Schwann cell?',
+    opts: [
+      'The innermost layer of myelin directly touching the axon',
+      'The outermost Schwann cell membrane layer, external to the myelin sheath',
+      'The node of Ranvier between two Schwann cells',
+      'The gap junction between adjacent Schwann cells'
+    ],
+    ans: 1,
+    explain: 'When a Schwann cell wraps its membrane repeatedly around an axon, the <b>myelin sheath</b> is the concentric lipid-protein layers formed. The <b>neurolemma</b> is the outermost Schwann cell membrane that sits outside all those layers — it is not myelin itself. It is this structure that enables PNS regeneration.'
+  },
+  {
+    cat: 'Oligodendrocytes & Schwann', color: 'purple',
+    q: 'Nodes of Ranvier are the gaps between adjacent myelin segments. What is densely concentrated at each node?',
+    opts: [
+      'Gap junctions and cadherins',
+      'Voltage-gated Na⁺ and K⁺ channels',
+      'GLUT transporters and Na⁺/K⁺-ATPases',
+      'Glutamate receptors and GABA receptors'
+    ],
+    ans: 1,
+    explain: 'Each <b>node of Ranvier</b> is packed with <b>voltage-gated Na⁺ and K⁺ channels</b>. These are absent under the myelin sheath. The concentration of channels at nodes is what makes saltatory conduction possible — action potentials are regenerated only at nodes, jumping rapidly from one to the next.'
+  },
+
+  // ── MYELIN & CONDUCTION ───────────────────────────────────
+  {
+    cat: 'Myelin & Conduction', color: 'green',
+    q: 'In saltatory conduction, why does the action potential appear to "jump" from one node of Ranvier to the next?',
+    opts: [
+      'Myelin generates its own electrical impulse that propels the signal forward',
+      'Voltage-gated ion channels are absent under the myelin sheath, so current must travel down the axon until it reaches the next node',
+      'The action potential travels backward under the myelin and is reflected forward at the next node',
+      'Saltatory refers to the Na⁺/K⁺ pump actively pumping ions forward along the sheath'
+    ],
+    ans: 1,
+    explain: 'In myelinated axons, <b>voltage-gated Na⁺/K⁺ channels are absent under the myelin</b>. When an action potential fires at one node, the ionic current cannot regenerate along the myelinated segment — it must flow down the axon to the next node, where channels open and the AP is regenerated. This creates the "jumping" appearance of <b>saltatory conduction</b>.'
+  },
+  {
+    cat: 'Myelin & Conduction', color: 'green',
+    q: 'What does "decreased membrane capacitance" caused by myelin mean for the speed of action potential conduction?',
+    opts: [
+      'Decreased capacitance means more negative charges on the membrane, attracting positive ions and slowing conduction',
+      'Decreased capacitance means fewer negative charges on the membrane, so fewer positive ions are attracted to it and more current flows forward — increasing velocity',
+      'Capacitance is unrelated to conduction; only resistance matters',
+      'Decreased capacitance means the membrane holds charge longer, slowing repolarization'
+    ],
+    ans: 1,
+    explain: 'Myelin reduces negative charge on the axon membrane (decreased capacitance). Fewer negative charges → <b>fewer positive ions are captured by the membrane</b> as they travel down the axon → more current flows forward to the next node → <b>increased conduction velocity</b>. This is the second major mechanism by which myelin speeds conduction.'
+  },
+  {
+    cat: 'Myelin & Conduction', color: 'green',
+    q: 'Two factors determine conduction velocity along an axon. Which combination is correct?',
+    opts: [
+      'Number of synapses and neurotransmitter concentration',
+      'Axon length and myelin protein composition',
+      'Degree of myelination and axon diameter',
+      'Node of Ranvier spacing and Na⁺/K⁺-ATPase density'
+    ],
+    ans: 2,
+    explain: 'Conduction velocity depends on: (1) <b>Degree of myelination</b> — more myelin = less capacitance and no leakage = faster; (2) <b>Axon diameter</b> — larger diameter = less electrical resistance = faster ion flow. Both factors are independent and additive in their effect on velocity.'
+  },
+  {
+    cat: 'Myelin & Conduction', color: 'green',
+    q: 'A-fibers, B-fibers, and C-fibers are classified by myelination and conduction velocity. Which type has the SLOWEST conduction velocity?',
+    opts: [
+      'A-alpha fibers',
+      'B fibers',
+      'C fibers',
+      'A-delta fibers'
+    ],
+    ans: 2,
+    explain: '<b>C fibers</b> have the slowest conduction velocity — they are unmyelinated or minimally myelinated. The order from fastest to slowest is: <b>A fibers</b> (heavily myelinated, fastest) → <b>B fibers</b> (moderately myelinated) → <b>C fibers</b> (unmyelinated/minimal, slowest). C fibers carry pain and temperature information.'
+  },
+  {
+    cat: 'Myelin & Conduction', color: 'green',
+    q: 'What is the key difference between saltatory and continuous conduction in terms of where action potentials are generated?',
+    opts: [
+      'Saltatory: every patch of membrane fires; Continuous: only at nodes',
+      'Saltatory: only at nodes of Ranvier; Continuous: along every segment of the axon membrane',
+      'Both generate APs at identical intervals; they differ only in speed',
+      'Saltatory uses K⁺ channels only; continuous uses Na⁺ channels only'
+    ],
+    ans: 1,
+    explain: 'In <b>saltatory conduction</b> (myelinated), action potentials are generated only at <b>nodes of Ranvier</b> — the gaps between myelin segments. In <b>continuous conduction</b> (unmyelinated), every segment of the axon membrane must depolarize, generating the AP at each point along the way. This makes continuous conduction much slower.'
+  },
+
+  // ── EPENDYMAL CELLS ───────────────────────────────────────
+  {
+    cat: 'Ependymal Cells', color: 'pink',
+    q: 'What type of cells are ependymal cells, and where are they located?',
+    opts: [
+      'Stellate cells lining the meninges',
+      'Cuboidal/columnar cells lining the ventricles of the brain and the central canal of the spinal cord',
+      'Flat squamous cells forming the arachnoid membrane',
+      'Columnar cells lining the choroid plexus sinuses'
+    ],
+    ans: 1,
+    explain: 'Ependymal cells are <b>cuboidal to columnar epithelial-like cells</b> that line the <b>ventricles of the brain</b> and the <b>central canal of the spinal cord</b>. They are the key cellular component of the blood-CSF barrier and have cilia on their apical surface to circulate CSF.'
+  },
+  {
+    cat: 'Ependymal Cells', color: 'pink',
+    q: 'In the blood-CSF barrier, where are the tight junctions located — and how does this differ from the blood-brain barrier?',
+    opts: [
+      'Blood-CSF barrier: tight junctions between endothelial cells. BBB: tight junctions between ependymal cells.',
+      'Blood-CSF barrier: tight junctions between ependymal cells. BBB: tight junctions between endothelial cells.',
+      'Both barriers have tight junctions only between endothelial cells.',
+      'Neither barrier uses tight junctions; selectivity is determined by transporters alone.'
+    ],
+    ans: 1,
+    explain: 'This is the key structural distinction: in the <b>blood-CSF barrier</b>, the endothelial cells are <em>fenestrated (leaky)</em> — the tight junctions are between <b>ependymal cells</b>. In the <b>BBB</b>, it is the endothelial cells that are joined by dense tight junctions, with astrocyte foot processes providing chemical maintenance on the outside.'
+  },
+  {
+    cat: 'Ependymal Cells', color: 'pink',
+    q: 'What are the three core functions of ependymal cells?',
+    opts: [
+      'Phagocytosis, myelination, and potassium buffering',
+      'Selective ion transport across the blood-CSF barrier, CSF production, and CSF circulation via cilia',
+      'Antigen presentation, neurotransmitter recycling, and glucose storage',
+      'BBB maintenance, glycogen storage, and gap junction communication'
+    ],
+    ans: 1,
+    explain: 'Ependymal cells perform three core functions: (1) <b>Selective transport</b> — control movement of ions, water, glucose, O₂, CO₂ into the ventricles via specific transport proteins; (2) <b>CSF production</b> — secrete cerebrospinal fluid (water, Na⁺, Cl⁻, glucose, amino acids); (3) <b>CSF circulation</b> — apical cilia beat to propel CSF through the ventricular system.'
+  },
+  {
+    cat: 'Ependymal Cells', color: 'pink',
+    q: 'The blood-CSF barrier and the blood-brain barrier both have three layers. What is found in BOTH barriers as the second (middle) layer?',
+    opts: ['Astrocyte foot processes', 'Tight junctions', 'Basal lamina', 'Fenestrated endothelium'],
+    ans: 2,
+    explain: 'The <b>basal lamina</b> (a layer of connective tissue/extracellular protein matrix) is the second layer in <em>both</em> the BBB and the blood-CSF barrier. It sits just outside the endothelial cells in both structures. The key differences lie in layers 1 and 3 — where tight junctions are located and what the outermost cell type is.'
+  },
+  {
+    cat: 'Ependymal Cells', color: 'pink',
+    q: 'Cerebrospinal fluid fills the ventricles of the brain. Which cellular structure propels this fluid through the ventricular system?',
+    opts: [
+      'Microvilli on the apical surface of ependymal cells',
+      'Cilia on the apical surface of ependymal cells',
+      'Flagella on choroid plexus cells',
+      'Astrocyte gap junctions creating bulk flow'
+    ],
+    ans: 1,
+    explain: 'Ependymal cells have <b>cilia</b> on their apical (luminal) surface. These cilia beat rhythmically to propel CSF through the ventricular system and around the brain and spinal cord. Loss of ependymal cilia function is associated with hydrocephalus (impaired CSF circulation leading to accumulation).'
+  },
+
+  // ── MICROGLIA ─────────────────────────────────────────────
+  {
+    cat: 'Microglia', color: 'red',
+    q: 'Microglia have a unique developmental origin compared to all other glial cells. Where do they come from?',
+    opts: [
+      'Neural crest cells that migrate from the neural tube',
+      'Monocytes derived from red bone marrow that migrate to and differentiate in the CNS',
+      'Neuroepithelial cells of the ventricular zone',
+      'Oligodendrocyte precursor cells that fail to differentiate'
+    ],
+    ans: 1,
+    explain: 'Microglia originate from <b>monocytes produced in the red bone marrow</b>. These monocytes migrate to the CNS during development (and throughout life) and differentiate into microglia. This gives them a myeloid lineage, making them the CNS equivalent of peripheral macrophages — unique among all glial cells.'
+  },
+  {
+    cat: 'Microglia', color: 'red',
+    q: 'What triggers microglial activation in the CNS?',
+    opts: [
+      'High extracellular glucose levels detected by surface receptors',
+      'Neural damage or infection leading to release of cellular debris and cytokines',
+      'Decreased local blood flow detected by foot processes',
+      'Elevated CSF pressure signaling from ependymal cells'
+    ],
+    ans: 1,
+    explain: 'Neural damage or infection causes release of <b>cellular debris</b> and <b>cytokines</b>. Microglia detect these via pattern-recognition receptors and become activated — transitioning from a ramified (surveying) state to an amoeboid (activated) morphology. The activated microglia then mount an immune response.'
+  },
+  {
+    cat: 'Microglia', color: 'red',
+    q: 'Activated microglia release nitric oxide and reactive oxygen species (free radicals). What is the intended purpose — and what is the dangerous side effect?',
+    opts: [
+      'Purpose: destroy synaptic connections that are no longer useful; side effect: excessive glutamate release',
+      'Purpose: destroy pathogens causing neural damage; side effect: can also damage surrounding neural tissue and myelin, causing bystander demyelination',
+      'Purpose: recruit T cells to the area; side effect: astrocyte apoptosis',
+      'Purpose: increase BBB permeability for immune access; side effect: uncontrolled protein entry into neural tissue'
+    ],
+    ans: 1,
+    explain: 'The intended goal of releasing <b>nitric oxide</b> and <b>reactive oxygen species</b> is to destroy the pathogen causing neural damage. However, these molecules are not precisely targeted — they can also damage surrounding <b>neural tissue and myelin</b>, causing "bystander demyelination." This is especially problematic in chronic neuroinflammation.'
+  },
+  {
+    cat: 'Microglia', color: 'red',
+    q: 'After phagocytosing a pathogen, microglia present pathogen fragments on MHC II molecules. What happens next?',
+    opts: [
+      'B cells in the CNS are activated to produce antibodies',
+      'T cells cross the blood-brain barrier, interact with MHC II, become activated, and release cytokines that amplify the immune response',
+      'NK cells are recruited to complete phagocytosis of any remaining pathogen',
+      'The MHC II–pathogen complex is exported to the lymph nodes for adaptive immune activation'
+    ],
+    ans: 1,
+    explain: 'Microglia present pathogen fragments on <b>MHC II</b> → <b>T cells cross the BBB</b> → interact with the MHC II-antigen complex → become activated → release cytokines → amplify and direct the immune response → may activate more microglia in a positive feedback loop. This is how microglia link innate and adaptive immunity in the CNS.'
+  },
+  {
+    cat: 'Microglia', color: 'red',
+    q: 'In HIV infection, why does CNS deterioration occur involving microglia?',
+    opts: [
+      'HIV destroys astrocytes, collapsing the blood-brain barrier and allowing pathogens into the CNS',
+      'HIV preferentially infects microglia, causing hyperactivation, excessive release of nitric oxide and free radicals, widespread demyelination, and HIV encephalitis',
+      'HIV blocks microglial phagocytosis, allowing pathogen buildup and eventual astrocyte damage',
+      'HIV prevents T cells from crossing the BBB, leaving the CNS without any immune defense'
+    ],
+    ans: 1,
+    explain: '<b>HIV preferentially attacks microglia</b> in the CNS. This causes microglial hyperactivation → excessive release of <b>nitric oxide</b> and <b>free radicals</b> → widespread axonal demyelination → <b>HIV encephalitis</b>. This underlies the cognitive decline and motor deficits seen in advanced HIV infection, even before opportunistic infections appear.'
+  },
+
+  // ── MIXED / COMPARISON ────────────────────────────────────
+  {
+    cat: 'Comparison', color: 'coral',
+    q: 'A patient develops ascending paralysis starting in the legs, with nerve conduction studies showing slowed conduction in peripheral nerves. This follows a recent GI infection. Which glial cell type is most likely affected?',
+    opts: ['Oligodendrocytes', 'Astrocytes', 'Schwann cells', 'Ependymal cells'],
+    ans: 2,
+    explain: 'This is classic <b>Guillain-Barré syndrome</b> — PNS demyelination following an infection. The affected cells are <b>Schwann cells</b>. Key features: peripheral nerve involvement, slowed conduction, post-infectious. Because Schwann cells have a neurolemma, recovery is possible. Oligodendrocytes → MS (CNS demyelination).'
+  },
+  {
+    cat: 'Comparison', color: 'coral',
+    q: 'Which TWO glial cell types are responsible for forming myelin — and in which nervous system compartment does each operate?',
+    opts: [
+      'Astrocytes (CNS) and satellite cells (PNS)',
+      'Microglia (CNS) and ependymal cells (PNS)',
+      'Oligodendrocytes (CNS) and Schwann cells (PNS)',
+      'Oligodendrocytes (PNS) and satellite cells (CNS)'
+    ],
+    ans: 2,
+    explain: '<b>Oligodendrocytes</b> myelinate axons in the <b>CNS</b> (and CN II); <b>Schwann cells</b> myelinate axons in the <b>PNS</b> (spinal nerves, CN III–XII). No other glial cell type produces myelin. This distinction is fundamental to understanding MS (CNS) vs GBS (PNS).'
+  },
+  {
+    cat: 'Comparison', color: 'coral',
+    q: 'Which of the following glial cells is the ONLY one with a myeloid (bone marrow) origin rather than a neuroectodermal origin?',
+    opts: ['Astrocytes', 'Oligodendrocytes', 'Ependymal cells', 'Microglia'],
+    ans: 3,
+    explain: '<b>Microglia</b> are unique — they are the only glial cells derived from <b>bone marrow monocytes</b> (myeloid lineage). All other glial cells (astrocytes, oligodendrocytes, ependymal cells, and Schwann cells) derive from the neuroectoderm. Satellite cells derive from neural crest cells.'
+  }
+];
+
+let current = 0;
+let score = 0;
+let answered = 0;
+let results_log = []; // {q, correct, chosen, correctAns}
+
+function renderQ() {
+  const d = Q[current];
+  const pct = ((current) / Q.length) * 100;
+  document.getElementById('prog-fill').style.width = Math.max(pct, 2) + '%';
+  document.getElementById('prog-count').textContent = (current + 1) + ' / ' + Q.length;
+
+  const letters = ['A', 'B', 'C', 'D'];
+  let optsHTML = d.opts.map((o, i) => `
+    <button class="option" onclick="choose(${i})" data-idx="${i}">
+      <span class="opt-letter">${letters[i]}</span>
+      <span class="opt-text">${o}</span>
+    </button>`).join('');
+
+  const pillClass = {
+    blue: 'pill-blue', teal: 'pill-teal', purple: 'pill-purple',
+    green: 'pill-green', coral: 'pill-coral', red: 'pill-red',
+    amber: 'pill-amber', pink: 'pill-pink'
+  }[d.color] || 'pill-teal';
+
+  document.getElementById('q-area').innerHTML = `
+    <div class="q-card ${d.color}">
+      <div class="q-num">Question ${current + 1} of ${Q.length}</div>
+      <div class="category-pill ${pillClass}">${d.cat}</div>
+      <div class="q-text">${d.q}</div>
+      <div class="options">${optsHTML}</div>
+      <div class="feedback" id="feedback"></div>
+    </div>`;
+
+  document.getElementById('next-btn').style.display = 'none';
+}
+
+function choose(idx) {
+  const d = Q[current];
+  const opts = document.querySelectorAll('.option');
+  opts.forEach(o => o.disabled = true);
+
+  const chosen = opts[idx];
+  const correct = opts[d.ans];
+  const isRight = idx === d.ans;
+
+  if (isRight) {
+    chosen.classList.add('correct');
+    score++;
+  } else {
+    chosen.classList.add('incorrect');
+    correct.classList.add('correct');
+  }
+
+  opts.forEach((o, i) => {
+    if (i !== idx && i !== d.ans) o.classList.add('dimmed');
+  });
+
+  answered++;
+  document.getElementById('live-score').textContent = score;
+  document.getElementById('live-total').textContent = answered;
+
+  results_log.push({
+    q: d.q,
+    cat: d.cat,
+    correct: isRight,
+    chosen: d.opts[idx],
+    correctAns: d.opts[d.ans],
+    explain: d.explain
+  });
+
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback show ' + (isRight ? 'correct-fb' : 'incorrect-fb');
+  fb.innerHTML = `
+    <div class="fb-head">
+      <div class="fb-icon ${isRight ? 'ok' : 'err'}">${isRight ? '✓' : '✗'}</div>
+      ${isRight ? 'Correct!' : 'Not quite'}
+    </div>
+    <div class="fb-body">${d.explain}</div>`;
+
+  const nextBtn = document.getElementById('next-btn');
+  nextBtn.style.display = 'inline-flex';
+  if (current === Q.length - 1) {
+    nextBtn.textContent = 'See results →';
+  } else {
+    nextBtn.textContent = 'Next question →';
+  }
+}
+
+function nextQ() {
+  current++;
+  if (current >= Q.length) {
+    showResults();
+  } else {
+    renderQ();
+  }
+}
+
+function showResults() {
+  document.getElementById('quiz-shell').style.display = 'none';
+  const res = document.getElementById('results');
+  res.classList.add('show');
+
+  const pct = Math.round((score / Q.length) * 100);
+  document.getElementById('res-pct').textContent = pct;
+  document.getElementById('res-correct').textContent = score;
+  document.getElementById('res-wrong').textContent = Q.length - score;
+
+  // Ring animation
+  const circumference = 2 * Math.PI * 66;
+  const offset = circumference - (pct / 100) * circumference;
+  setTimeout(() => {
+    document.getElementById('ring-circle').style.strokeDashoffset = offset;
+    document.getElementById('ring-circle').style.stroke =
+      pct >= 80 ? '#1D9E75' : pct >= 60 ? '#EF9F27' : '#E24B4A';
+  }, 100);
+
+  let msg, sub;
+  if (pct === 100) { msg = 'Perfect score!'; sub = 'Outstanding — you know glial cells inside out.'; }
+  else if (pct >= 85) { msg = 'Excellent work.'; sub = `${score} of ${Q.length} correct. You're in great shape for the exam.`; }
+  else if (pct >= 70) { msg = 'Well done.'; sub = `${score} of ${Q.length} correct. A few gaps to tighten up — check the review below.`; }
+  else if (pct >= 55) { msg = 'Good effort.'; sub = `${score} of ${Q.length} correct. Review the explanations and try again.`; }
+  else { msg = 'Keep studying.'; sub = `${score} of ${Q.length} correct. Go back to the study guide and retry.`; }
+
+  document.getElementById('res-msg').textContent = msg;
+  document.getElementById('res-sub').textContent = sub;
+
+  // Build review
+  const rl = document.getElementById('review-list');
+  rl.innerHTML = results_log.map(r => `
+    <div class="review-item">
+      <div class="review-icon ${r.correct ? 'ok' : 'err'}">${r.correct ? '✓' : '✗'}</div>
+      <div>
+        <div class="review-qtext">${r.q}</div>
+        <div class="review-answer">
+          ${r.correct
+            ? `<b>Your answer:</b> ${r.chosen}`
+            : `<b>Your answer:</b> ${r.chosen} &nbsp;·&nbsp; <b>Correct:</b> ${r.correctAns}`
+          }
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function restartQuiz() {
+  current = 0; score = 0; answered = 0; results_log = [];
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('quiz-shell').style.display = 'block';
+  document.getElementById('live-score').textContent = '0';
+  document.getElementById('live-total').textContent = '0';
+  renderQ();
+}
+
+// Start
+renderQ();
+</script>
+</body>
+</html>
