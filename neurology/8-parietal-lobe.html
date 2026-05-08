@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parietal Lobe — Unit 5 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F9F7F4;
+  --surface: #FFFFFF;
+  --surface-2: #F4F1EC;
+  --border: #E5E0D8;
+  --border-strong: #C8C0B4;
+  --text: #1A1714;
+  --text-muted: #6B6560;
+  --text-faint: #A39D97;
+
+  --teal-bg: #E4F5EE;   --teal-mid: #1D9E75;   --teal-dark: #085041;
+  --purple-bg: #EEEDFE; --purple-mid: #534AB7;  --purple-dark: #3C3489;
+  --coral-bg: #FAECE7;  --coral-mid: #D85A30;   --coral-dark: #712B13;
+  --blue-bg: #E6F1FB;   --blue-mid: #378ADD;    --blue-dark: #0C447C;
+  --amber-bg: #FDF3E3;  --amber-mid: #EF9F27;   --amber-dark: #633806;
+  --green-bg: #EAF3DE;  --green-mid: #639922;   --green-dark: #27500A;
+  --red-bg: #FCEBEB;    --red-mid: #E24B4A;     --red-dark: #791F1F;
+  --pink-bg: #FBEAF0;   --pink-mid: #D4537E;    --pink-dark: #72243E;
+
+  --accent: #1D9E75;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.page { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+/* ── Header ── */
+.header { padding: 56px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+.header-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.dot-accent { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+.eyebrow-text { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+.header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(32px, 5vw, 52px); line-height: 1.1; font-weight: 400; margin-bottom: 14px; }
+.header h1 em { font-style: italic; color: var(--accent); }
+.header-sub { font-size: 15px; color: var(--text-muted); max-width: 580px; line-height: 1.7; }
+
+/* ── Quick-jump chips ── */
+.quicknav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
+.qchip {
+  font-size: 12px; font-weight: 500; padding: 5px 13px;
+  border-radius: 99px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text-muted);
+  cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+}
+.qchip:hover { background: var(--surface-2); color: var(--text); border-color: var(--border-strong); }
+
+/* ── Collapsible regions ── */
+.region { margin-bottom: 20px; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+
+.region-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 22px; cursor: pointer; user-select: none;
+  transition: filter 0.15s;
+}
+.region-header:hover { filter: brightness(0.97); }
+
+.region-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 500;
+  padding: 3px 9px; border-radius: 99px; flex-shrink: 0; letter-spacing: 0.04em;
+}
+
+.region-title { font-family: 'DM Serif Display', serif; font-size: 19px; font-weight: 400; flex: 1; line-height: 1.2; }
+.region-sub   { font-size: 12px; margin-top: 2px; opacity: 0.75; }
+
+.chevron-icon { margin-left: auto; flex-shrink: 0; transition: transform 0.25s; color: var(--text-faint); }
+.chevron-icon.open { transform: rotate(180deg); }
+
+/* header colour themes */
+.rh-teal   { background: var(--teal-bg); }
+.rh-blue   { background: var(--blue-bg); }
+.rh-purple { background: var(--purple-bg); }
+.rh-amber  { background: var(--amber-bg); }
+.rh-green  { background: var(--green-bg); }
+.rh-coral  { background: var(--coral-bg); }
+.rh-pink   { background: var(--pink-bg); }
+.rh-red    { background: var(--red-bg); }
+
+.rb-teal   { background: var(--teal-bg);   color: var(--teal-dark); }
+.rb-blue   { background: var(--blue-bg);   color: var(--blue-dark); }
+.rb-purple { background: var(--purple-bg); color: var(--purple-dark); }
+.rb-amber  { background: var(--amber-bg);  color: var(--amber-dark); }
+.rb-green  { background: var(--green-bg);  color: var(--green-dark); }
+.rb-coral  { background: var(--coral-bg);  color: var(--coral-dark); }
+.rb-pink   { background: var(--pink-bg);   color: var(--pink-dark); }
+.rb-red    { background: var(--red-bg);    color: var(--red-dark); }
+
+.rt-teal   { color: var(--teal-dark); }
+.rt-blue   { color: var(--blue-dark); }
+.rt-purple { color: var(--purple-dark); }
+.rt-amber  { color: var(--amber-dark); }
+.rt-green  { color: var(--green-dark); }
+.rt-coral  { color: var(--coral-dark); }
+.rt-pink   { color: var(--pink-dark); }
+.rt-red    { color: var(--red-dark); }
+
+.region-body { display: none; padding: 24px; background: var(--surface); border-top: 1px solid var(--border); }
+.region-body.open { display: block; animation: fadeIn 0.18s ease; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+
+/* ── Section label ── */
+.s-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); margin: 0 0 12px; }
+.mt  { margin-top: 22px; }
+.mt2 { margin-top: 14px; }
+
+/* ── Fact list ── */
+.facts { list-style: none; margin-bottom: 4px; }
+.facts li {
+  font-size: 13.5px; color: var(--text-muted); line-height: 1.65;
+  padding: 6px 0 6px 16px; border-left: 1.5px solid var(--border);
+  margin-bottom: 4px; position: relative;
+}
+.facts li::before { content: ''; position: absolute; left: -4px; top: 13px; width: 6px; height: 6px; border-radius: 50%; background: var(--border-strong); }
+.facts li b  { color: var(--text); font-weight: 600; }
+.facts li em { font-style: italic; }
+
+/* ── Grids ── */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+@media (max-width: 580px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+/* ── Mini card ── */
+.mini-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.mini-card-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 6px; }
+.mini-card-val   { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+.mini-card-val b { color: var(--text); font-weight: 600; }
+
+/* ── Inner cards ── */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 14px; position: relative; overflow: hidden; }
+.card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
+.card.blue::before   { background: var(--blue-mid); }
+.card.teal::before   { background: var(--teal-mid); }
+.card.purple::before { background: var(--purple-mid); }
+.card.coral::before  { background: var(--coral-mid); }
+.card.amber::before  { background: var(--amber-mid); }
+.card.green::before  { background: var(--green-mid); }
+.card.pink::before   { background: var(--pink-mid); }
+.card.none::before   { display: none; }
+.card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.card h2 { font-family: 'DM Serif Display', serif; font-size: 16px; font-weight: 400; color: var(--text); line-height: 1.3; margin-bottom: 12px; }
+.card-head h2 { margin-bottom: 0; }
+
+/* ── Badges ── */
+.zone-badge { display: inline-flex; align-items: center; font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; white-space: nowrap; flex-shrink: 0; }
+.badge-blue   { background: var(--blue-bg);   color: var(--blue-dark); }
+.badge-teal   { background: var(--teal-bg);   color: var(--teal-dark); }
+.badge-purple { background: var(--purple-bg); color: var(--purple-dark); }
+.badge-coral  { background: var(--coral-bg);  color: var(--coral-dark); }
+.badge-amber  { background: var(--amber-bg);  color: var(--amber-dark); }
+.badge-green  { background: var(--green-bg);  color: var(--green-dark); }
+.badge-pink   { background: var(--pink-bg);   color: var(--pink-dark); }
+.badge-red    { background: var(--red-bg);    color: var(--red-dark); }
+
+/* ── Pills ── */
+.pill { display: inline-flex; align-items: center; font-size: 11.5px; font-weight: 500; padding: 3px 10px; border-radius: 99px; margin: 3px 4px 3px 0; }
+.pill-blue   { background: var(--blue-bg);   color: var(--blue-dark); }
+.pill-purple { background: var(--purple-bg); color: var(--purple-dark); }
+.pill-coral  { background: var(--coral-bg);  color: var(--coral-dark); }
+.pill-teal   { background: var(--teal-bg);   color: var(--teal-dark); }
+.pill-green  { background: var(--green-bg);  color: var(--green-dark); }
+.pill-amber  { background: var(--amber-bg);  color: var(--amber-dark); }
+.pill-pink   { background: var(--pink-bg);   color: var(--pink-dark); }
+
+/* ── Pathway flow ── */
+.pathway { display: flex; flex-direction: column; gap: 0; margin: 10px 0 14px; }
+.pathway-step {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 9px 14px; background: var(--surface-2);
+  border-left: 2px solid var(--border);
+  font-size: 13px; color: var(--text-muted); line-height: 1.55;
+}
+.pathway-step:first-child { border-radius: 8px 8px 0 0; }
+.pathway-step:last-child  { border-radius: 0 0 8px 8px; }
+.pathway-step b  { color: var(--text); font-weight: 600; }
+.step-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; color: var(--text-faint); flex-shrink: 0; margin-top: 2px; min-width: 18px; }
+
+/* ── Clinical / pearl boxes ── */
+.clinical {
+  background: var(--red-bg); border: 1px solid #F5BEBE;
+  border-left: 3px solid var(--red-mid);
+  border-radius: 0 10px 10px 0; padding: 14px 16px; margin-top: 16px;
+}
+.clinical-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.clinical-icon { width: 18px; height: 18px; border-radius: 50%; background: var(--red-mid); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.clinical-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #A32D2D; }
+.clinical p   { font-size: 13px; color: var(--red-dark); line-height: 1.65; }
+.clinical p+p { margin-top: 8px; }
+.clinical b   { color: #4A0E0E; font-weight: 600; }
+
+.pearl { background: var(--amber-bg); border: 1px solid #F5C56A; border-radius: 10px; padding: 14px 16px; margin-top: 14px; }
+.pearl-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.pearl-icon { width: 18px; height: 18px; border-radius: 50%; background: var(--amber-mid); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.pearl-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #854F0B; }
+.pearl p   { font-size: 13px; color: var(--amber-dark); line-height: 1.65; }
+.pearl p+p { margin-top: 8px; }
+.pearl b   { color: #412402; font-weight: 600; }
+
+/* ── Insight strip ── */
+.insight { background: var(--surface-2); border-left: 3px solid var(--purple-mid); border-radius: 0 8px 8px 0; padding: 12px 16px; margin-top: 14px; font-size: 13px; color: var(--text-muted); line-height: 1.65; }
+.insight b { color: var(--text); font-weight: 600; }
+.insight.teal  { border-left-color: var(--teal-mid); }
+.insight.blue  { border-left-color: var(--blue-mid); }
+.insight.green { border-left-color: var(--green-mid); }
+.insight.amber { border-left-color: var(--amber-mid); }
+.insight.coral { border-left-color: var(--coral-mid); }
+
+/* ── Homunculus bar ── */
+.homunc-bar { display: flex; align-items: stretch; height: 32px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); margin: 12px 0 4px; font-size: 9.5px; font-weight: 600; }
+.hb-seg { display: flex; align-items: center; justify-content: center; white-space: nowrap; padding: 0 4px; }
+
+/* ── Clinical exam table ── */
+.exam-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 4px; }
+.exam-table th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); padding: 7px 12px 9px; border-bottom: 1px solid var(--border); }
+.exam-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-muted); vertical-align: top; line-height: 1.5; font-size: 13px; }
+.exam-table td:first-child { font-weight: 600; color: var(--text); width: 18%; }
+.exam-table tr:last-child td { border-bottom: none; }
+.exam-table .term-mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--pink-dark); display: block; margin-bottom: 2px; }
+.exam-table .term-neg  { font-size: 11px; color: var(--text-faint); font-style: italic; }
+
+/* ── Multi-modal flow ── */
+.modal-flow { display: grid; grid-template-columns: 1fr 1fr 1fr 16px 1fr; align-items: center; gap: 10px; margin: 16px 0; }
+.modal-node { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; text-align: center; }
+.modal-label { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 4px; }
+.modal-name  { font-size: 13px; font-weight: 600; color: var(--text); }
+.modal-src   { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.modal-arrow { color: var(--text-faint); font-size: 20px; text-align: center; }
+@media (max-width: 620px) { .modal-flow { grid-template-columns: 1fr; } .modal-arrow { transform: rotate(90deg); } }
+
+/* ── Divider ── */
+.divider { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+
+/* ── Footer ── */
+.footer { text-align: center; padding: 40px 0 0; font-size: 12px; color: var(--text-faint); border-top: 1px solid var(--border); margin-top: 60px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <div class="header-eyebrow">
+      <div class="dot-accent"></div>
+      <span class="eyebrow-text">Neuroscience · Unit 5</span>
+    </div>
+    <h1>Parietal<br><em>Lobe</em></h1>
+    <p class="header-sub">Boundaries, somatosensory processing, the sensory homunculus, higher-order sensory analysis, clinical exam findings, and multi-modal integration.</p>
+  </header>
+
+  <!-- ── Quick-jump chips ── -->
+  <nav aria-label="Quick jump" class="quicknav">
+    <button class="qchip" onclick="openRegion('boundaries')">Boundaries</button>
+    <button class="qchip" onclick="openRegion('areas')">Functional Areas</button>
+    <button class="qchip" onclick="openRegion('primary')">Primary Somatosensory</button>
+    <button class="qchip" onclick="openRegion('homunculus')">Sensory Homunculus</button>
+    <button class="qchip" onclick="openRegion('association')">Association Cortex</button>
+    <button class="qchip" onclick="openRegion('clinical')">Clinical Exam</button>
+    <button class="qchip" onclick="openRegion('posterior')">Posterior Association Area</button>
+  </nav>
+
+
+  <!-- ══════════════ BOUNDARIES ══════════════ -->
+  <div class="region" id="reg-boundaries">
+    <div class="region-header rh-teal" onclick="toggle('boundaries')">
+      <span class="region-badge rb-teal">Section 01</span>
+      <div>
+        <div class="region-title rt-teal">Boundaries &amp; Sulci</div>
+        <div class="region-sub rt-teal">Three defining anatomical borders</div>
+      </div>
+      <svg class="chevron-icon" id="chev-boundaries" width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="region-body" id="body-boundaries">
+
+      <!-- Brain diagram — lateral view, parietal highlighted -->
+      <div style="margin-bottom:22px;">
+        <svg viewBox="0 0 680 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);" aria-label="Lateral brain view highlighting the parietal lobe and its three boundaries">
+
+          <!-- Whole brain outline -->
+          <path d="M75,165 C55,165 36,144 34,118 C32,92 46,66 66,50 C88,33 115,27 142,25 C172,22 212,30 244,38 C278,47 318,62 350,68 C382,74 415,72 442,77 C468,82 492,96 507,114 C522,132 524,156 515,165 Z" fill="#F0EDE8" stroke="var(--border-strong)" stroke-width="1.5"/>
+
+          <!-- Parietal lobe shading -->
+          <path d="M310,32 C330,38 360,52 380,60 C398,67 415,70 430,74 C448,79 470,90 490,107 C495,112 500,118 505,125 C500,135 490,148 478,157 C460,165 440,165 420,163 C395,160 368,155 345,148 C320,140 300,130 288,120 C276,110 270,97 268,83 C268,65 278,45 295,35 Z" fill="#E4F5EE" opacity="0.75"/>
+
+          <!-- Central sulcus -->
+          <path d="M310,30 C314,55 312,80 306,106 C300,132 290,152 285,167" stroke="#1D9E75" stroke-width="2" stroke-dasharray="5,3" fill="none"/>
+
+          <!-- Lateral sulcus -->
+          <path d="M148,148 C185,138 228,130 268,128 C295,126 310,130 335,136 C355,141 375,148 395,153" stroke="#534AB7" stroke-width="2" stroke-dasharray="5,3" fill="none"/>
+
+          <!-- Parieto-occipital sulcus -->
+          <path d="M480,74 C484,93 488,114 490,135 C492,150 490,162 486,168" stroke="#D85A30" stroke-width="2" stroke-dasharray="5,3" fill="none"/>
+
+          <!-- Lobe labels -->
+          <text x="150" y="92" font-family="'DM Sans',sans-serif" font-size="13" fill="var(--text-muted)">Frontal</text>
+          <text x="348" y="90" font-family="'DM Serif Display',serif" font-size="14" fill="var(--teal-dark)">Parietal Lobe</text>
+          <text x="506" y="108" font-family="'DM Sans',sans-serif" font-size="12" fill="var(--text-muted)">Occipital</text>
+          <text x="378" y="170" font-family="'DM Sans',sans-serif" font-size="12" fill="var(--text-muted)">Temporal</text>
+
+          <!-- Boundary labels with colour coding -->
+          <text x="245" y="22" font-family="'DM Sans',sans-serif" font-size="10" fill="var(--teal-dark)" font-weight="600">Central sulcus</text>
+          <line x1="305" y1="26" x2="316" y2="34" stroke="var(--teal-dark)" stroke-width="1"/>
+
+          <text x="136" y="118" font-family="'DM Sans',sans-serif" font-size="10" fill="var(--purple-dark)" font-weight="600">Lateral sulcus</text>
+          <line x1="217" y1="121" x2="228" y2="128" stroke="var(--purple-dark)" stroke-width="1"/>
+
+          <text x="498" y="68" font-family="'DM Sans',sans-serif" font-size="10" fill="var(--coral-dark)" font-weight="600">Parieto-occipital</text>
+          <text x="498" y="80" font-family="'DM Sans',sans-serif" font-size="10" fill="var(--coral-dark)" font-weight="600">sulcus</text>
+          <line x1="497" y1="83" x2="489" y2="88" stroke="var(--coral-dark)" stroke-width="1"/>
+
+          <!-- Postcentral gyrus marker -->
+          <path d="M278,36 C282,56 282,78 278,100" stroke="var(--blue-mid)" stroke-width="1.5" stroke-dasharray="3,3" fill="none" opacity=".6"/>
+          <text x="214" y="32" font-family="'DM Sans',sans-serif" font-size="9" fill="var(--blue-dark)" font-weight="600">Post-central gyrus (PSC)</text>
+
+          <text x="85" y="196" font-family="'DM Sans',sans-serif" font-size="9" fill="var(--text-faint)">← Anterior</text>
+          <text x="450" y="196" font-family="'DM Sans',sans-serif" font-size="9" fill="var(--text-faint)">Posterior →</text>
+        </svg>
+      </div>
+
+      <div class="grid3">
+        <div class="mini-card" style="border-top: 3px solid var(--teal-mid);">
+          <div class="mini-card-label" style="color:var(--teal-dark);">Anterior boundary</div>
+          <div class="mini-card-val"><b>Central sulcus</b> — separates the parietal lobe from the frontal lobe. Immediately posterior to it lies the post-central gyrus (primary somatosensory cortex).</div>
+        </div>
+        <div class="mini-card" style="border-top: 3px solid var(--purple-mid);">
+          <div class="mini-card-label" style="color:var(--purple-dark);">Inferior boundary</div>
+          <div class="mini-card-val"><b>Lateral sulcus</b> (Sylvian fissure) — separates the parietal lobe from the temporal lobe below.</div>
+        </div>
+        <div class="mini-card" style="border-top: 3px solid var(--coral-mid);">
+          <div class="mini-card-label" style="color:var(--coral-dark);">Posterior boundary</div>
+          <div class="mini-card-val"><b>Parieto-occipital sulcus</b> — separates the parietal lobe from the occipital lobe posteriorly.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ FUNCTIONAL AREAS OVERVIEW ══════════════ -->
+  <div class="region" id="reg-areas">
+    <div class="region-header rh-blue" onclick="toggle('areas')">
+      <span class="region-badge rb-blue">Section 02</span>
+      <div>
+        <div class="region-title rt-blue">Functional Areas Overview</div>
+        <div class="region-sub rt-blue">Three major regions, each with a distinct sensory role</div>
+      </div>
+      <svg class="chevron-icon" id="chev-areas" width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="region-body" id="body-areas">
+
+      <div class="card blue">
+        <div class="card-head">
+          <h2>① Primary Somatosensory Cortex</h2>
+          <span class="zone-badge badge-blue">Areas 3, 1, 2</span>
+        </div>
+        <ul class="facts">
+          <li>Located just <b>posterior to the central sulcus</b> on the <b>post-central gyrus</b></li>
+          <li>Function: <b>conscious awareness</b> of somatic sensations — touch, pain, temperature, vibration, pressure, proprioception</li>
+          <li>Brodmann areas <b>3, 1, 2</b> (often remembered as 1-2-3 in posterior order, but 3 is the primary input zone)</li>
+        </ul>
+      </div>
+
+      <div class="card pink">
+        <div class="card-head">
+          <h2>② Somatosensory Association Cortex</h2>
+          <span class="zone-badge badge-pink">Higher-order</span>
+        </div>
+        <ul class="facts">
+          <li>Located <b>posterior to</b> the primary somatosensory cortex</li>
+          <li>Function: <b>analyzes, recognizes, and stores</b> somatic sensations in memory</li>
+          <li>Gives <em>meaning</em> to what we feel — object identity, texture, shape, weight</li>
+        </ul>
+      </div>
+
+      <div class="card coral">
+        <div class="card-head">
+          <h2>③ Posterior Association Area</h2>
+          <span class="zone-badge badge-coral">Multi-modal</span>
+        </div>
+        <ul class="facts">
+          <li>Spans parts of the <b>parietal, occipital, and temporal lobes</b> (parieto-occipito-temporal cortex)</li>
+          <li>Function: <b>multi-modal integration</b> — combines visual, auditory, and somatic sensations</li>
+          <li>Essential for <b>spatial coordination</b> and making coherent sense of the environment</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ PRIMARY SOMATOSENSORY CORTEX ══════════════ -->
+  <div class="region" id="reg-primary">
+    <div class="region-header rh-green" onclick="toggle('primary')">
+      <span class="region-badge rb-green">Section 03</span>
+      <div>
+        <div class="region-title rt-green">Primary Somatosensory Cortex</div>
+        <div class="region-sub rt-green">Post-central gyrus · Brodmann Areas 3, 1, 2</div>
+      </div>
+      <svg class="chevron-icon" id="chev-primary" width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="region-body" id="body-primary">
+
+      <p class="s-label">Two ascending input pathways</p>
+      <div class="grid2" style="margin-bottom:16px;">
+        <div class="card teal" style="margin-bottom:0;">
+          <div class="card-head">
+            <h2>Dorsal column–medial lemniscus (DCML)</h2>
+            <span class="zone-badge badge-teal">Discriminative</span>
+          </div>
+          <div>
+            <span class="pill pill-teal">Fine / discriminative touch</span>
+            <span class="pill pill-teal">Proprioception</span>
+            <span class="pill pill-teal">Vibration</span>
+            <span class="pill pill-teal">Kinesthesia</span>
+          </div>
+          <div class="insight teal" style="margin-top:12px;">
+            <b>Route:</b> Peripheral receptor → dorsal column → nucleus gracilis/cuneatus (medulla) → decussates → medial lemniscus → thalamus (VPL) → primary somatosensory cortex
+          </div>
+        </div>
+        <div class="card purple" style="margin-bottom:0;">
+          <div class="card-head">
+            <h2>Spinothalamic tract (STT)</h2>
+            <span class="zone-badge badge-purple">Protective</span>
+          </div>
+          <div>
+            <span class="pill pill-purple">Pain</span>
+            <span class="pill pill-purple">Temperature</span>
+            <span class="pill pill-purple">Crude touch</span>
+            <span class="pill pill-purple">Pressure</span>
+          </div>
+          <div class="insight" style="margin-top:12px;">
+            <b>Route:</b> Peripheral receptor → dorsal horn (spinal cord) → decussates immediately → anterolateral column → thalamus (VPL) → primary somatosensory cortex
+          </div>
+        </div>
+      </div>
+
+      <div class="pearl">
+        <div class="pearl-head">
+          <div class="pearl-icon">!</div>
+          <span class="pearl-label">Key rule — contralateral processing</span>
+        </div>
+        <p>Both the DCML and STT <b>decussate (cross) before reaching the cortex</b>. Sensations from the <b>right</b> body → <b>left</b> primary somatosensory cortex, and vice versa. They differ only in <em>where</em> they cross: DCML crosses in the medulla; STT crosses at the spinal cord level of entry.</p>
+      </div>
+
+      <div class="card none mt">
+        <div class="card-head">
+          <h2>Motor contribution — an often-overlooked fact</h2>
+          <span class="zone-badge badge-green">~40% of CST</span>
+        </div>
+        <ul class="facts">
+          <li>The primary somatosensory cortex is <em>not</em> purely sensory — it contributes approximately <b>40%</b> of the fibers in the corticospinal and corticobulbar tracts</li>
+          <li>This makes it a significant participant in motor function alongside the frontal motor areas</li>
+          <li>Damage here causes both sensory deficits <em>and</em> motor weakness</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ SENSORY HOMUNCULUS ══════════════ -->
+  <div class="region" id="reg-homunculus">
+    <div class="region-header rh-amber" onclick="toggle('homunculus')">
+      <span class="region-badge rb-amber">Section 04</span>
+      <div>
+        <div class="region-title rt-amber">Somatotopic Arrangement &amp; Sensory Homunculus</div>
+        <div class="region-sub rt-amber">Body map on the post-central gyrus</div>
+      </div>
+      <svg class="chevron-icon" id="chev-homunculus" width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="region-body" id="body-homunculus">
+
+      <p style="font-size:13.5px;color:var(--text-muted);line-height:1.65;margin-bottom:16px;">The primary somatosensory cortex is organized <b>somatotopically</b> — different body regions map to distinct cortical zones. This map is called the <b>sensory homunculus</b>. Arrangement mirrors the motor homunculus (Unit 4): medial cortex = lower body; lateral cortex = upper body and head.</p>
+
+      <!-- Homunculus bar -->
+      <div class="homunc-bar">
+        <div class="hb-seg" style="background:#E4F5EE;color:#085041;flex:1.2;">Foot</div>
+        <div class="hb-seg" style="background:#CCF0E2;color:#085041;flex:1.1;">Leg</div>
+        <div class="hb-seg" style="background:#B3E8D4;color:#085041;flex:0.9;">Hip</div>
+        <div class="hb-seg" style="background:#9EDFC6;color:#085041;flex:0.9;">Trunk</div>
+        <div class="hb-seg" style="background:#82D5B5;color:#085041;flex:1.0;">Shoulder</div>
+        <div class="hb-seg" style="background:#65C9A2;color:#085041;flex:1.2;">Arm</div>
+        <div class="hb-seg" style="background:#44BB8E;color:#fff;flex:2.0;">Hand</div>
+        <div class="hb-seg" style="background:#27AE7A;color:#fff;flex:2.5;">Face</div>
+        <div class="hb-seg" style="background:#1D9E75;color:#fff;flex:1.5;">Tongue</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:16px;">
+        <span style="font-size:10px;color:var(--text-faint);">← Medial (superior) — ACA territory</span>
+        <span style="font-size:10px;color:var(--text-faint);">MCA territory — Lateral (inferior) →</span>
+      </div>
+
+      <div class="grid2" style="margin-bottom:16px;">
+        <div class="mini-card" style="border-left:3px solid var(--teal-mid);">
+          <div class="mini-card-label">Medial cortex → ACA territory</div>
+          <div class="mini-card-val">Receives sensations from <b>lower limbs</b> (foot → lower leg → thigh → trunk). ACA occlusion → <b>contralateral lower extremity sensory loss</b>.</div>
+        </div>
+        <div class="mini-card" style="border-left:3px solid var(--blue-mid);">
+          <div class="mini-card-label">Lateral cortex → MCA territory</div>
+          <div class="mini-card-val">Receives sensations from <b>upper limbs and head/neck</b> (arm → hand → face → tongue). MCA occlusion → <b>contralateral upper extremity + face/neck sensory loss</b>.</div>
+        </div>
+      </div>
+
+      <div class="insight amber">
+        <b>Homunculus distortion rule:</b> Body parts like <b>hands and face</b> appear disproportionately large. Larger cortical representation = greater <b>sensory nerve density</b> = higher sensitivity in that region. Fingertips and lips have far more mechanoreceptors per cm² than the back or thigh.
+      </div>
+
+      <div class="clinical" style="margin-top:16px;">
+        <div class="clinical-head">
+          <div class="clinical-icon">Rx</div>
+          <span class="clinical-label">Clinical correlation — Vascular lesions &amp; sensory loss</span>
+        </div>
+        <p><b>ACA occlusion</b> → medial somatosensory cortex → contralateral <b>lower extremity</b> sensory loss (foot, leg). Often accompanied by lower extremity motor weakness (motor homunculus also medial).</p>
+        <p><b>MCA occlusion</b> → lateral somatosensory cortex → contralateral <b>upper extremity + head &amp; neck</b> sensory loss. Often co-occurs with Broca's aphasia and upper extremity weakness.</p>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ SOMATOSENSORY ASSOCIATION CORTEX ══════════════ -->
+  <div class="region" id="reg-association">
+    <div class="region-header rh-pink" onclick="toggle('association')">
+      <span class="region-badge rb-pink">Section 05</span>
+      <div>
+        <div class="region-title rt-pink">Somatosensory Association Cortex</div>
+        <div class="region-sub rt-pink">Analyze · recognize · store somatic sensations</div>
+      </div>
+      <svg class="chevron-icon" id="chev-association" width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="region-body" id="body-association">
+
+      <p class="s-label">Processing hierarchy</p>
+      <div class="pathway" style="margin-bottom:20px;">
+        <div class="pathway-step">
+          <span class="step-num">①</span>
+          <span><b>Peripheral receptors</b> — mechanoreceptors, nociceptors, thermoreceptors in skin, muscle, joints</span>
+        </div>
+        <div class="pathway-step">
+          <span class="step-num">②</span>
+          <span><b>DCML / STT</b> → thalamus (VPL nucleus) → <b>primary somatosensory cortex</b> — conscious perception is generated here</span>
+        </div>
+        <div class="pathway-step" style="background:var(--pink-bg);border-left-color:var(--pink-mid);">
+          <span class="step-num" style="color:var(--pink-dark);">③</span>
+          <span style="color:var(--pink-dark);"><b>Somatosensory association cortex</b> — analyze · recognize · store. Gives the sensation <em>meaning</em>.</span>
+        </div>
+      </div>
+
+      <p class="s-label">Three higher-order functions</p>
+      <div class="grid3">
+        <div class="mini-card" style="border-top:3px solid var(--pink-mid);">
+          <div class="mini-card-label" style="color:var(--pink-dark);">Analysis</div>
+          <div class="mini-card-val">Evaluates <b>texture, weight, size, edges</b>, and position in 3D space — the fine details of an object's physical properties.</div>
+        </div>
+        <div class="mini-card" style="border-top:3px solid var(--purple-mid);">
+          <div class="mini-card-label" style="color:var(--purple-dark);">Pattern recognition</div>
+          <div class="mini-card-val">Compares incoming sensations against <b>stored memories</b> to <em>identify objects</em> (e.g., feeling a key vs. a coin with eyes closed).</div>
+        </div>
+        <div class="mini-card" style="border-top:3px solid var(--blue-mid);">
+          <div class="mini-card-label" style="color:var(--blue-dark);">Memory storage</div>
+          <div class="mini-card-val">Stores sensory experiences for <b>future reference</b> — builds the library of tactile memories used for recognition.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ CLINICAL EXAM ══════════════ -->
+  <div class="region" id="reg-clinical">
+    <div class="region-header rh-red" onclick="toggle('clinical')">
+      <span class="region-badge rb-red">Section 06</span>
+      <div>
+        <div class="region-title rt-red">Clinical Exam Findings</div>
+        <div class="region-sub rt-red">Neuro exam tests for somatosensory association cortex damage</div>
+      </div>
+      <svg class="chevron-icon" id="chev-clinical" width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="region-body" id="body-clinical">
+
+      <p style="font-size:13.5px;color:var(--text-muted);line-height:1.65;margin-bottom:16px;">Damage to the somatosensory association cortex produces characteristic deficits testable on the neurological exam. These tests all require <b>eyes closed</b> so the patient must rely purely on tactile information.</p>
+
+      <div class="card none" style="padding:0;overflow:hidden;">
+        <table class="exam-table">
+          <thead>
+            <tr>
+              <th>Test</th>
+              <th>Method</th>
+              <th>Clinical term</th>
+              <th>Deficit meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Object ID</td>
+              <td>Place an object (eraser, coin, key) in the patient's hand; eyes closed; ask them to identify it.</td>
+              <td>
+                <span class="term-mono">Stereognosis</span>
+                <span class="term-neg">Inability = astereognosis</span>
+              </td>
+              <td>Cannot identify objects by touch alone — failure of shape/texture pattern recognition.</td>
+            </tr>
+            <tr>
+              <td>Symbol tracing</td>
+              <td>Draw a number or letter on the patient's palm with a fingertip; patient identifies it.</td>
+              <td>
+                <span class="term-mono">Graphesthesia</span>
+                <span class="term-neg">Inability = agraphesthesia</span>
+              </td>
+              <td>Cannot identify symbols traced on skin — loss of fine spatial mapping of touch.</td>
+            </tr>
+            <tr>
+              <td>Finger position</td>
+              <td>Move patient's finger up or down with their eyes closed; patient states the direction.</td>
+              <td>
+                <span class="term-mono">Statognosis</span>
+                <span class="term-neg">Inability = astatognosis</span>
+              </td>
+              <td>Cannot identify body part position — impaired proprioceptive processing.</td>
+            </tr>
+            <tr>
+              <td>Weight discrimination</td>
+              <td>Place different weights sequentially in the patient's hand; patient identifies which is heavier.</td>
+              <td>
+                <span class="term-mono">Barognosis</span>
+                <span class="term-neg">Inability = baragnosis</span>
+              </td>
+              <td>Cannot distinguish weight differences — failure of pressure magnitude comparison.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="insight" style="margin-top:0;">
+        <b>Important distinction:</b> These deficits occur with <em>association cortex</em> damage, not primary cortex damage. If the primary cortex is damaged, the patient loses <em>all</em> sensation in that area. If only the association cortex is damaged, basic sensation is preserved but the patient cannot <em>interpret</em> what they feel.
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ POSTERIOR ASSOCIATION AREA ══════════════ -->
+  <div class="region" id="reg-posterior">
+    <div class="region-header rh-coral" onclick="toggle('posterior')">
+      <span class="region-badge rb-coral">Section 07</span>
+      <div>
+        <div class="region-title rt-coral">Posterior Association Area</div>
+        <div class="region-sub rt-coral">Parieto-occipito-temporal cortex · multi-modal integration</div>
+      </div>
+      <svg class="chevron-icon" id="chev-posterior" width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="region-body" id="body-posterior">
+
+      <p style="font-size:13.5px;color:var(--text-muted);line-height:1.65;margin-bottom:20px;">A <b>multi-modal association area</b> that bridges the parietal, occipital, and temporal lobes. Its core job is to combine all three major sensory streams into a single coherent perception of the world.</p>
+
+      <p class="s-label">Three sensory inputs</p>
+
+      <!-- Multi-modal convergence diagram -->
+      <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;">
+          <div class="mini-card" style="border-top:3px solid var(--blue-mid);text-align:center;">
+            <div class="mini-card-label" style="color:var(--blue-dark);">Visual</div>
+            <div style="font-size:20px;margin:6px 0;">👁</div>
+            <div class="mini-card-val">Visual association cortex → <b>(occipital lobe)</b></div>
+          </div>
+          <div class="mini-card" style="border-top:3px solid var(--purple-mid);text-align:center;">
+            <div class="mini-card-label" style="color:var(--purple-dark);">Auditory</div>
+            <div style="font-size:20px;margin:6px 0;">👂</div>
+            <div class="mini-card-val">Auditory association cortex → <b>(temporal lobe)</b></div>
+          </div>
+          <div class="mini-card" style="border-top:3px solid var(--pink-mid);text-align:center;">
+            <div class="mini-card-label" style="color:var(--pink-dark);">Somatic</div>
+            <div style="font-size:20px;margin:6px 0;">✋</div>
+            <div class="mini-card-val">Somatosensory association cortex → <b>(parietal lobe)</b></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:14px;">
+          <div style="flex:1;height:1.5px;background:var(--border-strong);"></div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-faint);white-space:nowrap;">all three converge</div>
+          <div style="flex:1;height:1.5px;background:var(--border-strong);"></div>
+        </div>
+        <div class="mini-card" style="border:2px solid var(--coral-mid);text-align:center;">
+          <div class="mini-card-label" style="color:var(--coral-dark);">Posterior Association Area</div>
+          <div class="mini-card-val" style="font-size:14px;"><b>Unified spatial perception of the world</b></div>
+        </div>
+      </div>
+
+      <p class="s-label">Two outputs</p>
+      <div class="grid2" style="margin-bottom:20px;">
+        <div class="mini-card" style="border-left:3px solid var(--green-mid);">
+          <div class="mini-card-label" style="color:var(--green-dark);">→ Prefrontal cortex</div>
+          <div class="mini-card-val">Elaboration of thought, executive decision-making, and encoding of multi-sensory events into <b>long-term memory</b>.</div>
+        </div>
+        <div class="mini-card" style="border-left:3px solid var(--blue-mid);">
+          <div class="mini-card-label" style="color:var(--blue-dark);">→ Motor / pre-motor cortex</div>
+          <div class="mini-card-val">Coordinates <b>movement responses</b> based on the integrated sensory picture — turns perception into action.</div>
+        </div>
+      </div>
+
+      <p class="s-label">Worked example — HCl beaker scenario</p>
+      <div class="card coral">
+        <div class="card-head">
+          <h2>Dropping a beaker of hydrochloric acid</h2>
+          <span class="zone-badge badge-coral">Multi-modal</span>
+        </div>
+        <div class="pathway">
+          <div class="pathway-step">
+            <span class="step-num">①</span>
+            <span><b>Somatic signal</b> — acid contact on foot → nociceptors → STT → somatosensory cortex → posterior association area</span>
+          </div>
+          <div class="pathway-step">
+            <span class="step-num">②</span>
+            <span><b>Auditory signal</b> — crash sound → cochlea → auditory cortex (temporal) → posterior association area</span>
+          </div>
+          <div class="pathway-step">
+            <span class="step-num">③</span>
+            <span><b>Visual signal</b> — seeing it happen → retina → visual cortex (occipital) → posterior association area</span>
+          </div>
+          <div class="pathway-step" style="background:var(--coral-bg);border-left-color:var(--coral-mid);">
+            <span class="step-num" style="color:var(--coral-dark);">④</span>
+            <span style="color:var(--coral-dark);">All three converge → <b>prefrontal cortex</b> (decision-making, memory formation) → <b>motor cortex</b> (escape response)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="insight coral" style="margin-top:14px;">
+        <b>Primary function summary:</b> Spatial coordination and the integration of multi-modal sensory experience into coherent perception — the neurological basis for making sense of the environment using all senses simultaneously.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Brodmann quick reference ── -->
+  <div style="margin-top:32px;">
+    <p class="s-label">Brodmann area quick reference</p>
+    <div class="grid3">
+      <div class="mini-card" style="text-align:center;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:500;color:var(--blue-dark);margin-bottom:4px;">3, 1, 2</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);">Primary Somatosensory</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Post-central gyrus</div>
+      </div>
+      <div class="mini-card" style="text-align:center;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:500;color:var(--pink-dark);margin-bottom:4px;">5, 7</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);">Somatosensory Assoc.</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Superior parietal lobule</div>
+      </div>
+      <div class="mini-card" style="text-align:center;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:500;color:var(--coral-dark);margin-bottom:4px;">39, 40</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);">Posterior Assoc. Area</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Angular &amp; supramarginal gyri</div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Neuroscience Study Guide &nbsp;·&nbsp; Unit 5: Parietal Lobe</p>
+    <p style="margin-top:6px;">For study purposes only. Always verify with primary course materials.</p>
+  </footer>
+
+</div>
+
+<script>
+function toggle(id) {
+  const body = document.getElementById('body-' + id);
+  const chev = document.getElementById('chev-' + id);
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+
+function openRegion(id) {
+  const body = document.getElementById('body-' + id);
+  const chev = document.getElementById('chev-' + id);
+  body.classList.add('open');
+  chev.classList.add('open');
+  setTimeout(() => {
+    document.getElementById('reg-' + id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 60);
+}
+
+// Open first region by default
+openRegion('boundaries');
+</script>
+</body>
+</html>
