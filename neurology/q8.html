@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parietal Lobe — Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f13;
+    --surface: #16161d;
+    --surface2: #1e1e28;
+    --border: #2a2a38;
+    --text: #e8e4d8;
+    --muted: #8a8478;
+    --accent-blue: #6ab0f5;
+    --accent-pink: #f07fa4;
+    --accent-red: #e05a5a;
+    --accent-green: #6bcb8b;
+    --accent-gold: #f0c060;
+    --accent-purple: #b07adb;
+    --correct: #6bcb8b;
+    --wrong: #e05a5a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  .wrapper {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 52px 28px 100px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── START SCREEN ── */
+  .start-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-size: 2.6rem;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  h1 em { font-style: italic; color: var(--accent-blue); }
+
+  .subtitle {
+    margin-top: 8px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .topic-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 28px 0 36px;
+  }
+
+  @media (max-width: 560px) { .topic-grid { grid-template-columns: 1fr; } }
+
+  .topic-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-size: 0.88rem;
+  }
+
+  .topic-chip .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 3px;
+    letter-spacing: 0.1em;
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+
+  .stat-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 20px;
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+  }
+
+  .stat-box .val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.5rem;
+    color: var(--accent-gold);
+    display: block;
+  }
+
+  .stat-box .lbl {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-block;
+    padding: 13px 30px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+
+  .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+
+  .btn-primary {
+    background: var(--accent-blue);
+    color: #0a0a10;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .btn-sm {
+    padding: 8px 18px;
+    font-size: 0.72rem;
+  }
+
+  /* ── QUIZ SCREEN ── */
+  .progress-bar-wrap {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 36px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent-blue);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .q-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .q-counter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .q-category {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .q-category.cat-0 { color: var(--accent-green);  border-color: var(--accent-green);  }
+  .q-category.cat-1 { color: var(--accent-blue);   border-color: var(--accent-blue);   }
+  .q-category.cat-2 { color: var(--accent-gold);   border-color: var(--accent-gold);   }
+  .q-category.cat-3 { color: var(--accent-pink);   border-color: var(--accent-pink);   }
+  .q-category.cat-4 { color: var(--accent-purple); border-color: var(--accent-purple); }
+  .q-category.cat-5 { color: var(--accent-red);    border-color: var(--accent-red);    }
+  .q-category.cat-6 { color: #f0a060;              border-color: #f0a060;              }
+
+  .question-text {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 28px;
+    line-height: 1.55;
+  }
+
+  /* MCQ options */
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .option-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 18px;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 1rem;
+    color: var(--text);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transition: border-color 0.15s, background 0.15s;
+    line-height: 1.5;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent-blue);
+    background: var(--surface2);
+  }
+
+  .option-btn .opt-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    min-width: 16px;
+    padding-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: rgba(107,203,139,0.08);
+  }
+
+  .option-btn.correct .opt-label { color: var(--correct); }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: rgba(224,90,90,0.08);
+  }
+
+  .option-btn.wrong .opt-label { color: var(--wrong); }
+
+  .option-btn:disabled { cursor: default; }
+
+  /* True/False */
+  .tf-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .tf-btn {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text);
+    transition: border-color 0.15s, background 0.15s;
+    text-align: center;
+  }
+
+  .tf-btn:hover:not(:disabled) {
+    border-color: var(--accent-blue);
+    background: var(--surface2);
+  }
+
+  .tf-btn.correct { border-color: var(--correct); background: rgba(107,203,139,0.1); color: var(--correct); }
+  .tf-btn.wrong   { border-color: var(--wrong);   background: rgba(224,90,90,0.1);   color: var(--wrong);   }
+  .tf-btn:disabled { cursor: default; }
+
+  /* Fill-in-the-blank */
+  .fill-wrap {
+    margin-bottom: 24px;
+  }
+
+  .fill-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 18px;
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 1.05rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .fill-input:focus { border-color: var(--accent-blue); }
+  .fill-input.correct { border-color: var(--correct); background: rgba(107,203,139,0.08); }
+  .fill-input.wrong   { border-color: var(--wrong);   background: rgba(224,90,90,0.08);   }
+  .fill-input:disabled { cursor: default; }
+
+  /* Feedback */
+  .feedback-box {
+    background: var(--surface2);
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    display: none;
+    border-left: 3px solid var(--border);
+    line-height: 1.6;
+  }
+
+  .feedback-box.show { display: block; }
+  .feedback-box.correct-fb { border-left-color: var(--correct); }
+  .feedback-box.wrong-fb   { border-left-color: var(--wrong); }
+
+  .feedback-box .fb-verdict {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+
+  .feedback-box.correct-fb .fb-verdict { color: var(--correct); }
+  .feedback-box.wrong-fb   .fb-verdict { color: var(--wrong); }
+
+  .q-nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  /* ── RESULTS SCREEN ── */
+  .results-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+  }
+
+  .big-score {
+    font-size: 5rem;
+    font-weight: 300;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin: 12px 0 4px;
+  }
+
+  .score-label {
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 24px;
+  }
+
+  .grade-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 3px;
+    border: 1px solid;
+    margin-bottom: 20px;
+  }
+
+  .results-breakdown {
+    margin: 28px 0;
+  }
+
+  .breakdown-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .breakdown-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+  }
+
+  .breakdown-row .cat-name {
+    min-width: 200px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .breakdown-bar-bg {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .breakdown-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.6s ease;
+  }
+
+  .breakdown-score-txt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  .results-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+
+  /* Review list */
+  .review-list { margin-top: 36px; }
+
+  .review-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    font-size: 0.93rem;
+  }
+
+  .review-item.r-correct { border-left: 3px solid var(--correct); }
+  .review-item.r-wrong   { border-left: 3px solid var(--wrong); }
+
+  .review-q {
+    font-size: 0.97rem;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  .review-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .review-answer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    margin-top: 4px;
+  }
+
+  .review-answer .lbl { color: var(--muted); }
+  .review-answer .val-correct { color: var(--correct); }
+  .review-answer .val-wrong   { color: var(--wrong); }
+
+  .review-toggle {
+    background: none;
+    border: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent-blue);
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0;
+    margin-bottom: 14px;
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .anim-in { animation: fadeIn 0.3s ease both; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- ════════════ START SCREEN ════════════ -->
+  <div id="screen-start" class="screen active">
+    <div class="start-header">
+      <div class="eyebrow">Neuroscience · Cerebral Cortex</div>
+      <h1>Parietal Lobe<br><em>Quiz</em></h1>
+      <p class="subtitle">35 questions across 7 topic categories</p>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box"><span class="val">35</span><span class="lbl">Questions</span></div>
+      <div class="stat-box"><span class="val">7</span><span class="lbl">Categories</span></div>
+      <div class="stat-box"><span class="val">MCQ + T/F</span><span class="lbl">Formats</span></div>
+    </div>
+
+    <div class="topic-grid">
+      <div class="topic-chip"><span class="num">01</span>Boundaries & Sulci</div>
+      <div class="topic-chip"><span class="num">02</span>Functional Areas Overview</div>
+      <div class="topic-chip"><span class="num">03</span>Primary Somatosensory Cortex</div>
+      <div class="topic-chip"><span class="num">04</span>Somatotopic Arrangement</div>
+      <div class="topic-chip"><span class="num">05</span>Somatosensory Association Cortex</div>
+      <div class="topic-chip"><span class="num">06</span>Clinical Exam Findings</div>
+      <div class="topic-chip"><span class="num">07</span>Posterior Association Area</div>
+    </div>
+
+    <button class="btn btn-primary" onclick="startQuiz()">Begin Quiz →</button>
+  </div>
+
+  <!-- ════════════ QUIZ SCREEN ════════════ -->
+  <div id="screen-quiz" class="screen">
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-fill"></div>
+    </div>
+
+    <div class="q-meta">
+      <span class="q-counter" id="q-counter">Question 1 of 35</span>
+      <span class="q-category" id="q-category">Category</span>
+    </div>
+
+    <div class="question-text" id="question-text"></div>
+
+    <div id="options-area"></div>
+
+    <div class="feedback-box" id="feedback-box">
+      <div class="fb-verdict" id="fb-verdict"></div>
+      <div id="fb-explanation"></div>
+    </div>
+
+    <div class="q-nav">
+      <button class="btn btn-ghost btn-sm" id="submit-btn" onclick="submitAnswer()">Check Answer</button>
+      <button class="btn btn-primary btn-sm" id="next-btn" onclick="nextQuestion()" style="display:none;">Next →</button>
+    </div>
+  </div>
+
+  <!-- ════════════ RESULTS SCREEN ════════════ -->
+  <div id="screen-results" class="screen">
+    <div class="results-header">
+      <div class="eyebrow">Quiz Complete</div>
+      <div class="big-score" id="result-score">0/35</div>
+      <div class="score-label" id="result-pct"></div>
+      <div class="grade-badge" id="grade-badge"></div>
+    </div>
+
+    <div class="results-breakdown">
+      <div class="breakdown-title">Performance by Category</div>
+      <div id="breakdown-rows"></div>
+    </div>
+
+    <div class="results-actions">
+      <button class="btn btn-primary" onclick="restartQuiz()">Retake Quiz</button>
+      <button class="btn btn-ghost" onclick="toggleReview()">Review Answers</button>
+    </div>
+
+    <div class="review-list" id="review-list" style="display:none;"></div>
+  </div>
+
+</div>
+
+<script>
+const CATEGORIES = [
+  { id: 0, name: "Boundaries & Sulci" },
+  { id: 1, name: "Functional Areas" },
+  { id: 2, name: "Primary Somatosensory" },
+  { id: 3, name: "Somatotopic Arrangement" },
+  { id: 4, name: "Association Cortex" },
+  { id: 5, name: "Clinical Findings" },
+  { id: 6, name: "Posterior Association" },
+];
+
+const CAT_COLORS = [
+  "var(--accent-green)",
+  "var(--accent-blue)",
+  "var(--accent-gold)",
+  "var(--accent-pink)",
+  "var(--accent-purple)",
+  "var(--accent-red)",
+  "#f0a060",
+];
+
+// type: "mcq" | "tf"
+const ALL_QUESTIONS = [
+  // ── CATEGORY 0: Boundaries & Sulci ──
+  {
+    cat: 0,
+    type: "mcq",
+    q: "Which sulcus forms the anterior boundary of the parietal lobe, separating it from the frontal lobe?",
+    options: ["Lateral sulcus", "Central sulcus", "Parieto-occipital sulcus", "Calcarine sulcus"],
+    answer: 1,
+    explanation: "The central sulcus (Rolandic fissure) forms the anterior boundary, separating the parietal lobe (posterior) from the frontal lobe (anterior).",
+  },
+  {
+    cat: 0,
+    type: "mcq",
+    q: "The lateral sulcus (Sylvian fissure) separates the parietal lobe from which other lobe?",
+    options: ["Frontal lobe", "Occipital lobe", "Temporal lobe", "Insular cortex"],
+    answer: 2,
+    explanation: "The lateral sulcus (Sylvian fissure) forms the inferior boundary of the parietal lobe, separating it from the temporal lobe below.",
+  },
+  {
+    cat: 0,
+    type: "mcq",
+    q: "Which sulcus forms the posterior boundary of the parietal lobe?",
+    options: ["Central sulcus", "Lateral sulcus", "Calcarine sulcus", "Parieto-occipital sulcus"],
+    answer: 3,
+    explanation: "The parieto-occipital sulcus forms the posterior boundary, separating the parietal lobe from the occipital lobe.",
+  },
+  {
+    cat: 0,
+    type: "tf",
+    q: "The lateral sulcus (Sylvian fissure) forms the posterior boundary of the parietal lobe.",
+    answer: false,
+    explanation: "False. The lateral sulcus forms the inferior boundary. The posterior boundary is formed by the parieto-occipital sulcus.",
+  },
+  {
+    cat: 0,
+    type: "tf",
+    q: "The central sulcus separates the parietal lobe from the frontal lobe.",
+    answer: true,
+    explanation: "True. The central sulcus is the anterior boundary of the parietal lobe, with the frontal lobe lying anterior to it.",
+  },
+
+  // ── CATEGORY 1: Functional Areas ──
+  {
+    cat: 1,
+    type: "mcq",
+    q: "The primary somatosensory cortex is located on which gyrus?",
+    options: ["Precentral gyrus", "Postcentral gyrus", "Angular gyrus", "Supramarginal gyrus"],
+    answer: 1,
+    explanation: "The primary somatosensory cortex resides on the postcentral gyrus — the gyrus just posterior to the central sulcus.",
+  },
+  {
+    cat: 1,
+    type: "mcq",
+    q: "What are the Brodmann areas assigned to the primary somatosensory cortex?",
+    options: ["4, 6, 8", "1, 2, 3", "17, 18, 19", "41, 42, 22"],
+    answer: 1,
+    explanation: "The primary somatosensory cortex corresponds to Brodmann areas 3, 1, and 2 (often remembered as 3-1-2).",
+  },
+  {
+    cat: 1,
+    type: "mcq",
+    q: "The somatosensory association cortex is located where relative to the primary somatosensory cortex?",
+    options: ["Anterior to it", "Medial to it", "Posterior to it", "Deep within it"],
+    answer: 2,
+    explanation: "The somatosensory association cortex is located just posterior to the primary somatosensory cortex within the parietal lobe.",
+  },
+  {
+    cat: 1,
+    type: "mcq",
+    q: "The posterior association area is unique because it spans how many lobes?",
+    options: ["Only the parietal lobe", "Parietal and occipital only", "Parietal, occipital, and temporal lobes", "All four lobes"],
+    answer: 2,
+    explanation: "The posterior association area (parieto-occipital-temporal cortex) spans parts of the parietal, occipital, and temporal lobes — making it truly multi-regional.",
+  },
+  {
+    cat: 1,
+    type: "tf",
+    q: "The primary somatosensory cortex is located on the precentral gyrus.",
+    answer: false,
+    explanation: "False. The precentral gyrus houses the primary MOTOR cortex. The primary somatosensory cortex is on the postcentral gyrus.",
+  },
+  {
+    cat: 1,
+    type: "tf",
+    q: "The posterior association area is classified as a multi-modal association area because it receives input from visual, auditory, and somatic sensory modalities.",
+    answer: true,
+    explanation: "True. It receives visual input from the occipital lobe, auditory input from the temporal lobe, and somatic sensory input from the parietal lobe.",
+  },
+
+  // ── CATEGORY 2: Primary Somatosensory Cortex ──
+  {
+    cat: 2,
+    type: "mcq",
+    q: "Which sensory pathway carries fine/discriminative touch, proprioception, and vibration to the primary somatosensory cortex?",
+    options: ["Spinothalamic tract", "Dorsal column–medial lemniscus pathway", "Spinocerebellar tract", "Trigeminothalamic tract"],
+    answer: 1,
+    explanation: "The dorsal column–medial lemniscus (DCML) pathway carries fine/discriminative touch, proprioception, vibration, and kinesthesia to the somatosensory cortex.",
+  },
+  {
+    cat: 2,
+    type: "mcq",
+    q: "Which types of sensation are carried by the spinothalamic tract?",
+    options: ["Fine touch, proprioception, vibration", "Pain, temperature, crude touch, and pressure", "Only pain and temperature", "Vibration and proprioception only"],
+    answer: 1,
+    explanation: "The spinothalamic tract carries pain, temperature, crude/light touch, and pressure sensations to the primary somatosensory cortex.",
+  },
+  {
+    cat: 2,
+    type: "mcq",
+    q: "Sensations from the right side of the body are processed in which hemisphere's primary somatosensory cortex?",
+    options: ["Right hemisphere", "Left hemisphere", "Both hemispheres equally", "Ipsilateral to the sensation"],
+    answer: 1,
+    explanation: "Both sensory pathways decussate (cross) before reaching the cortex. Therefore, sensations from the right body side are processed in the LEFT primary somatosensory cortex (contralateral processing).",
+  },
+  {
+    cat: 2,
+    type: "mcq",
+    q: "Approximately what percentage of corticospinal and corticobulbar tract fibers originate from the primary somatosensory cortex?",
+    options: ["10%", "20%", "40%", "60%"],
+    answer: 2,
+    explanation: "Surprisingly, the primary somatosensory cortex contributes approximately 40% of the fibers in the corticospinal and corticobulbar tracts, giving it a significant motor function.",
+  },
+  {
+    cat: 2,
+    type: "tf",
+    q: "The primary somatosensory cortex contributes to motor pathways in addition to its sensory role.",
+    answer: true,
+    explanation: "True. About 40% of corticospinal and corticobulbar tract fibers originate from the primary somatosensory cortex.",
+  },
+  {
+    cat: 2,
+    type: "tf",
+    q: "The spinothalamic tract carries proprioception and vibration sense.",
+    answer: false,
+    explanation: "False. Proprioception and vibration are carried by the dorsal column–medial lemniscus pathway. The spinothalamic tract carries pain, temperature, crude touch, and pressure.",
+  },
+
+  // ── CATEGORY 3: Somatotopic Arrangement ──
+  {
+    cat: 3,
+    type: "mcq",
+    q: "In the sensory homunculus, which body region is represented on the medial portion of the primary somatosensory cortex?",
+    options: ["Upper extremity and face", "Tongue and jaw", "Lower extremity (foot, leg, thigh, trunk)", "Hands and fingers"],
+    answer: 2,
+    explanation: "The medial portion of the primary somatosensory cortex receives sensations from the lower limbs (foot → lower leg → thigh → trunk).",
+  },
+  {
+    cat: 3,
+    type: "mcq",
+    q: "Occlusion of the anterior cerebral artery (ACA) would most likely cause contralateral sensory loss in which body region?",
+    options: ["Upper extremity and head/neck", "Face and tongue", "Lower extremity", "All extremities equally"],
+    answer: 2,
+    explanation: "The ACA supplies the medial portion of the primary somatosensory cortex, which represents the lower extremities. ACA occlusion → contralateral lower extremity sensory loss.",
+  },
+  {
+    cat: 3,
+    type: "mcq",
+    q: "Which vessel supplies the lateral portion of the primary somatosensory cortex (upper extremity and head/neck areas)?",
+    options: ["Anterior cerebral artery", "Posterior cerebral artery", "Middle cerebral artery", "Basilar artery"],
+    answer: 2,
+    explanation: "The middle cerebral artery (MCA) supplies the lateral portion of the primary somatosensory cortex, representing the upper extremity, head, and neck.",
+  },
+  {
+    cat: 3,
+    type: "mcq",
+    q: "On the sensory homunculus, the hands and face appear disproportionately large. What does this indicate?",
+    options: ["These areas have fewer sensory nerves", "These areas require more motor control", "These areas have greater sensory nerve density and higher sensitivity", "These areas are less important functionally"],
+    answer: 2,
+    explanation: "Larger representation on the homunculus = greater sensory nerve density = higher sensitivity. The hands and face are among the most touch-sensitive regions of the body.",
+  },
+  {
+    cat: 3,
+    type: "tf",
+    q: "A middle cerebral artery (MCA) occlusion would produce contralateral lower extremity sensory loss.",
+    answer: false,
+    explanation: "False. MCA occlusion affects the lateral somatosensory cortex → contralateral UPPER extremity and head/neck sensory loss. Lower extremity loss results from ACA occlusion.",
+  },
+  {
+    cat: 3,
+    type: "tf",
+    q: "The somatotopic map of the primary somatosensory cortex is called the sensory homunculus.",
+    answer: true,
+    explanation: "True. The 'sensory homunculus' is the distorted map of body regions across the primary somatosensory cortex, organized somatotopically.",
+  },
+
+  // ── CATEGORY 4: Association Cortex ──
+  {
+    cat: 4,
+    type: "mcq",
+    q: "A patient closes their eyes and is asked to identify an object placed in their hand by feel alone. This task primarily tests which cortical area?",
+    options: ["Primary motor cortex", "Primary visual cortex", "Somatosensory association cortex", "Primary auditory cortex"],
+    answer: 2,
+    explanation: "Identifying objects by feel (without sight) — stereognosis — depends on the somatosensory association cortex to analyze texture, size, weight, and shape of the object.",
+  },
+  {
+    cat: 4,
+    type: "mcq",
+    q: "Which THREE functions does the somatosensory association cortex perform with incoming sensory signals?",
+    options: [
+      "Generate pain, suppress temperature, initiate reflexes",
+      "Analyze sensations, recognize patterns, store in memory",
+      "Transmit signals to cerebellum, medulla, and spinal cord",
+      "Produce motor commands, regulate autonomic function, and encode smell",
+    ],
+    answer: 1,
+    explanation: "The somatosensory association cortex analyzes incoming sensations, recognizes patterns (to identify objects), and stores those sensations in memory for future reference.",
+  },
+  {
+    cat: 4,
+    type: "mcq",
+    q: "The somatosensory association cortex receives its main input from where?",
+    options: ["Directly from spinal sensory neurons", "The primary somatosensory cortex", "The prefrontal cortex", "The cerebellum"],
+    answer: 1,
+    explanation: "Sensory signals travel: peripheral receptors → spinal cord pathways → primary somatosensory cortex → somatosensory association cortex for higher-order processing.",
+  },
+  {
+    cat: 4,
+    type: "tf",
+    q: "Damage to the somatosensory association cortex can impair the ability to determine where one's limbs are in three-dimensional space.",
+    answer: true,
+    explanation: "True. Proprioceptive signals also feed into the association cortex; lesions can disrupt 3D body-position awareness in addition to object recognition.",
+  },
+  {
+    cat: 4,
+    type: "tf",
+    q: "The somatosensory association cortex is located anterior to the primary somatosensory cortex.",
+    answer: false,
+    explanation: "False. It is located POSTERIOR to the primary somatosensory cortex.",
+  },
+
+  // ── CATEGORY 5: Clinical Findings ──
+  {
+    cat: 5,
+    type: "mcq",
+    q: "A patient cannot identify a coin placed in their closed hand. What is this deficit called?",
+    options: ["Graphesthesia", "Barognosis", "Astereognosis", "Statognosis"],
+    answer: 2,
+    explanation: "Astereognosis (also called stereognosis when normal) refers to the inability to identify objects by touch alone when visual input is excluded.",
+  },
+  {
+    cat: 5,
+    type: "mcq",
+    q: "A clinician traces the number '8' on a patient's palm. The patient cannot identify the number. What deficit is this?",
+    options: ["Astereognosis", "Agraphesthesia", "Baragnosis", "Proprioceptive loss"],
+    answer: 1,
+    explanation: "Agraphesthesia is the inability to identify symbols, letters, or numbers traced on the skin — testing fine and discriminative touch processed by the somatosensory association cortex.",
+  },
+  {
+    cat: 5,
+    type: "mcq",
+    q: "With eyes closed, a patient cannot tell whether their finger is being moved up or down. What is this condition?",
+    options: ["Astereognosis", "Agraphesthesia", "Baragnosis", "Statognosis (impaired)"],
+    answer: 3,
+    explanation: "Statognosis refers to the sense of body-part position. When the patient cannot identify the direction of finger movement with eyes closed, statognosis is impaired.",
+  },
+  {
+    cat: 5,
+    type: "mcq",
+    q: "A patient cannot tell which of two objects placed in their hands is heavier. What is this deficit?",
+    options: ["Astereognosis", "Agraphesthesia", "Baragnosis", "Statognosis loss"],
+    answer: 2,
+    explanation: "Baragnosis (or barognosis when normal) is the inability to distinguish differences in weight between objects, relying on integrated sensory processing.",
+  },
+  {
+    cat: 5,
+    type: "mcq",
+    q: "In the neurophysical exam, a patient is asked to identify a key placed in their closed hand. Which sensory pathway is most important for this task?",
+    options: ["Spinothalamic tract (pain/temperature)", "Dorsal column–medial lemniscus pathway (fine/discriminative touch)", "Trigeminothalamic tract", "Anterolateral system (crude touch)"],
+    answer: 1,
+    explanation: "Object identification (stereognosis) relies primarily on fine and discriminative touch, which is carried via the dorsal column–medial lemniscus pathway.",
+  },
+  {
+    cat: 5,
+    type: "tf",
+    q: "Testing barognosis involves asking a patient to identify an object by feel alone with their eyes closed.",
+    answer: false,
+    explanation: "False. Barognosis specifically tests weight discrimination — placing objects of different weights in each hand and asking which is heavier. Object identification by touch is stereognosis.",
+  },
+  {
+    cat: 5,
+    type: "tf",
+    q: "Graphesthesia tests the ability to identify symbols traced on the skin, relying on fine and discriminative touch.",
+    answer: true,
+    explanation: "True. Graphesthesia depends on fine/discriminative touch (dorsal column pathway) and processing in the somatosensory association cortex to interpret the traced pattern.",
+  },
+
+  // ── CATEGORY 6: Posterior Association Area ──
+  {
+    cat: 6,
+    type: "mcq",
+    q: "The posterior association area receives input from which THREE sensory modalities?",
+    options: [
+      "Taste, smell, and touch",
+      "Visual, auditory, and somatic sensory",
+      "Proprioception, pain, and temperature only",
+      "Visual, olfactory, and gustatory",
+    ],
+    answer: 1,
+    explanation: "The posterior association area is multi-modal: it receives visual input (occipital), auditory input (temporal), and somatic sensory input (parietal), integrating all three.",
+  },
+  {
+    cat: 6,
+    type: "mcq",
+    q: "After integrating multi-modal sensory information, the posterior association area sends signals to the prefrontal cortex primarily for what purpose?",
+    options: [
+      "Controlling eye movements",
+      "Elaboration of thought, executive function, and memory",
+      "Regulating heart rate and blood pressure",
+      "Coordinating cerebellar output",
+    ],
+    answer: 1,
+    explanation: "The posterior association area communicates with the prefrontal cortex to support executive function, elaboration of thought, and the formation of memories based on integrated sensory experience.",
+  },
+  {
+    cat: 6,
+    type: "mcq",
+    q: "In the HCl beaker example, why does the posterior association area communicate with the motor cortex?",
+    options: [
+      "To generate the sensation of pain from the acid",
+      "To store the memory of the event",
+      "To initiate a movement response — getting out of the way",
+      "To suppress auditory processing of the crash",
+    ],
+    answer: 2,
+    explanation: "The motor/pre-motor cortex receives signals from the posterior association area to coordinate the movement response — moving out of the way when danger is detected.",
+  },
+  {
+    cat: 6,
+    type: "mcq",
+    q: "Which best describes the primary function of the posterior association area?",
+    options: [
+      "Generating conscious awareness of pain",
+      "Spatial coordination through multi-modal sensory integration",
+      "Storing long-term motor memories only",
+      "Processing only auditory signals from the temporal lobe",
+    ],
+    answer: 1,
+    explanation: "The posterior association area's primary function is spatial coordination — achieved by integrating visual, auditory, and somatic sensory information simultaneously.",
+  },
+  {
+    cat: 6,
+    type: "tf",
+    q: "The posterior association area is classified as 'multi-modal' because it processes information from more than one sensory modality.",
+    answer: true,
+    explanation: "True. Multi-modal means multiple sensory modalities (visual, auditory, somatic) all converge and are integrated in this single cortical area.",
+  },
+  {
+    cat: 6,
+    type: "tf",
+    q: "The posterior association area communicates with the prefrontal cortex but NOT with any motor areas.",
+    answer: false,
+    explanation: "False. The posterior association area communicates with BOTH the prefrontal cortex (thought, memory, executive function) AND the motor/pre-motor cortex (movement coordination).",
+  },
+];
+
+// ── State ──
+let questions = [];
+let currentIdx = 0;
+let score = 0;
+let userAnswers = [];
+let selectedOption = null;
+let answered = false;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  questions = shuffle(ALL_QUESTIONS);
+  currentIdx = 0;
+  score = 0;
+  userAnswers = [];
+  showScreen('screen-quiz');
+  renderQuestion();
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function renderQuestion() {
+  answered = false;
+  selectedOption = null;
+
+  const q = questions[currentIdx];
+  const total = questions.length;
+
+  // Progress
+  document.getElementById('progress-fill').style.width = ((currentIdx / total) * 100) + '%';
+  document.getElementById('q-counter').textContent = `Question ${currentIdx + 1} of ${total}`;
+
+  const catEl = document.getElementById('q-category');
+  catEl.textContent = CATEGORIES[q.cat].name;
+  catEl.className = `q-category cat-${q.cat}`;
+
+  document.getElementById('question-text').textContent = q.q;
+
+  const area = document.getElementById('options-area');
+  area.className = 'anim-in';
+
+  if (q.type === 'mcq') {
+    let html = '<div class="options-list">';
+    const labels = ['A', 'B', 'C', 'D'];
+    q.options.forEach((opt, i) => {
+      html += `<button class="option-btn" onclick="selectOption(${i})" id="opt-${i}">
+        <span class="opt-label">${labels[i]}</span>
+        <span>${opt}</span>
+      </button>`;
+    });
+    html += '</div>';
+    area.innerHTML = html;
+  } else {
+    area.innerHTML = `
+      <div class="tf-row">
+        <button class="tf-btn" onclick="selectTF(true)" id="tf-true">True</button>
+        <button class="tf-btn" onclick="selectTF(false)" id="tf-false">False</button>
+      </div>`;
+  }
+
+  const fb = document.getElementById('feedback-box');
+  fb.className = 'feedback-box';
+  fb.style.display = 'none';
+
+  document.getElementById('submit-btn').style.display = 'inline-block';
+  document.getElementById('next-btn').style.display = 'none';
+
+  // Force reflow for animation
+  void area.offsetWidth;
+}
+
+function selectOption(i) {
+  if (answered) return;
+  selectedOption = i;
+  document.querySelectorAll('.option-btn').forEach((b, idx) => {
+    b.style.borderColor = idx === i ? 'var(--accent-blue)' : '';
+    b.style.background = idx === i ? 'var(--surface2)' : '';
+    b.querySelector('.opt-label').style.color = idx === i ? 'var(--accent-blue)' : '';
+  });
+}
+
+function selectTF(val) {
+  if (answered) return;
+  selectedOption = val;
+  const t = document.getElementById('tf-true');
+  const f = document.getElementById('tf-false');
+  if (val) {
+    t.style.borderColor = 'var(--accent-blue)'; t.style.color = 'var(--accent-blue)';
+    f.style.borderColor = ''; f.style.color = '';
+  } else {
+    f.style.borderColor = 'var(--accent-blue)'; f.style.color = 'var(--accent-blue)';
+    t.style.borderColor = ''; t.style.color = '';
+  }
+}
+
+function submitAnswer() {
+  if (selectedOption === null) return;
+  answered = true;
+  const q = questions[currentIdx];
+  const isCorrect = selectedOption === q.answer;
+
+  if (isCorrect) score++;
+
+  userAnswers.push({
+    question: q,
+    userAnswer: selectedOption,
+    correct: isCorrect,
+  });
+
+  // Style options
+  if (q.type === 'mcq') {
+    document.querySelectorAll('.option-btn').forEach((b, idx) => {
+      b.disabled = true;
+      b.style.borderColor = '';
+      b.style.background = '';
+      if (idx === q.answer) b.classList.add('correct');
+      if (idx === selectedOption && !isCorrect) b.classList.add('wrong');
+      b.querySelector('.opt-label').style.color = '';
+    });
+  } else {
+    ['tf-true', 'tf-false'].forEach(id => {
+      const el = document.getElementById(id);
+      el.disabled = true;
+      el.style.borderColor = ''; el.style.color = '';
+    });
+    const correctId = q.answer ? 'tf-true' : 'tf-false';
+    const selectedId = selectedOption ? 'tf-true' : 'tf-false';
+    document.getElementById(correctId).classList.add('correct');
+    if (!isCorrect) document.getElementById(selectedId).classList.add('wrong');
+  }
+
+  // Feedback
+  const fb = document.getElementById('feedback-box');
+  fb.style.display = 'block';
+  fb.className = 'feedback-box show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+  document.getElementById('fb-verdict').textContent = isCorrect ? '✓ Correct' : '✗ Incorrect';
+  document.getElementById('fb-explanation').textContent = q.explanation;
+
+  document.getElementById('submit-btn').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'inline-block';
+  document.getElementById('next-btn').textContent =
+    currentIdx < questions.length - 1 ? 'Next →' : 'See Results →';
+}
+
+function nextQuestion() {
+  currentIdx++;
+  if (currentIdx >= questions.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults() {
+  showScreen('screen-results');
+  const total = questions.length;
+  const pct = Math.round((score / total) * 100);
+
+  document.getElementById('result-score').textContent = `${score}/${total}`;
+  document.getElementById('result-pct').textContent = `${pct}% correct`;
+
+  const badge = document.getElementById('grade-badge');
+  let grade, color;
+  if (pct >= 90) { grade = 'Excellent'; color = 'var(--correct)'; }
+  else if (pct >= 75) { grade = 'Good'; color = 'var(--accent-blue)'; }
+  else if (pct >= 60) { grade = 'Fair — Review Missed Topics'; color = 'var(--accent-gold)'; }
+  else { grade = 'Needs More Study'; color = 'var(--wrong)'; }
+  badge.textContent = grade;
+  badge.style.color = color;
+  badge.style.borderColor = color;
+
+  // Breakdown
+  const rows = document.getElementById('breakdown-rows');
+  rows.innerHTML = '';
+  CATEGORIES.forEach(cat => {
+    const catQs = userAnswers.filter(a => a.question.cat === cat.id);
+    if (catQs.length === 0) return;
+    const catScore = catQs.filter(a => a.correct).length;
+    const catPct = Math.round((catScore / catQs.length) * 100);
+
+    rows.innerHTML += `
+      <div class="breakdown-row">
+        <span class="cat-name">${cat.name}</span>
+        <div class="breakdown-bar-bg">
+          <div class="breakdown-bar-fill" style="width:${catPct}%; background:${CAT_COLORS[cat.id]};"></div>
+        </div>
+        <span class="breakdown-score-txt">${catScore}/${catQs.length}</span>
+      </div>`;
+  });
+}
+
+function restartQuiz() {
+  document.getElementById('review-list').style.display = 'none';
+  startQuiz();
+}
+
+let reviewVisible = false;
+function toggleReview() {
+  reviewVisible = !reviewVisible;
+  const rl = document.getElementById('review-list');
+  if (!reviewVisible) { rl.style.display = 'none'; return; }
+  rl.style.display = 'block';
+  let html = '<div class="breakdown-title" style="margin-bottom:18px;">All Questions</div>';
+  userAnswers.forEach((item, idx) => {
+    const q = item.question;
+    const cls = item.correct ? 'r-correct' : 'r-wrong';
+    let answerHtml = '';
+    if (q.type === 'mcq') {
+      const labels = ['A', 'B', 'C', 'D'];
+      answerHtml = `<div class="review-answer">
+        <span class="lbl">Your answer: </span><span class="${item.correct ? 'val-correct' : 'val-wrong'}">${labels[item.userAnswer]}. ${q.options[item.userAnswer]}</span>
+        ${!item.correct ? `<br><span class="lbl">Correct: </span><span class="val-correct">${labels[q.answer]}. ${q.options[q.answer]}</span>` : ''}
+      </div>`;
+    } else {
+      answerHtml = `<div class="review-answer">
+        <span class="lbl">Your answer: </span><span class="${item.correct ? 'val-correct' : 'val-wrong'}">${item.userAnswer ? 'True' : 'False'}</span>
+        ${!item.correct ? `<br><span class="lbl">Correct: </span><span class="val-correct">${q.answer ? 'True' : 'False'}</span>` : ''}
+      </div>`;
+    }
+    html += `<div class="review-item ${cls}">
+      <div class="review-meta">${CATEGORIES[q.cat].name} · ${q.type.toUpperCase()} · Q${idx + 1}</div>
+      <div class="review-q">${q.q}</div>
+      ${answerHtml}
+      <div class="feedback-box show ${item.correct ? 'correct-fb' : 'wrong-fb'}" style="margin-top:10px; margin-bottom:0;">
+        <div class="fb-verdict" style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;color:${item.correct ? 'var(--correct)' : 'var(--wrong)'};">${item.correct ? '✓ Correct' : '✗ Incorrect'}</div>
+        <div style="font-size:0.88rem;">${q.explanation}</div>
+      </div>
+    </div>`;
+  });
+  rl.innerHTML = html;
+}
+</script>
+</body>
+</html>
