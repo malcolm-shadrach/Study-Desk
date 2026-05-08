@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frontal Lobe Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #141720;
+    --surface2: #1c2030;
+    --border: #252a3a;
+    --accent: #7c9fff;
+    --accent2: #a78bfa;
+    --correct: #34d399;
+    --wrong: #f87171;
+    --warning: #fbbf24;
+    --text: #e8eaf2;
+    --muted: #6b7280;
+    --muted2: #9ca3af;
+    --radius: 14px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,159,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,159,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .glow-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .glow-orb-1 { width: 500px; height: 500px; background: rgba(124,159,255,0.06); top: -100px; right: -100px; }
+  .glow-orb-2 { width: 400px; height: 400px; background: rgba(167,139,250,0.05); bottom: 100px; left: -80px; }
+
+  .container { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 52px; animation: fadeDown 0.6s ease both; }
+  .header-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .header-eyebrow::before, .header-eyebrow::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent));
+  }
+  .header-eyebrow::after { background: linear-gradient(90deg, var(--accent), transparent); }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 6vw, 52px);
+    line-height: 1.1;
+    background: linear-gradient(135deg, #e8eaf2 0%, #7c9fff 50%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 14px;
+  }
+  .header-sub { font-size: 15px; color: var(--muted2); font-weight: 300; line-height: 1.6; }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 36px;
+    animation: fadeDown 0.6s 0.1s ease both;
+  }
+  .stat-pill {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .stat-num { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: var(--accent); }
+  .stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* Progress */
+  .progress-wrap { margin-bottom: 32px; animation: fadeDown 0.6s 0.15s ease both; }
+  .progress-top { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 8px; font-family: 'DM Mono', monospace; }
+  .progress-bar { height: 4px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 99px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
+
+  /* Category label */
+  .cat-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 99px;
+    border: 1px solid;
+    margin-bottom: 20px;
+  }
+  .cat-boundaries { color: #34d399; border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.06); }
+  .cat-pmc       { color: #60a5fa; border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.06); }
+  .cat-mac       { color: #a78bfa; border-color: rgba(167,139,250,0.3); background: rgba(167,139,250,0.06); }
+  .cat-fef       { color: #fbbf24; border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.06); }
+  .cat-pfc       { color: #f472b6; border-color: rgba(244,114,182,0.3); background: rgba(244,114,182,0.06); }
+  .cat-broca     { color: #fb923c; border-color: rgba(251,146,60,0.3); background: rgba(251,146,60,0.06); }
+
+  /* Question card */
+  .question-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-bottom: 20px;
+    animation: fadeUp 0.4s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+  .question-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0.5;
+  }
+  .q-number { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-bottom: 16px; }
+  .q-text { font-size: 18px; font-weight: 400; line-height: 1.55; color: var(--text); }
+  .q-text em { font-family: 'DM Serif Display', serif; font-style: italic; color: var(--accent); }
+
+  /* Options */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 15px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: all 0.18s ease;
+    position: relative;
+    overflow: hidden;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--muted2);
+    text-align: left;
+    width: 100%;
+    font-family: 'Outfit', sans-serif;
+  }
+  .option:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--text);
+    background: rgba(124,159,255,0.06);
+  }
+  .option-key {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    background: var(--border);
+    border-radius: 5px;
+    padding: 2px 7px;
+    color: var(--muted);
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: all 0.18s;
+  }
+  .option:hover:not(:disabled) .option-key { background: var(--accent); color: #fff; }
+  .option.correct {
+    border-color: var(--correct);
+    background: rgba(52,211,153,0.08);
+    color: var(--text);
+    cursor: default;
+  }
+  .option.correct .option-key { background: var(--correct); color: #fff; }
+  .option.wrong {
+    border-color: var(--wrong);
+    background: rgba(248,113,113,0.08);
+    color: var(--text);
+    cursor: default;
+  }
+  .option.wrong .option-key { background: var(--wrong); color: #fff; }
+  .option.dimmed { opacity: 0.4; cursor: default; }
+  .option:disabled { cursor: default; }
+
+  /* Feedback */
+  .feedback {
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 1.65;
+    display: none;
+    animation: fadeUp 0.3s ease both;
+  }
+  .feedback.correct { background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.25); color: #a7f3d0; }
+  .feedback.wrong   { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25); color: #fca5a5; }
+  .feedback-icon { font-size: 16px; margin-bottom: 6px; display: block; }
+  .feedback strong { color: #fff; }
+
+  /* Controls */
+  .controls { display: flex; gap: 12px; margin-top: 20px; }
+  .btn {
+    padding: 13px 28px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    flex: 1;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.35; cursor: default; transform: none; }
+  .btn-skip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted2);
+  }
+  .btn-skip:hover { border-color: var(--muted); color: var(--text); }
+
+  /* Results */
+  .results {
+    display: none;
+    text-align: center;
+    animation: fadeUp 0.6s ease both;
+  }
+  .results-score-ring {
+    width: 160px;
+    height: 160px;
+    margin: 0 auto 32px;
+    position: relative;
+  }
+  .results-score-ring svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: var(--border); stroke-width: 10; }
+  .ring-fill { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1); }
+  .ring-text {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .ring-pct { font-family: 'DM Serif Display', serif; font-size: 40px; line-height: 1; }
+  .ring-label { font-size: 12px; color: var(--muted); margin-top: 4px; font-family: 'DM Mono', monospace; }
+  .results-title { font-family: 'DM Serif Display', serif; font-size: 32px; margin-bottom: 8px; }
+  .results-sub { color: var(--muted2); font-size: 15px; margin-bottom: 40px; }
+  .results-breakdown {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+  .breakdown-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .breakdown-num { font-family: 'DM Mono', monospace; font-size: 28px; font-weight: 500; }
+  .breakdown-num.green { color: var(--correct); }
+  .breakdown-num.red { color: var(--wrong); }
+  .breakdown-num.blue { color: var(--accent); }
+  .breakdown-lbl { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .cat-results { margin-bottom: 36px; text-align: left; }
+  .cat-results-title { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; font-family: 'DM Mono', monospace; margin-bottom: 14px; }
+  .cat-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .cat-row-label { font-size: 13px; color: var(--muted2); width: 200px; flex-shrink: 0; }
+  .cat-row-bar { flex: 1; height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .cat-row-fill { height: 100%; border-radius: 99px; transition: width 0.8s ease; }
+  .cat-row-score { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); width: 40px; text-align: right; }
+  .btn-restart { width: 100%; padding: 16px; font-size: 16px; }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: none; } }
+  @keyframes fadeUp   { from { opacity: 0; transform: translateY(16px);  } to { opacity: 1; transform: none; } }
+
+  /* Screen intro */
+  .intro-screen {
+    text-align: center;
+    padding: 20px 0;
+    animation: fadeUp 0.6s ease both;
+  }
+  .intro-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 36px 0;
+    text-align: left;
+  }
+  .intro-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .intro-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .intro-card-title { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  .intro-card-sub { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .btn-start { font-size: 17px; padding: 16px 48px; width: 100%; justify-content: center; }
+  .quiz-total-note { font-size: 13px; color: var(--muted); margin-top: 12px; }
+</style>
+</head>
+<body>
+<div class="glow-orb glow-orb-1"></div>
+<div class="glow-orb glow-orb-2"></div>
+
+<div class="container">
+  <div class="header">
+    <div class="header-eyebrow">Neuroscience · Cerebral Cortex</div>
+    <h1>Frontal Lobe Mastery Quiz</h1>
+    <p class="header-sub">Test your knowledge across all six functional regions of the frontal lobe</p>
+  </div>
+
+  <!-- INTRO SCREEN -->
+  <div id="intro-screen" class="intro-screen">
+    <div class="intro-grid">
+      <div class="intro-card">
+        <div class="intro-dot" style="background:#34d399"></div>
+        <div>
+          <div class="intro-card-title">Boundaries</div>
+          <div class="intro-card-sub">Central sulcus, lateral sulcus, lobe definitions</div>
+        </div>
+      </div>
+      <div class="intro-card">
+        <div class="intro-dot" style="background:#60a5fa"></div>
+        <div>
+          <div class="intro-card-title">Primary Motor Cortex</div>
+          <div class="intro-card-sub">Tracts, homunculus, Brodmann area 4, stroke correlations</div>
+        </div>
+      </div>
+      <div class="intro-card">
+        <div class="intro-dot" style="background:#a78bfa"></div>
+        <div>
+          <div class="intro-card-title">Motor Association Cortex</div>
+          <div class="intro-card-sub">Pre-motor, supplementary, cerebellum & basal ganglia</div>
+        </div>
+      </div>
+      <div class="intro-card">
+        <div class="intro-dot" style="background:#fbbf24"></div>
+        <div>
+          <div class="intro-card-title">Frontal Eye Fields</div>
+          <div class="intro-card-sub">Saccades, PPRF pathway, gaze deviation lesions</div>
+        </div>
+      </div>
+      <div class="intro-card">
+        <div class="intro-dot" style="background:#f472b6"></div>
+        <div>
+          <div class="intro-card-title">Prefrontal Cortex</div>
+          <div class="intro-card-sub">Working memory, personality, FTD clinical correlations</div>
+        </div>
+      </div>
+      <div class="intro-card">
+        <div class="intro-dot" style="background:#fb923c"></div>
+        <div>
+          <div class="intro-card-title">Broca's Area</div>
+          <div class="intro-card-sub">Speech production, arcuate fasciculus, expressive aphasia</div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-start" onclick="startQuiz()">Begin Quiz →</button>
+    <p class="quiz-total-note">35 questions · Multiple choice · Instant feedback</p>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" style="display:none;">
+    <div class="stats-bar">
+      <div class="stat-pill"><div class="stat-num" id="stat-current">1</div><div class="stat-label">Question</div></div>
+      <div class="stat-pill"><div class="stat-num" id="stat-score">0</div><div class="stat-label">Correct</div></div>
+      <div class="stat-pill"><div class="stat-num" id="stat-streak">0</div><div class="stat-label">Streak</div></div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-top"><span id="prog-label">Question 1 of 35</span><span id="prog-pct">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="cat-label-wrap"></div>
+    <div class="question-card" id="question-card">
+      <div class="q-number" id="q-number"></div>
+      <div class="q-text" id="q-text"></div>
+    </div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="controls">
+      <button class="btn btn-skip" id="btn-skip" onclick="skipQuestion()">Skip</button>
+      <button class="btn btn-primary" id="btn-next" onclick="nextQuestion()" disabled>Next →</button>
+    </div>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div class="results" id="results-screen">
+    <div class="results-score-ring">
+      <svg width="160" height="160" viewBox="0 0 160 160">
+        <circle class="ring-bg" cx="80" cy="80" r="70"/>
+        <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70"
+          stroke="url(#ringGrad)"
+          stroke-dasharray="439.82"
+          stroke-dashoffset="439.82"/>
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#7c9fff"/>
+            <stop offset="100%" stop-color="#a78bfa"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div class="ring-text">
+        <span class="ring-pct" id="ring-pct">—</span>
+        <span class="ring-label">score</span>
+      </div>
+    </div>
+    <div class="results-title" id="results-title"></div>
+    <div class="results-sub" id="results-sub"></div>
+    <div class="results-breakdown">
+      <div class="breakdown-card"><div class="breakdown-num green" id="res-correct">0</div><div class="breakdown-lbl">Correct</div></div>
+      <div class="breakdown-card"><div class="breakdown-num red"   id="res-wrong">0</div><div class="breakdown-lbl">Wrong / Skipped</div></div>
+      <div class="breakdown-card"><div class="breakdown-num blue"  id="res-total">35</div><div class="breakdown-lbl">Total Questions</div></div>
+    </div>
+    <div class="cat-results">
+      <div class="cat-results-title">Performance by Category</div>
+      <div id="cat-breakdown"></div>
+    </div>
+    <button class="btn btn-primary btn-restart" onclick="restartQuiz()">↺ Restart Quiz</button>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+  // ── BOUNDARIES (6) ──────────────────────────────────────────────────────────
+  {
+    cat: 'boundaries', catLabel: 'Boundaries', catClass: 'cat-boundaries',
+    q: 'Which sulcus forms the posterior boundary of the frontal lobe, separating it from the parietal lobe?',
+    opts: ['Lateral sulcus', 'Central sulcus', 'Calcarine sulcus', 'Cingulate sulcus'],
+    ans: 1,
+    exp: '<strong>Central sulcus</strong> (also called the fissure of Rolando) is the key landmark that separates the frontal lobe anteriorly from the parietal lobe posteriorly. The pre-central gyrus (primary motor cortex) lies just anterior to it.'
+  },
+  {
+    cat: 'boundaries', catLabel: 'Boundaries', catClass: 'cat-boundaries',
+    q: 'The lateral sulcus (Sylvian fissure) separates the frontal lobe from which lobe?',
+    opts: ['Parietal lobe', 'Occipital lobe', 'Temporal lobe', 'Insula'],
+    ans: 2,
+    exp: 'The <strong>lateral sulcus</strong> (Sylvian fissure) runs inferiorly and separates the frontal and parietal lobes above from the <strong>temporal lobe</strong> below.'
+  },
+  {
+    cat: 'boundaries', catLabel: 'Boundaries', catClass: 'cat-boundaries',
+    q: 'The pre-central gyrus is the anatomical name for which functional area?',
+    opts: ['Prefrontal cortex', 'Motor association cortex', 'Primary motor cortex', 'Primary somatosensory cortex'],
+    ans: 2,
+    exp: 'The <strong>pre-central gyrus</strong> is the structural/anatomical term, while <strong>primary motor cortex</strong> is the functional term for this same region, located just anterior to the central sulcus.'
+  },
+  {
+    cat: 'boundaries', catLabel: 'Boundaries', catClass: 'cat-boundaries',
+    q: 'Which of the following best describes the position of the frontal eye fields within the frontal lobe?',
+    opts: ['Immediately anterior to the central sulcus', 'Just anterior to the motor association cortex, within the prefrontal region', 'In the inferior frontal gyrus of the dominant hemisphere', 'In the most anterior tip of the frontal lobe'],
+    ans: 1,
+    exp: 'The frontal eye fields lie <strong>anterior to the motor association cortex</strong> (pre-motor / supplementary motor areas) and are considered part of the broader prefrontal region, corresponding to Brodmann area 8.'
+  },
+  {
+    cat: 'boundaries', catLabel: 'Boundaries', catClass: 'cat-boundaries',
+    q: 'A sulcus is best defined as:',
+    opts: ['A raised fold of cortex (a "mountain" of tissue)', 'A fissure that separates the cerebral hemispheres', 'A furrow (groove) between gyri on the cortical surface', 'The flat underside of a gyrus'],
+    ans: 2,
+    exp: 'A <strong>sulcus</strong> is the groove (furrow) between gyri. A <strong>gyrus</strong> is the raised ridge ("mountain"). Major sulci serve as anatomical landmarks and boundaries between lobes.'
+  },
+  {
+    cat: 'boundaries', catLabel: 'Boundaries', catClass: 'cat-boundaries',
+    q: 'Broca\'s area is located in which specific anatomical region of the frontal lobe?',
+    opts: ['Superior frontal gyrus', 'Pre-central gyrus', 'Inferior frontal gyrus', 'Middle frontal gyrus'],
+    ans: 2,
+    exp: "Broca's area occupies the <strong>inferior frontal gyrus</strong> of the dominant hemisphere (typically the left hemisphere in right-handed individuals)."
+  },
+
+  // ── PRIMARY MOTOR CORTEX (8) ──────────────────────────────────────────────
+  {
+    cat: 'pmc', catLabel: 'Primary Motor Cortex', catClass: 'cat-pmc',
+    q: 'The primary motor cortex corresponds to which Brodmann area?',
+    opts: ['Area 3, 1, 2', 'Area 4', 'Area 6', 'Area 8'],
+    ans: 1,
+    exp: 'The primary motor cortex is <strong>Brodmann area 4</strong>. Areas 3, 1, 2 form the primary somatosensory cortex; area 6 is the motor association cortex; area 8 includes the frontal eye fields.'
+  },
+  {
+    cat: 'pmc', catLabel: 'Primary Motor Cortex', catClass: 'cat-pmc',
+    q: 'The corticospinal tract carries voluntary motor signals from the primary motor cortex to which target?',
+    opts: ['Motor nuclei of cranial nerves in the brainstem', 'Anterior gray horn of the spinal cord', 'Posterior gray horn of the spinal cord', 'Basal ganglia'],
+    ans: 1,
+    exp: 'The <strong>corticospinal tract (CST)</strong> descends from the cortex to the <strong>anterior gray horn</strong> of the spinal cord, where it synapses on lower motor neurons (alpha motor neurons) that directly innervate skeletal muscles of the limbs and trunk.'
+  },
+  {
+    cat: 'pmc', catLabel: 'Primary Motor Cortex', catClass: 'cat-pmc',
+    q: 'The corticobulbar tract carries signals from the motor cortex to:',
+    opts: ['Anterior gray horn neurons for limb control', 'Motor nuclei of cranial nerves in the brainstem', 'Purkinje cells of the cerebellum', 'The striatum of the basal ganglia'],
+    ans: 1,
+    exp: 'The <strong>corticobulbar tract</strong> travels from the motor cortex to <strong>motor nuclei of cranial nerves</strong> in the brainstem (CN V, VII, IX, X, XI, XII), controlling voluntary movements of the head and neck.'
+  },
+  {
+    cat: 'pmc', catLabel: 'Primary Motor Cortex', catClass: 'cat-pmc',
+    q: 'Which cranial nerve supplies the muscles of mastication (chewing)?',
+    opts: ['CN VII (facial)', 'CN V (trigeminal)', 'CN IX (glossopharyngeal)', 'CN XII (hypoglossal)'],
+    ans: 1,
+    exp: '<strong>CN V (trigeminal nerve)</strong> provides motor innervation to the <strong>muscles of mastication</strong> — temporalis, masseter, medial and lateral pterygoids. CN VII supplies facial expression muscles; CN XII supplies the tongue.'
+  },
+  {
+    cat: 'pmc', catLabel: 'Primary Motor Cortex', catClass: 'cat-pmc',
+    q: 'In the motor homunculus, which body regions are represented in the most MEDIAL portion of the primary motor cortex?',
+    opts: ['Face and tongue', 'Hand and fingers', 'Shoulder and arm', 'Lower limb and foot'],
+    ans: 3,
+    exp: 'The motor homunculus is arranged medial → lateral: foot and lower limb are most <strong>medial</strong> (extending into the medial wall / paracentral lobule), while the face and tongue are most lateral-inferior. This is why ACA strokes cause lower-extremity weakness.'
+  },
+  {
+    cat: 'pmc', catLabel: 'Primary Motor Cortex', catClass: 'cat-pmc',
+    q: 'Why are the hands and tongue disproportionately large in the motor homunculus?',
+    opts: ['They are the heaviest body parts', 'They have more motor units, reflecting greater fine motor control', 'They receive more sensory input than other areas', 'They are closest to the cortical surface'],
+    ans: 1,
+    exp: 'A larger representation in the motor homunculus corresponds to a greater number of <strong>motor units</strong> and, therefore, greater capacity for <strong>fine motor control</strong>. Hands and tongue require precision movements, so they are disproportionately large.'
+  },
+  {
+    cat: 'pmc', catLabel: 'Primary Motor Cortex', catClass: 'cat-pmc',
+    q: 'A patient presents with sudden contralateral lower extremity paralysis but preserved upper extremity function. Which artery is most likely occluded?',
+    opts: ['Middle cerebral artery (MCA)', 'Posterior cerebral artery (PCA)', 'Anterior cerebral artery (ACA)', 'Basilar artery'],
+    ans: 2,
+    exp: 'The <strong>anterior cerebral artery (ACA)</strong> supplies the medial aspect of the primary motor cortex, which represents the lower extremities. ACA occlusion → contralateral <strong>lower limb weakness/paralysis</strong>, with relative sparing of the upper extremity.'
+  },
+  {
+    cat: 'pmc', catLabel: 'Primary Motor Cortex', catClass: 'cat-pmc',
+    q: 'Which artery occlusion most classically causes contralateral upper extremity (arm and face) paralysis?',
+    opts: ['Anterior cerebral artery (ACA)', 'Posterior cerebral artery (PCA)', 'Middle cerebral artery (MCA)', 'Anterior communicating artery'],
+    ans: 2,
+    exp: 'The <strong>middle cerebral artery (MCA)</strong> supplies the lateral aspect of the primary motor cortex, which represents the upper extremity and face. MCA occlusion → contralateral <strong>arm, hand, and facial weakness</strong>.'
+  },
+  {
+    cat: 'pmc', catLabel: 'Primary Motor Cortex', catClass: 'cat-pmc',
+    q: 'CN IX, CN X, and the cranial part of CN XI together form the pharyngeal plexus. Which structures do they supply?',
+    opts: ['Tongue muscles only', 'Facial expression and eye closure', 'Pharynx, larynx, uvula, and soft palate', 'Sternocleidomastoid and trapezius exclusively'],
+    ans: 2,
+    exp: 'CN IX (glossopharyngeal), CN X (vagus), and the cranial part of CN XI collectively form the <strong>pharyngeal plexus</strong>, which innervates the <strong>pharynx, larynx, uvula, and soft palate</strong>. The spinal part of CN XI innervates the sternocleidomastoid and trapezius.'
+  },
+
+  // ── MOTOR ASSOCIATION CORTEX (6) ──────────────────────────────────────────
+  {
+    cat: 'mac', catLabel: 'Motor Association Cortex', catClass: 'cat-mac',
+    q: 'The motor association cortex (Brodmann area 6) is composed of which two regions?',
+    opts: ['Primary motor cortex and supplementary motor cortex', 'Pre-motor cortex and supplementary motor cortex', 'Pre-motor cortex and frontal eye fields', 'Supplementary motor cortex and prefrontal cortex'],
+    ans: 1,
+    exp: 'Brodmann area 6 encompasses both the <strong>pre-motor cortex</strong> (lateral portion) and the <strong>supplementary motor cortex/area (SMA)</strong> (medial-superior portion). Together they constitute the motor association cortex.'
+  },
+  {
+    cat: 'mac', catLabel: 'Motor Association Cortex', catClass: 'cat-mac',
+    q: 'What percentage of corticospinal tract fibers is contributed by the pre-motor and supplementary motor cortices?',
+    opts: ['About 5%', 'About 15%', 'About 40%', 'About 60%'],
+    ans: 1,
+    exp: 'The pre-motor and supplementary motor cortices together contribute approximately <strong>15%</strong> of corticospinal tract fibers. The primary motor cortex contributes the majority of CST fibers.'
+  },
+  {
+    cat: 'mac', catLabel: 'Motor Association Cortex', catClass: 'cat-mac',
+    q: 'The pre-motor and supplementary motor cortex primarily supply lower motor neurons controlling which muscles via the CST?',
+    opts: ['Distal hand and finger muscles', 'Eye movement muscles', 'Axial (trunk) and proximal limb muscles (hip & shoulder)', 'Tongue muscles'],
+    ans: 2,
+    exp: 'The motor association cortex specifically targets <strong>axial (trunk) musculature</strong> and <strong>proximal limb muscles</strong> (muscles around the hip and shoulder joints), not the distal fine-movement muscles primarily controlled by area 4.'
+  },
+  {
+    cat: 'mac', catLabel: 'Motor Association Cortex', catClass: 'cat-mac',
+    q: 'Which subcortical structure does the motor association cortex interact with to INITIATE desired movements and SUPPRESS unwanted movements?',
+    opts: ['Hippocampus', 'Amygdala', 'Basal ganglia', 'Thalamus only'],
+    ans: 2,
+    exp: 'The motor association cortex communicates bidirectionally with the <strong>basal ganglia</strong> to help initiate voluntary movements, suppress unwanted movements, and fine-tune motor output. Disruption of this circuit underlies movement disorders like Parkinson disease.'
+  },
+  {
+    cat: 'mac', catLabel: 'Motor Association Cortex', catClass: 'cat-mac',
+    q: 'What sensory information does the cerebellum integrate before sending modification signals back to the motor association cortex?',
+    opts: ['Visual input from the occipital lobe only', 'Auditory signals from the temporal lobe', 'Proprioception and equilibrium (from inner ear, muscles, tendons, joints)', 'Pain and temperature from the spinothalamic tract'],
+    ans: 2,
+    exp: 'The cerebellum integrates <strong>proprioception</strong> (muscle, tendon, joint position sense) and <strong>equilibrium/vestibular information</strong> from the inner ear along with the intended motor plan, then sends corrective signals back to the motor association cortex to produce smooth, coordinated movement.'
+  },
+  {
+    cat: 'mac', catLabel: 'Motor Association Cortex', catClass: 'cat-mac',
+    q: 'Which three functions are most classically attributed to the motor association cortex?',
+    opts: ['Memory, personality, and language production', 'Vision, hearing, and taste processing', 'Planning, sequencing, and execution of movement', 'Voluntary saccades, smooth pursuit, and vergence'],
+    ans: 2,
+    exp: 'The motor association cortex (pre-motor + supplementary motor) is specifically involved in <strong>planning</strong>, <strong>sequencing</strong>, and <strong>execution</strong> of purposeful voluntary movements — the preparatory stages before primary motor cortex fires the final command.'
+  },
+
+  // ── FRONTAL EYE FIELDS (5) ──────────────────────────────────────────────
+  {
+    cat: 'fef', catLabel: 'Frontal Eye Fields', catClass: 'cat-fef',
+    q: 'What type of eye movement are the frontal eye fields primarily responsible for?',
+    opts: ['Smooth pursuit eye movements', 'Vergence (convergence/divergence)', 'Voluntary rapid saccadic eye movements', 'Optokinetic nystagmus'],
+    ans: 2,
+    exp: 'The frontal eye fields (FEF) generate <strong>voluntary saccades</strong> — rapid, conjugate (both eyes moving together) eye movements used to quickly shift gaze to a new target.'
+  },
+  {
+    cat: 'fef', catLabel: 'Frontal Eye Fields', catClass: 'cat-fef',
+    q: 'The right frontal eye field sends descending fibers to which structure to initiate leftward gaze?',
+    opts: ['Right paramedian pontine reticular formation (PPRF)', 'Left paramedian pontine reticular formation (PPRF)', 'Left superior colliculus', 'Right abducens nucleus directly'],
+    ans: 1,
+    exp: 'The right FEF projects <strong>contralaterally</strong> to the <strong>left PPRF</strong> (paramedian pontine reticular formation), which then activates the left CN VI nucleus, ultimately driving conjugate gaze to the LEFT.'
+  },
+  {
+    cat: 'fef', catLabel: 'Frontal Eye Fields', catClass: 'cat-fef',
+    q: 'Stimulation of the left abducens (CN VI) nucleus produces conjugate gaze by activating which two muscles?',
+    opts: ['Left lateral rectus and right lateral rectus', 'Left lateral rectus and right medial rectus', 'Left medial rectus and right lateral rectus', 'Both medial recti'],
+    ans: 1,
+    exp: 'The CN VI nucleus does two things: (1) sends axons via the abducens nerve to the <strong>ipsilateral lateral rectus</strong> (abducting that eye) and (2) projects via the MLF to the <strong>contralateral CN III nucleus</strong>, activating the contralateral medial rectus. Together these produce conjugate horizontal gaze.'
+  },
+  {
+    cat: 'fef', catLabel: 'Frontal Eye Fields', catClass: 'cat-fef',
+    q: 'A patient with a destructive lesion of the right frontal eye field will show eyes deviating toward which direction?',
+    opts: ['Left (away from the lesion)', 'Right (toward the lesion)', 'Upward', 'No deviation — the lesion has no gaze effect'],
+    ans: 1,
+    exp: 'A <strong>destructive lesion</strong> of the right FEF eliminates the drive to look left. The intact left FEF continues to drive rightward gaze unopposed. Result: <strong>ipsilateral (rightward) conjugate gaze deviation</strong> — the eyes deviate toward the side of the lesion.'
+  },
+  {
+    cat: 'fef', catLabel: 'Frontal Eye Fields', catClass: 'cat-fef',
+    q: 'Which Brodmann area is associated with the frontal eye fields?',
+    opts: ['Area 4', 'Area 6', 'Area 8', 'Area 17'],
+    ans: 2,
+    exp: 'The frontal eye fields correspond to <strong>Brodmann area 8</strong>. Area 4 = primary motor cortex; area 6 = motor association cortex; area 17 = primary visual cortex.'
+  },
+
+  // ── PREFRONTAL CORTEX (5) ──────────────────────────────────────────────
+  {
+    cat: 'pfc', catLabel: 'Prefrontal Cortex', catClass: 'cat-pfc',
+    q: 'Which type of memory is most closely associated with prefrontal cortex function?',
+    opts: ['Procedural (motor skill) memory', 'Episodic long-term memory storage', 'Working memory', 'Implicit memory'],
+    ans: 2,
+    exp: 'The prefrontal cortex is critical for <strong>working memory</strong> — the active maintenance and manipulation of information over short periods, enabling complex reasoning, planning, and task execution.'
+  },
+  {
+    cat: 'pfc', catLabel: 'Prefrontal Cortex', catClass: 'cat-pfc',
+    q: 'Which limbic structure communicates with the prefrontal cortex to regulate emotional aspects of personality and behavior?',
+    opts: ['Cerebellum', 'Amygdala', 'Anterior gray horn', 'Inferior olive'],
+    ans: 1,
+    exp: 'The <strong>amygdala</strong> (deep in the temporal lobe) and the <strong>hypothalamus</strong> are limbic structures that interact with the prefrontal cortex to modulate emotional responses, behavioral regulation, and personality expression.'
+  },
+  {
+    cat: 'pfc', catLabel: 'Prefrontal Cortex', catClass: 'cat-pfc',
+    q: 'The ventral tegmental area (VTA) communicates with the prefrontal cortex and is primarily involved in which function?',
+    opts: ['Voluntary saccade generation', 'Reward and addiction circuitry, influencing decision-making', 'Regulating muscle tone', 'Coordinating fine motor movements of the fingers'],
+    ans: 1,
+    exp: 'The <strong>ventral tegmental area (VTA)</strong> in the midbrain is a key node in <strong>reward and addiction circuitry</strong>, releasing dopamine to the prefrontal cortex. This pathway influences motivation, pleasure, and decision-making, and is implicated in addictive behaviors.'
+  },
+  {
+    cat: 'pfc', catLabel: 'Prefrontal Cortex', catClass: 'cat-pfc',
+    q: 'In frontotemporal dementia (FTD), prefrontal cortex damage leads to disinhibition. Which behaviors result from this?',
+    opts: ['Increased fine motor control and precise speech', 'Inappropriate hypersexual behavior and impulsive gambling', 'Enhanced short-term memory and improved judgment', 'Increased inhibition of emotional responses'],
+    ans: 1,
+    exp: 'The prefrontal cortex normally <strong>inhibits</strong> socially inappropriate impulses. When damaged (as in FTD), this inhibitory brake is lost, leading to <strong>disinhibition</strong>: inappropriate hypersexual behavior, impulsive gambling, poor judgment, and socially unacceptable conduct.'
+  },
+  {
+    cat: 'pfc', catLabel: 'Prefrontal Cortex', catClass: 'cat-pfc',
+    q: 'Motor deficits seen in late-stage frontotemporal dementia most resemble which condition, and why?',
+    opts: ["Cerebellar ataxia, due to disruption of cerebellar-cortical connections", "Parkinson disease, due to disrupted prefrontal–basal ganglia communication", "Upper motor neuron syndrome, due to direct damage to the corticospinal tract", "Myopathy, due to neuromuscular junction impairment"],
+    ans: 1,
+    exp: "FTD damages prefrontal cortex → disrupts its communication with the <strong>basal ganglia</strong> → impairs the basal ganglia's modulation of motor cortex output → <strong>parkinsonian-type motor symptoms</strong> (rigidity, bradykinesia) emerge in later stages."
+  },
+
+  // ── BROCA'S AREA (5) ──────────────────────────────────────────────────────
+  {
+    cat: 'broca', catLabel: "Broca's Area", catClass: 'cat-broca',
+    q: "Broca's area is located in which hemisphere in most right-handed individuals?",
+    opts: ['Right hemisphere', 'Left hemisphere', 'Both hemispheres equally', 'The non-dominant hemisphere'],
+    ans: 1,
+    exp: "In right-handed individuals (and ~70% of left-handers), <strong>Broca's area resides in the LEFT (dominant) hemisphere</strong> inferior frontal gyrus. Language is lateralized to the dominant hemisphere."
+  },
+  {
+    cat: 'broca', catLabel: "Broca's Area", catClass: 'cat-broca',
+    q: "Which white matter tract connects Wernicke's area to Broca's area?",
+    opts: ['Corpus callosum', 'Internal capsule', 'Arcuate fasciculus', 'Uncinate fasciculus'],
+    ans: 2,
+    exp: "The <strong>arcuate fasciculus</strong> is the major white-matter pathway connecting <strong>Wernicke's area</strong> (language comprehension, posterior superior temporal gyrus) to <strong>Broca's area</strong> (speech production, inferior frontal gyrus). Damage to it causes conduction aphasia."
+  },
+  {
+    cat: 'broca', catLabel: "Broca's Area", catClass: 'cat-broca',
+    q: "Which cranial nerve does Broca's area activate to shape the mouth (orbicularis oris) during speech?",
+    opts: ['CN V (trigeminal)', 'CN VII (facial)', 'CN IX (glossopharyngeal)', 'CN X (vagus)'],
+    ans: 1,
+    exp: "<strong>CN VII (facial nerve)</strong> innervates the <strong>orbicularis oris</strong>, the muscle encircling the mouth that modifies lip shape and helps articulate words during speech production."
+  },
+  {
+    cat: 'broca', catLabel: "Broca's Area", catClass: 'cat-broca',
+    q: "A patient suffers an MCA stroke affecting Broca's area. Which pattern of speech and comprehension would you expect?",
+    opts: ['Fluent but incomprehensible speech; impaired comprehension', 'Non-fluent, grammatically incorrect speech; comprehension intact', 'Normal speech; profound comprehension deficit', 'Complete mutism with no comprehension'],
+    ans: 1,
+    exp: "<strong>Broca's (expressive) aphasia</strong>: speech is <strong>non-fluent</strong> (effortful, halting) and <strong>agrammatic</strong> (grammatically incorrect), but <strong>comprehension is preserved</strong> because Wernicke's area is undamaged. Patients understand what is said to them but struggle to express themselves."
+  },
+  {
+    cat: 'broca', catLabel: "Broca's Area", catClass: 'cat-broca',
+    q: "CN XII (hypoglossal nerve) is stimulated by Broca's area to contribute to speech. What does CN XII innervate?",
+    opts: ['Muscles of the soft palate', 'Muscles of the larynx (vocal cords)', 'Intrinsic and extrinsic muscles of the tongue', 'Muscles of mastication'],
+    ans: 2,
+    exp: "<strong>CN XII (hypoglossal nerve)</strong> innervates the <strong>intrinsic and extrinsic muscles of the tongue</strong>, enabling precise tongue positioning essential for articulation of consonants and vowels during speech."
+  }
+];
+
+let questions = [];
+let current = 0;
+let score = 0;
+let streak = 0;
+let answered = false;
+let catScores = {};
+
+const CATS = ['boundaries','pmc','mac','fef','pfc','broca'];
+const CAT_NAMES = {
+  boundaries: 'Boundaries',
+  pmc: 'Primary Motor Cortex',
+  mac: 'Motor Association Cortex',
+  fef: 'Frontal Eye Fields',
+  pfc: 'Prefrontal Cortex',
+  broca: "Broca's Area"
+};
+const CAT_COLORS = {
+  boundaries: '#34d399', pmc: '#60a5fa', mac: '#a78bfa',
+  fef: '#fbbf24', pfc: '#f472b6', broca: '#fb923c'
+};
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  questions = shuffle(QUESTIONS);
+  current = 0; score = 0; streak = 0;
+  catScores = {};
+  CATS.forEach(c => catScores[c] = { correct: 0, total: 0 });
+  document.getElementById('intro-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = questions[current];
+  const total = questions.length;
+
+  document.getElementById('stat-current').textContent = current + 1;
+  document.getElementById('stat-score').textContent = score;
+  document.getElementById('stat-streak').textContent = streak;
+
+  const pct = Math.round((current / total) * 100);
+  document.getElementById('prog-label').textContent = `Question ${current+1} of ${total}`;
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  document.getElementById('cat-label-wrap').innerHTML =
+    `<div><span class="cat-label ${q.catClass}">● ${q.catLabel}</span></div>`;
+
+  document.getElementById('q-number').textContent = `Q${current + 1} / ${total}`;
+  document.getElementById('q-text').innerHTML = q.q;
+
+  const letters = ['A','B','C','D'];
+  const optHtml = q.opts.map((o, i) =>
+    `<button class="option" onclick="selectOption(${i})" id="opt-${i}">
+      <span class="option-key">${letters[i]}</span>
+      <span>${o}</span>
+    </button>`
+  ).join('');
+  document.getElementById('options').innerHTML = optHtml;
+
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none';
+  fb.className = 'feedback';
+
+  document.getElementById('btn-next').disabled = true;
+  document.getElementById('btn-skip').disabled = false;
+}
+
+function selectOption(idx) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  const isCorrect = idx === q.ans;
+  catScores[q.cat].total++;
+
+  const letters = ['A','B','C','D'];
+
+  q.opts.forEach((_, i) => {
+    const el = document.getElementById('opt-' + i);
+    el.disabled = true;
+    if (i === q.ans) el.classList.add('correct');
+    else if (i === idx && !isCorrect) el.classList.add('wrong');
+    else el.classList.add('dimmed');
+  });
+
+  const fb = document.getElementById('feedback');
+  if (isCorrect) {
+    score++;
+    streak++;
+    catScores[q.cat].correct++;
+    fb.className = 'feedback correct';
+    fb.innerHTML = `<span class="feedback-icon">✓ Correct</span>${q.exp}`;
+  } else {
+    streak = 0;
+    fb.className = 'feedback wrong';
+    fb.innerHTML = `<span class="feedback-icon">✗ Incorrect — correct answer: ${letters[q.ans]}</span>${q.exp}`;
+  }
+  fb.style.display = 'block';
+
+  document.getElementById('stat-score').textContent = score;
+  document.getElementById('stat-streak').textContent = streak;
+  document.getElementById('btn-next').disabled = false;
+  document.getElementById('btn-skip').disabled = true;
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) {
+    showResults();
+  } else {
+    // Re-animate card
+    const card = document.getElementById('question-card');
+    card.style.animation = 'none';
+    card.offsetHeight;
+    card.style.animation = 'fadeUp 0.4s ease both';
+    renderQuestion();
+  }
+}
+
+function skipQuestion() {
+  if (answered) return;
+  catScores[questions[current].cat].total++;
+  current++;
+  if (current >= questions.length) showResults();
+  else renderQuestion();
+}
+
+function showResults() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  const res = document.getElementById('results-screen');
+  res.style.display = 'block';
+
+  const total = questions.length;
+  const pct = Math.round((score / total) * 100);
+
+  document.getElementById('ring-pct').textContent = pct + '%';
+  document.getElementById('res-correct').textContent = score;
+  document.getElementById('res-wrong').textContent = total - score;
+  document.getElementById('res-total').textContent = total;
+
+  let title, sub;
+  if (pct >= 90) { title = 'Outstanding!'; sub = 'You have mastered the frontal lobe.'; }
+  else if (pct >= 75) { title = 'Well done!'; sub = 'Strong performance — review the missed topics.'; }
+  else if (pct >= 55) { title = 'Good effort.'; sub = 'Revisit the weaker areas and try again.'; }
+  else { title = 'Keep studying.'; sub = 'Review the notes and retake the quiz.'; }
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-sub').textContent = sub;
+
+  // Animate ring
+  const circ = 439.82;
+  const fill = circ - (pct / 100) * circ;
+  setTimeout(() => {
+    document.getElementById('ring-fill').style.strokeDashoffset = fill;
+  }, 100);
+
+  // Category breakdown
+  const breakdownEl = document.getElementById('cat-breakdown');
+  breakdownEl.innerHTML = CATS.map(c => {
+    const d = catScores[c];
+    const catPct = d.total > 0 ? Math.round((d.correct / d.total) * 100) : 0;
+    return `<div class="cat-row">
+      <div class="cat-row-label">${CAT_NAMES[c]}</div>
+      <div class="cat-row-bar"><div class="cat-row-fill" style="width:0%;background:${CAT_COLORS[c]}" data-w="${catPct}"></div></div>
+      <div class="cat-row-score">${d.correct}/${d.total}</div>
+    </div>`;
+  }).join('');
+
+  setTimeout(() => {
+    document.querySelectorAll('.cat-row-fill').forEach(el => {
+      el.style.width = el.dataset.w + '%';
+    });
+  }, 200);
+}
+
+function restartQuiz() {
+  document.getElementById('results-screen').style.display = 'none';
+  document.getElementById('ring-fill').style.strokeDashoffset = 439.82;
+  startQuiz();
+  document.getElementById('quiz-screen').style.display = 'block';
+}
+</script>
+</body>
+</html>
