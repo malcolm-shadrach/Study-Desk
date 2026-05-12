@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temporal Lobe — Quiz</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0e0f13;
+    --surface: #161820;
+    --surface2: #1c1e28;
+    --border: #252730;
+    --text: #e8e9ef;
+    --muted: #7c7f96;
+    --orange: #f97316;
+    --blue: #60a5fa;
+    --green: #4ade80;
+    --pink: #f472b6;
+    --purple: #a78bfa;
+    --yellow: #fbbf24;
+    --teal: #2dd4bf;
+    --red: #f87171;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── START SCREEN ── */
+  #start-screen {
+    min-height: 100vh;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    text-align: center;
+  }
+  #start-screen.active { display: flex; }
+
+  .start-label {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+
+  .start-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(38px, 6vw, 64px);
+    line-height: 1.1;
+    margin-bottom: 18px;
+  }
+  .start-title em { font-style: italic; color: var(--orange); }
+
+  .start-desc {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 480px;
+    margin-bottom: 40px;
+    line-height: 1.8;
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px;
+    max-width: 700px;
+    width: 100%;
+    margin-bottom: 44px;
+  }
+
+  .cat-pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: left;
+    cursor: default;
+  }
+  .cat-pill .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  .cat-pill .name { font-size: 13px; font-weight: 500; }
+  .cat-pill .count { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  .btn-start {
+    background: var(--orange);
+    color: #000;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 48px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: opacity 0.15s, transform 0.15s;
+  }
+  .btn-start:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* ── QUIZ SCREEN ── */
+  #quiz-screen {
+    min-height: 100vh;
+    display: none;
+    flex-direction: column;
+    padding: 0;
+  }
+  #quiz-screen.active { display: flex; }
+
+  /* Progress bar */
+  .progress-bar-wrap {
+    height: 3px;
+    background: var(--border);
+    width: 100%;
+    flex-shrink: 0;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--orange);
+    transition: width 0.4s ease;
+  }
+
+  /* Top nav */
+  .quiz-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 32px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .quiz-nav .q-counter {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .quiz-nav .q-counter strong { color: var(--text); font-weight: 600; }
+
+  .cat-badge {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px 12px;
+    color: var(--muted);
+  }
+
+  .score-live {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .score-live span { color: var(--green); font-weight: 600; }
+
+  /* Question area */
+  .quiz-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px 32px;
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .q-type-tag {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 18px;
+    align-self: flex-start;
+  }
+
+  .q-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(19px, 3vw, 26px);
+    line-height: 1.45;
+    margin-bottom: 36px;
+    align-self: flex-start;
+    width: 100%;
+  }
+
+  /* Options */
+  .options-grid {
+    display: grid;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 28px;
+  }
+
+  .opt-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    text-align: left;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14.5px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.5;
+  }
+
+  .opt-btn:hover:not(:disabled) {
+    border-color: var(--orange);
+    background: var(--surface2);
+    transform: translateX(3px);
+  }
+
+  .opt-letter {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .opt-btn.correct {
+    border-color: var(--green);
+    background: #4ade8012;
+  }
+  .opt-btn.correct .opt-letter {
+    background: var(--green);
+    border-color: var(--green);
+    color: #000;
+  }
+
+  .opt-btn.wrong {
+    border-color: var(--red);
+    background: #f8717112;
+  }
+  .opt-btn.wrong .opt-letter {
+    background: var(--red);
+    border-color: var(--red);
+    color: #000;
+  }
+
+  .opt-btn.reveal-correct {
+    border-color: var(--green);
+    background: #4ade8008;
+  }
+  .opt-btn.reveal-correct .opt-letter {
+    background: var(--green);
+    border-color: var(--green);
+    color: #000;
+  }
+
+  .opt-btn:disabled { cursor: default; transform: none; }
+
+  /* Feedback box */
+  .feedback-box {
+    width: 100%;
+    border-left: 3px solid;
+    border-radius: 0 10px 10px 0;
+    padding: 14px 20px;
+    font-size: 14px;
+    color: #bfc2d4;
+    margin-bottom: 24px;
+    opacity: 0;
+    transition: opacity 0.25s;
+    display: none;
+  }
+  .feedback-box.show { opacity: 1; display: block; }
+  .feedback-box.correct-fb { border-color: var(--green); background: #4ade8010; }
+  .feedback-box.wrong-fb { border-color: var(--red); background: #f8717110; }
+  .feedback-box strong { color: var(--text); }
+
+  /* Next btn */
+  .btn-next {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 13px 36px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    align-self: flex-end;
+    display: none;
+  }
+  .btn-next.show { display: block; }
+  .btn-next:hover { border-color: var(--orange); background: var(--surface); }
+
+  /* True / False layout */
+  .tf-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 28px;
+  }
+
+  /* ── RESULTS SCREEN ── */
+  #results-screen {
+    min-height: 100vh;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    text-align: center;
+  }
+  #results-screen.active { display: flex; }
+
+  .result-label {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .result-score-ring {
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    border: 3px solid var(--border);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    margin: 0 auto 28px;
+    position: relative;
+  }
+  .result-score-ring::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: var(--orange);
+    border-right-color: var(--orange);
+  }
+  .result-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    line-height: 1;
+  }
+  .result-denom { font-size: 13px; color: var(--muted); }
+
+  .result-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  .result-title em { color: var(--orange); font-style: italic; }
+
+  .result-sub { color: var(--muted); font-size: 14px; margin-bottom: 36px; }
+
+  /* Category breakdown */
+  .breakdown {
+    max-width: 520px;
+    width: 100%;
+    margin-bottom: 40px;
+  }
+  .breakdown-title {
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 16px; text-align: left;
+  }
+  .breakdown-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 13.5px;
+  }
+  .breakdown-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .breakdown-name { flex: 1; text-align: left; }
+  .breakdown-frac { font-weight: 500; color: var(--text); }
+  .breakdown-bar-wrap { width: 80px; height: 4px; background: var(--border); border-radius: 2px; }
+  .breakdown-bar { height: 100%; border-radius: 2px; background: var(--green); transition: width 0.6s ease; }
+
+  .result-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+
+  .btn-retry {
+    background: var(--orange);
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 36px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .btn-retry:hover { opacity: 0.85; }
+
+  .btn-review {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 36px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .btn-review:hover { border-color: var(--orange); }
+
+  /* ── REVIEW SCREEN ── */
+  #review-screen {
+    display: none;
+    padding: 40px 24px;
+  }
+  #review-screen.active { display: block; }
+
+  .review-inner { max-width: 720px; margin: 0 auto; }
+
+  .review-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 36px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 24px;
+  }
+
+  .review-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+  }
+
+  .btn-back {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .btn-back:hover { border-color: var(--orange); color: var(--text); }
+
+  .review-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 14px;
+  }
+  .review-item.ri-correct { border-color: #4ade8040; }
+  .review-item.ri-wrong { border-color: #f8717140; }
+
+  .ri-top {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 12px; margin-bottom: 10px;
+  }
+  .ri-q { font-size: 14.5px; font-weight: 400; flex: 1; line-height: 1.5; }
+  .ri-icon { font-size: 16px; flex-shrink: 0; }
+
+  .ri-answers { font-size: 13px; }
+  .ri-your { color: var(--muted); margin-bottom: 3px; }
+  .ri-your span { color: var(--red); }
+  .ri-correct-ans { color: var(--muted); margin-bottom: 8px; }
+  .ri-correct-ans span { color: var(--green); }
+  .ri-explain { font-size: 13px; color: #7c8099; border-top: 1px solid var(--border); padding-top: 10px; margin-top: 10px; }
+
+  @media (max-width: 540px) {
+    .quiz-nav { padding: 14px 16px; }
+    .quiz-body { padding: 28px 16px 24px; }
+    .tf-grid { grid-template-columns: 1fr; }
+    .score-live { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     START SCREEN
+════════════════════════════════════════════ -->
+<div id="start-screen" class="screen active">
+  <div class="start-label">Neuroscience · Self-Test</div>
+  <h1 class="start-title">Temporal <em>Lobe</em><br>Quiz</h1>
+  <p class="start-desc">35 questions spanning boundaries, auditory pathways, Wernicke's area, olfaction, the insula, and clinical correlations. Multiple choice + True / False.</p>
+
+  <div class="category-grid">
+    <div class="cat-pill">
+      <span class="dot" style="background:var(--blue)"></span><span class="name">Boundaries</span>
+      <div class="count">4 questions</div>
+    </div>
+    <div class="cat-pill">
+      <span class="dot" style="background:var(--orange)"></span><span class="name">Auditory Cortex</span>
+      <div class="count">7 questions</div>
+    </div>
+    <div class="cat-pill">
+      <span class="dot" style="background:var(--green)"></span><span class="name">Wernicke's Area</span>
+      <div class="count">8 questions</div>
+    </div>
+    <div class="cat-pill">
+      <span class="dot" style="background:var(--pink)"></span><span class="name">Olfactory System</span>
+      <div class="count">8 questions</div>
+    </div>
+    <div class="cat-pill">
+      <span class="dot" style="background:var(--teal)"></span><span class="name">Insula</span>
+      <div class="count">8 questions</div>
+    </div>
+  </div>
+
+  <button class="btn-start" onclick="startQuiz()">Begin Quiz →</button>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     QUIZ SCREEN
+════════════════════════════════════════════ -->
+<div id="quiz-screen" class="screen">
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+
+  <div class="quiz-nav">
+    <div class="q-counter">Question <strong id="q-num">1</strong> of <strong>35</strong></div>
+    <div class="cat-badge" id="cat-badge">—</div>
+    <div class="score-live">Score: <span id="score-live">0</span></div>
+  </div>
+
+  <div class="quiz-body">
+    <div class="q-type-tag" id="q-type-tag">Multiple Choice</div>
+    <div class="q-text" id="q-text"></div>
+    <div id="options-container"></div>
+    <div class="feedback-box" id="feedback-box"></div>
+    <button class="btn-next" id="btn-next" onclick="nextQuestion()">Next →</button>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     RESULTS SCREEN
+════════════════════════════════════════════ -->
+<div id="results-screen" class="screen">
+  <div class="result-label">Quiz Complete</div>
+  <div class="result-score-ring">
+    <div class="result-num" id="res-score">0</div>
+    <div class="result-denom" id="res-total">/ 35</div>
+  </div>
+  <h2 class="result-title" id="res-title">Well <em>done!</em></h2>
+  <p class="result-sub" id="res-sub"></p>
+
+  <div class="breakdown">
+    <div class="breakdown-title">Category Breakdown</div>
+    <div id="breakdown-list"></div>
+  </div>
+
+  <div class="result-btns">
+    <button class="btn-retry" onclick="restartQuiz()">Retry Quiz</button>
+    <button class="btn-review" onclick="showReview()">Review Answers</button>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     REVIEW SCREEN
+════════════════════════════════════════════ -->
+<div id="review-screen" class="screen">
+  <div class="review-inner">
+    <div class="review-header">
+      <h2>Answer Review</h2>
+      <button class="btn-back" onclick="backToResults()">← Results</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+</div>
+
+
+<script>
+// ═══════════════════════════════════════════════
+//  QUESTION BANK
+// ═══════════════════════════════════════════════
+const QUESTIONS = [
+
+  // ── BOUNDARIES ──────────────────────────────────
+  {
+    cat: "Boundaries", color: "var(--blue)",
+    type: "mc",
+    q: "Which sulcus forms the primary boundary separating the temporal lobe from both the frontal and parietal lobes?",
+    opts: ["Central sulcus", "Lateral sulcus (Sylvian fissure)", "Calcarine sulcus", "Parieto-occipital sulcus"],
+    ans: 1,
+    explain: "The lateral sulcus (also called the Sylvian fissure) runs along the superior border of the temporal lobe and cleanly separates it from the frontal lobe anteriorly and the parietal lobe superiorly."
+  },
+  {
+    cat: "Boundaries", color: "var(--blue)",
+    type: "mc",
+    q: "The boundary between the temporal lobe and occipital lobe is defined by:",
+    opts: [
+      "The central sulcus alone",
+      "An imaginary line from the preoccipital notch to the tip of the lateral sulcus",
+      "The parieto-occipital sulcus extending laterally",
+      "The calcarine fissure"
+    ],
+    ans: 1,
+    explain: "There is no clear sulcus here — an imaginary line drawn from the preoccipital notch upward to the tip of the lateral sulcus serves as the conventional boundary between the temporal and occipital lobes."
+  },
+  {
+    cat: "Boundaries", color: "var(--blue)",
+    type: "tf",
+    q: "True or False: The preoccipital notch is a clearly defined sulcus that forms a visible groove on the lateral brain surface.",
+    opts: ["True", "False"],
+    ans: 1,
+    explain: "False. The preoccipital notch is only a small notch — not a well-defined sulcus. The actual division between temporal and occipital lobes relies on an imaginary line projected from it."
+  },
+  {
+    cat: "Boundaries", color: "var(--blue)",
+    type: "mc",
+    q: "Another name for the lateral sulcus that borders the temporal lobe superiorly is:",
+    opts: ["Rolandic fissure", "Calcarine fissure", "Sylvian fissure", "Intraparietal sulcus"],
+    ans: 2,
+    explain: "The lateral sulcus is also classically called the Sylvian fissure, named after Franciscus Sylvius. The Rolandic fissure is another name for the central sulcus."
+  },
+
+  // ── AUDITORY CORTEX ─────────────────────────────
+  {
+    cat: "Auditory Cortex", color: "var(--orange)",
+    type: "mc",
+    q: "Which three properties of sound does the primary auditory cortex help consciously process?",
+    opts: [
+      "Amplitude, duration, and timbre",
+      "Frequency, pitch, and localization",
+      "Pitch, language meaning, and emotional tone",
+      "Volume, rhythm, and direction"
+    ],
+    ans: 1,
+    explain: "The primary auditory cortex specifically handles frequency (rate of oscillation), pitch (high vs. low), and localization (determining which side the sound comes from). Meaning and emotion are handled downstream."
+  },
+  {
+    cat: "Auditory Cortex", color: "var(--orange)",
+    type: "mc",
+    q: "Auditory signals from the cochlea travel via which cranial nerve?",
+    opts: ["CN V (Trigeminal)", "CN VII (Facial)", "CN VIII (Vestibulocochlear)", "CN X (Vagus)"],
+    ans: 2,
+    explain: "CN VIII, the vestibulocochlear nerve, carries both auditory information from the cochlea and vestibular information from the semicircular canals and vestibule to the brainstem."
+  },
+  {
+    cat: "Auditory Cortex", color: "var(--orange)",
+    type: "mc",
+    q: "Where does CN VIII first synapse in the brainstem after leaving the inner ear?",
+    opts: ["Inferior colliculus", "Medial geniculate nucleus", "Cochlear nuclei in the medulla", "Superior olivary nucleus"],
+    ans: 2,
+    explain: "CN VIII synapses on the cochlear nuclei located in the medulla. From there, fibres cross via the trapezoid body and ascend to the thalamus."
+  },
+  {
+    cat: "Auditory Cortex", color: "var(--orange)",
+    type: "mc",
+    q: "Which thalamic nucleus relays auditory information to the primary auditory cortex?",
+    opts: ["Lateral geniculate nucleus", "Medial geniculate nucleus", "Ventral posterolateral nucleus", "Pulvinar"],
+    ans: 1,
+    explain: "The medial geniculate nucleus (MGN) of the thalamus is the auditory relay station — analogous to how the lateral geniculate nucleus handles visual information."
+  },
+  {
+    cat: "Auditory Cortex", color: "var(--orange)",
+    type: "tf",
+    q: "True or False: Sound from the right ear projects predominantly to the right (ipsilateral) primary auditory cortex.",
+    opts: ["True", "False"],
+    ans: 1,
+    explain: "False. Auditory information crosses (decussates) at the cochlear nuclei/trapezoid body, so the right ear projects predominantly to the LEFT primary auditory cortex — contralateral processing."
+  },
+  {
+    cat: "Auditory Cortex", color: "var(--orange)",
+    type: "mc",
+    q: "A lesion of the right primary auditory cortex above the level of the cochlear nuclei would most likely cause difficulty:",
+    opts: [
+      "Complete deafness in the right ear",
+      "Localizing and perceiving pitch/frequency of sounds from the left side",
+      "Understanding the meaning of all sounds bilaterally",
+      "Speech production"
+    ],
+    ans: 1,
+    explain: "Because auditory signals are predominantly contralateral, a right primary auditory cortex lesion impairs processing of sounds from the LEFT side — specifically localization, pitch, and frequency discrimination. It does not cause complete deafness due to bilateral representation."
+  },
+  {
+    cat: "Auditory Cortex", color: "var(--orange)",
+    type: "mc",
+    q: "The auditory association cortex is located _______ to the primary auditory cortex and gives _______ to sounds.",
+    opts: [
+      "Superior; location data",
+      "Inferior; meaning and purpose",
+      "Medial; emotional responses",
+      "Posterior; language comprehension"
+    ],
+    ans: 1,
+    explain: "The auditory association cortex lies inferior to the primary auditory cortex on the temporal lobe and integrates acoustic properties with past memories to give meaning and purpose to the sound — e.g., distinguishing a scream from music."
+  },
+
+  // ── WERNICKE'S AREA ─────────────────────────────
+  {
+    cat: "Wernicke's Area", color: "var(--green)",
+    type: "mc",
+    q: "Wernicke's area is primarily responsible for:",
+    opts: [
+      "Motor production of speech",
+      "Conscious awareness of auditory pitch",
+      "Comprehension and understanding of written and spoken language",
+      "Emotional processing of language"
+    ],
+    ans: 2,
+    explain: "Wernicke's area handles comprehension — understanding both what you hear (spoken language) and what you read (written language). Speech production is handled by Broca's area in the frontal lobe."
+  },
+  {
+    cat: "Wernicke's Area", color: "var(--green)",
+    type: "mc",
+    q: "Wernicke's area integrates input from which TWO cortical regions?",
+    opts: [
+      "Motor cortex and somatosensory cortex",
+      "Auditory association cortex and visual cortex",
+      "Prefrontal cortex and limbic system",
+      "Olfactory cortex and auditory cortex"
+    ],
+    ans: 1,
+    explain: "Wernicke's area receives processed auditory input (spoken language) from the auditory cortices and visual input (facial expressions, written text) from the visual cortices, combining both to form complete language comprehension."
+  },
+  {
+    cat: "Wernicke's Area", color: "var(--green)",
+    type: "mc",
+    q: "The white matter tract connecting Wernicke's area to Broca's area is called the:",
+    opts: ["Corpus callosum", "Internal capsule", "Arcuate fasciculus", "Superior longitudinal fasciculus"],
+    ans: 2,
+    explain: "The arcuate fasciculus is a curved bundle of white matter fibres that connects Wernicke's area (temporal lobe) to Broca's area (frontal lobe), allowing comprehension to drive speech production."
+  },
+  {
+    cat: "Wernicke's Area", color: "var(--green)",
+    type: "mc",
+    q: "Broca's area, which receives output from Wernicke's area via the arcuate fasciculus, is located in the:",
+    opts: ["Temporal lobe", "Parietal lobe", "Occipital lobe", "Frontal lobe"],
+    ans: 3,
+    explain: "Broca's area is in the inferior frontal gyrus of the frontal lobe. It handles the motor planning and execution of speech — the production side of language."
+  },
+  {
+    cat: "Wernicke's Area", color: "var(--green)",
+    type: "mc",
+    q: "A patient with Wernicke's aphasia would most likely present with:",
+    opts: [
+      "Inability to produce any speech; comprehension intact",
+      "Fluent but nonsensical speech ('word salad'); impaired comprehension",
+      "Slow, effortful speech; comprehension intact",
+      "Inability to read but normal speech and comprehension"
+    ],
+    ans: 1,
+    explain: "Wernicke's aphasia = receptive aphasia. Broca's area is undamaged, so speech is fluent. But without Wernicke's area, comprehension fails and output becomes meaningless 'word salad.' Patients are unaware their speech makes no sense."
+  },
+  {
+    cat: "Wernicke's Area", color: "var(--green)",
+    type: "tf",
+    q: "True or False: In Wernicke's aphasia, the patient's speech is non-fluent and halting because Broca's area is also damaged.",
+    opts: ["True", "False"],
+    ans: 1,
+    explain: "False. In Wernicke's aphasia, Broca's area remains intact, so speech production is preserved and appears fluent. The problem is that the content is nonsensical due to absent comprehension."
+  },
+  {
+    cat: "Wernicke's Area", color: "var(--green)",
+    type: "mc",
+    q: "Wernicke's aphasia is also called _______ aphasia because the deficit lies in processing incoming language.",
+    opts: ["Expressive", "Receptive", "Global", "Conduction"],
+    ans: 1,
+    explain: "Wernicke's aphasia is called receptive aphasia — the patient cannot receive and properly process (comprehend) language input. In contrast, Broca's aphasia is expressive (difficulty producing speech)."
+  },
+  {
+    cat: "Wernicke's Area", color: "var(--green)",
+    type: "mc",
+    q: "Wernicke's aphasia is most commonly caused by:",
+    opts: [
+      "Traumatic brain injury to the parietal lobe",
+      "A stroke affecting the middle cerebral artery territory",
+      "A tumor in the frontal lobe",
+      "Damage to the cerebellum"
+    ],
+    ans: 1,
+    explain: "Wernicke's area is supplied by the middle cerebral artery (MCA). A stroke in the MCA territory — specifically the superior temporal gyrus — is the most common cause of Wernicke's aphasia."
+  },
+
+  // ── OLFACTORY ───────────────────────────────────
+  {
+    cat: "Olfactory System", color: "var(--pink)",
+    type: "mc",
+    q: "The primary olfactory cortex is located on the _______ surface of the temporal lobe at the:",
+    opts: [
+      "Lateral surface; superior temporal gyrus",
+      "Medial surface; uncus",
+      "Inferior surface; parahippocampal gyrus",
+      "Lateral surface; fusiform gyrus"
+    ],
+    ans: 1,
+    explain: "The primary olfactory cortex is tucked on the medial surface of the temporal lobe and is centered on the uncus — it cannot be seen from a standard lateral view of the brain."
+  },
+  {
+    cat: "Olfactory System", color: "var(--pink)",
+    type: "mc",
+    q: "After activating olfactory receptors in the nasal cavity, the olfactory nerve fibres pass through which structure to reach the brain?",
+    opts: [
+      "Foramen magnum",
+      "Cribriform plate of the ethmoid bone",
+      "Jugular foramen",
+      "Foramen ovale"
+    ],
+    ans: 1,
+    explain: "Olfactory nerve fibres (CN I axons) pass superiorly through the tiny perforations of the cribriform plate of the ethmoid bone to reach the olfactory bulb resting on the inferior surface of the frontal lobe."
+  },
+  {
+    cat: "Olfactory System", color: "var(--pink)",
+    type: "mc",
+    q: "What is the correct order of structures in the olfactory pathway after the olfactory receptors?",
+    opts: [
+      "Olfactory bulb → Olfactory tract → Striae → Primary olfactory cortex",
+      "Olfactory tract → Olfactory bulb → Striae → Primary olfactory cortex",
+      "Cribriform plate → Primary olfactory cortex → Olfactory bulb → Amygdala",
+      "Olfactory bulb → Primary olfactory cortex → Thalamus → Frontal lobe"
+    ],
+    ans: 0,
+    explain: "Olfactory receptors → CN I fibres → cribriform plate → olfactory bulb → olfactory tract → lateral/medial olfactory striae → primary olfactory cortex (and orbital frontal cortex). The olfactory system uniquely bypasses the thalamus."
+  },
+  {
+    cat: "Olfactory System", color: "var(--pink)",
+    type: "tf",
+    q: "True or False: Unlike most sensory systems, the olfactory pathway sends signals directly to the cortex without first relaying through the thalamus.",
+    opts: ["True", "False"],
+    ans: 0,
+    explain: "True! The olfactory system is unique in bypassing the thalamus — it projects directly from the olfactory bulb via the olfactory tract to the primary olfactory cortex. All other major sensory modalities relay through the thalamus first."
+  },
+  {
+    cat: "Olfactory System", color: "var(--pink)",
+    type: "mc",
+    q: "The primary olfactory cortex provides:",
+    opts: [
+      "Recognition and naming of specific smells",
+      "Conscious awareness that a smell is present",
+      "Emotional responses to odours",
+      "Storage of olfactory memories"
+    ],
+    ans: 1,
+    explain: "The primary olfactory cortex gives you conscious awareness that a smell exists. The recognition, analysis, memory storage, and emotional linking are all performed by the downstream olfactory association cortex."
+  },
+  {
+    cat: "Olfactory System", color: "var(--pink)",
+    type: "mc",
+    q: "Which limbic structure does the olfactory association cortex communicate with to link smells with emotions?",
+    opts: ["Hippocampus", "Amygdala", "Hypothalamus", "Cingulate gyrus"],
+    ans: 1,
+    explain: "The olfactory association cortex projects to the amygdala, which processes emotions like fear, aggression, and pleasure. This connection explains why smells can evoke powerful emotional memories."
+  },
+  {
+    cat: "Olfactory System", color: "var(--pink)",
+    type: "mc",
+    q: "Loss of the ability to smell is termed:",
+    opts: ["Agnosia", "Anosmia", "Aphasia", "Ageusia"],
+    ans: 1,
+    explain: "Anosmia is the loss of the sense of smell, often resulting from damage to olfactory nerve fibres, the olfactory bulb, or the olfactory cortex. Ageusia refers to loss of taste."
+  },
+  {
+    cat: "Olfactory System", color: "var(--pink)",
+    type: "mc",
+    q: "Some olfactory fibres, via the medial olfactory striae, project to a region in the frontal lobe called the:",
+    opts: ["Prefrontal cortex", "Orbital frontal cortex", "Premotor cortex", "Primary motor cortex"],
+    ans: 1,
+    explain: "A subset of olfactory signals reach the orbital frontal cortex (orbitofrontal cortex) via the medial olfactory striae. This area is involved in higher-level olfactory processing including the hedonic (pleasant/unpleasant) evaluation of odours."
+  },
+
+  // ── INSULA ──────────────────────────────────────
+  {
+    cat: "Insula", color: "var(--teal)",
+    type: "mc",
+    q: "The insular cortex is classified as:",
+    opts: [
+      "Part of the temporal lobe",
+      "Part of the parietal lobe",
+      "The fifth lobe of the cerebral cortex",
+      "A subcortical structure"
+    ],
+    ans: 2,
+    explain: "The insula is often referred to as the fifth lobe of the cerebral cortex. Although buried within the lateral sulcus and surrounded by temporal and parietal cortex, it is considered its own distinct cortical region."
+  },
+  {
+    cat: "Insula", color: "var(--teal)",
+    type: "mc",
+    q: "The insula is hidden from the lateral surface of the brain. In which imaging plane is it best visualised?",
+    opts: ["Sagittal", "Axial", "Coronal", "Oblique"],
+    ans: 2,
+    explain: "A coronal section through the brain reveals the insula nestled within the lateral sulcus, flanked by the parietal and temporal opercula. On lateral views it is completely covered by overlying cortex."
+  },
+  {
+    cat: "Insula", color: "var(--teal)",
+    type: "mc",
+    q: "Taste information reaches the insular cortex after first synapsing in the brainstem at the:",
+    opts: [
+      "Trigeminal nucleus",
+      "Nucleus tractus solitarius (NTS)",
+      "Dorsal motor nucleus of the vagus",
+      "Cochlear nuclei"
+    ],
+    ans: 1,
+    explain: "Taste fibres from CN VII (chorda tympani), CN IX (glossopharyngeal), and CN X (vagus) first synapse in the Nucleus Tractus Solitarius (NTS) in the brainstem, which then relays the signal to the thalamus and ultimately the insula."
+  },
+  {
+    cat: "Insula", color: "var(--teal)",
+    type: "mc",
+    q: "Which of the following is NOT one of the five basic taste qualities processed in the insula?",
+    opts: ["Umami", "Pungent", "Bitter", "Sour"],
+    ans: 1,
+    explain: "The five recognised basic tastes are sweet, sour, salty, bitter, and umami. 'Pungent' (spiciness) is actually a pain/irritant sensation mediated by trigeminal pathways, not a taste quality processed in the insula."
+  },
+  {
+    cat: "Insula", color: "var(--teal)",
+    type: "mc",
+    q: "Which organs send visceral sensory information to the insular cortex?",
+    opts: [
+      "Skeletal muscles and skin",
+      "Heart, lungs, and gastrointestinal tract",
+      "Kidneys and bladder only",
+      "Eyes and inner ear"
+    ],
+    ans: 1,
+    explain: "The insula receives interoceptive visceral sensory signals from internal organs including the heart, lungs, and GI tract. This allows conscious awareness of internal body states such as pain, nausea, and fullness."
+  },
+  {
+    cat: "Insula", color: "var(--teal)",
+    type: "tf",
+    q: "True or False: The insula's role in vestibular sensation (equilibrium) is as well established as its role in taste.",
+    opts: ["True", "False"],
+    ans: 1,
+    explain: "False. The insula's involvement in vestibular/equilibrium processing is still under investigation and not as firmly established as its roles in taste and visceral sensation. It is considered a possible vestibular cortex but evidence is still accumulating."
+  },
+  {
+    cat: "Insula", color: "var(--teal)",
+    type: "mc",
+    q: "A person develops gastroenteritis (food poisoning) and the visceral pain is relayed to the insula. The likely adaptive outcome is:",
+    opts: [
+      "Permanently increased appetite for the food that caused it",
+      "Formation of an aversive visceral memory that discourages eating that food again",
+      "Complete loss of taste sensation",
+      "Damage to the olfactory bulb"
+    ],
+    ans: 1,
+    explain: "The insula integrates visceral sensory experiences and can form lasting aversive memories — a protective mechanism. Remembering the feeling of food poisoning helps us avoid repeating the same food choice."
+  },
+  {
+    cat: "Insula", color: "var(--teal)",
+    type: "mc",
+    q: "Vestibular information received by the insula originates from which two structures of the inner ear?",
+    opts: [
+      "Cochlea and oval window",
+      "Semicircular canals (dynamic equilibrium) and vestibule (static equilibrium)",
+      "Organ of Corti and tectorial membrane",
+      "Round window and endolymph"
+    ],
+    ans: 1,
+    explain: "The vestibular apparatus has two parts: the semicircular canals detect angular/rotational (dynamic) movement, while the vestibule (utricle and saccule) detects static position relative to gravity. Both send signals via CN VIII that may ultimately reach the insula."
+  }
+];
+
+// ═══════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════
+let order = [];
+let current = 0;
+let score = 0;
+let userAnswers = [];
+let answered = false;
+
+// category meta
+const CATS = {
+  "Boundaries":       { color: "var(--blue)",   total: 0, correct: 0 },
+  "Auditory Cortex":  { color: "var(--orange)", total: 0, correct: 0 },
+  "Wernicke's Area":  { color: "var(--green)",  total: 0, correct: 0 },
+  "Olfactory System": { color: "var(--pink)",   total: 0, correct: 0 },
+  "Insula":           { color: "var(--teal)",   total: 0, correct: 0 }
+};
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// ═══════════════════════════════════════════════
+//  FLOW
+// ═══════════════════════════════════════════════
+function startQuiz() {
+  order = shuffle([...Array(QUESTIONS.length).keys()]);
+  current = 0; score = 0; userAnswers = [];
+  Object.values(CATS).forEach(c => { c.total = 0; c.correct = 0; });
+  showScreen('quiz-screen');
+  renderQuestion();
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function renderQuestion() {
+  answered = false;
+  const idx = order[current];
+  const q = QUESTIONS[idx];
+  const total = QUESTIONS.length;
+
+  document.getElementById('q-num').textContent = current + 1;
+  document.getElementById('progress-fill').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cat-badge').textContent = q.cat;
+  document.getElementById('q-type-tag').textContent = q.type === 'tf' ? 'True / False' : 'Multiple Choice';
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('score-live').textContent = score;
+
+  const fb = document.getElementById('feedback-box');
+  fb.className = 'feedback-box';
+  fb.textContent = '';
+
+  const btn = document.getElementById('btn-next');
+  btn.className = 'btn-next';
+  btn.textContent = current < total - 1 ? 'Next →' : 'See Results →';
+
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+
+  const gridClass = q.type === 'tf' ? 'tf-grid' : 'options-grid';
+  const grid = document.createElement('div');
+  grid.className = gridClass;
+
+  const letters = ['A', 'B', 'C', 'D'];
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = `<span class="opt-letter">${q.type === 'tf' ? (i === 0 ? '✓' : '✗') : letters[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectAnswer(i);
+    grid.appendChild(btn);
+  });
+
+  container.appendChild(grid);
+}
+
+function selectAnswer(chosen) {
+  if (answered) return;
+  answered = true;
+
+  const idx = order[current];
+  const q = QUESTIONS[idx];
+  const correct = q.ans;
+  const isCorrect = chosen === correct;
+
+  userAnswers.push({ qIdx: idx, chosen, correct, isCorrect });
+
+  CATS[q.cat].total++;
+  if (isCorrect) { score++; CATS[q.cat].correct++; }
+
+  const grid = document.querySelector('.options-grid, .tf-grid');
+  const btns = grid.querySelectorAll('.opt-btn');
+  btns.forEach((b, i) => {
+    b.disabled = true;
+    if (i === chosen && isCorrect) b.classList.add('correct');
+    else if (i === chosen && !isCorrect) b.classList.add('wrong');
+    if (!isCorrect && i === correct) b.classList.add('reveal-correct');
+  });
+
+  const fb = document.getElementById('feedback-box');
+  fb.className = `feedback-box show ${isCorrect ? 'correct-fb' : 'wrong-fb'}`;
+  fb.innerHTML = `<strong>${isCorrect ? '✓ Correct!' : '✗ Incorrect.'}</strong> ${q.explain}`;
+
+  document.getElementById('btn-next').classList.add('show');
+  document.getElementById('score-live').textContent = score;
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= QUESTIONS.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  RESULTS
+// ═══════════════════════════════════════════════
+function showResults() {
+  document.getElementById('progress-fill').style.width = '100%';
+  showScreen('results-screen');
+
+  document.getElementById('res-score').textContent = score;
+  document.getElementById('res-total').textContent = `/ ${QUESTIONS.length}`;
+
+  const pct = score / QUESTIONS.length;
+  let title, sub;
+  if (pct === 1)       { title = `Perfect <em>Score!</em>`;  sub = "Flawless. Every concept nailed."; }
+  else if (pct >= 0.8) { title = `Great <em>Work!</em>`;     sub = "Strong understanding across the board."; }
+  else if (pct >= 0.6) { title = `Good <em>Effort!</em>`;    sub = "A few gaps to review — you've got this."; }
+  else                 { title = `Keep <em>Studying!</em>`;  sub = "Go back to the notes and try again."; }
+
+  document.getElementById('res-title').innerHTML = title;
+  document.getElementById('res-sub').textContent = sub;
+
+  // Breakdown
+  const list = document.getElementById('breakdown-list');
+  list.innerHTML = '';
+  Object.entries(CATS).forEach(([name, data]) => {
+    if (data.total === 0) return;
+    const pct = data.correct / data.total;
+    list.innerHTML += `
+      <div class="breakdown-row">
+        <span class="breakdown-dot" style="background:${data.color}"></span>
+        <span class="breakdown-name">${name}</span>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar" style="width:${pct*100}%;background:${data.color}"></div></div>
+        <span class="breakdown-frac">${data.correct}/${data.total}</span>
+      </div>`;
+  });
+}
+
+function restartQuiz() { startQuiz(); }
+
+// ═══════════════════════════════════════════════
+//  REVIEW
+// ═══════════════════════════════════════════════
+function showReview() {
+  showScreen('review-screen');
+  const list = document.getElementById('review-list');
+  list.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+
+  userAnswers.forEach((ua, i) => {
+    const q = QUESTIONS[ua.qIdx];
+    const div = document.createElement('div');
+    div.className = `review-item ${ua.isCorrect ? 'ri-correct' : 'ri-wrong'}`;
+
+    const chosenLabel = q.type === 'tf'
+      ? (ua.chosen === 0 ? 'True' : 'False')
+      : `${letters[ua.chosen]}. ${q.opts[ua.chosen]}`;
+    const correctLabel = q.type === 'tf'
+      ? (ua.correct === 0 ? 'True' : 'False')
+      : `${letters[ua.correct]}. ${q.opts[ua.correct]}`;
+
+    const wrongAnswerLine = ua.isCorrect ? '' :
+      `<div class="ri-your">Your answer: <span>${chosenLabel}</span></div>`;
+
+    div.innerHTML = `
+      <div class="ri-top">
+        <div class="ri-q"><strong>Q${i+1}.</strong> ${q.q}</div>
+        <div class="ri-icon">${ua.isCorrect ? '✅' : '❌'}</div>
+      </div>
+      <div class="ri-answers">
+        ${wrongAnswerLine}
+        <div class="ri-correct-ans">Correct answer: <span>${correctLabel}</span></div>
+        <div class="ri-explain">${q.explain}</div>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+function backToResults() { showScreen('results-screen'); }
+</script>
+</body>
+</html>
