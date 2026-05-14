@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Occipital Lobe — Unit 7 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ══════════════════════════════════════
+   THEME TOKENS
+══════════════════════════════════════ */
+:root {
+  --teal-bg: #E4F5EE;   --teal-mid: #1D9E75;   --teal-dark: #085041;
+  --purple-bg: #EEEDFE; --purple-mid: #534AB7;  --purple-dark: #3C3489;
+  --coral-bg: #FAECE7;  --coral-mid: #D85A30;   --coral-dark: #712B13;
+  --blue-bg: #E6F1FB;   --blue-mid: #378ADD;    --blue-dark: #0C447C;
+  --amber-bg: #FDF3E3;  --amber-mid: #EF9F27;   --amber-dark: #633806;
+  --green-bg: #EAF3DE;  --green-mid: #639922;   --green-dark: #27500A;
+  --red-bg: #FCEBEB;    --red-mid: #E24B4A;     --red-dark: #791F1F;
+  --indigo-bg: #EDEEFF; --indigo-mid: #4F55CC;  --indigo-dark: #252882;
+  --accent: #1D9E75;
+}
+
+/* LIGHT MODE */
+[data-theme="light"] {
+  --bg:           #F9F7F4;
+  --surface:      #FFFFFF;
+  --surface-2:    #F4F1EC;
+  --border:       #E5E0D8;
+  --border-strong:#C8C0B4;
+  --text:         #1A1714;
+  --text-muted:   #6B6560;
+  --text-faint:   #A39D97;
+  --toggle-bg:    #E5E0D8;
+  --toggle-knob:  #FFFFFF;
+}
+
+/* DARK MODE */
+[data-theme="dark"] {
+  --bg:           #0F0F13;
+  --surface:      #16161D;
+  --surface-2:    #1E1E28;
+  --border:       #2A2A38;
+  --border-strong:#3E3E52;
+  --text:         #E8E4D8;
+  --text-muted:   #8A8478;
+  --text-faint:   #5A5650;
+  --toggle-bg:    #3C3489;
+  --toggle-knob:  #E8E4D8;
+
+  --teal-bg:    #0D2B22;  --teal-dark:   #5ECFA6;
+  --purple-bg:  #1A1840;  --purple-dark: #A99FF0;
+  --coral-bg:   #2A150E;  --coral-dark:  #F0946A;
+  --blue-bg:    #0C1E33;  --blue-dark:   #7BBFEE;
+  --amber-bg:   #261A07;  --amber-dark:  #F5C97A;
+  --green-bg:   #0F2009;  --green-dark:  #8FCC50;
+  --red-bg:     #260B0B;  --red-dark:    #F08080;
+  --indigo-bg:  #12143A;  --indigo-dark: #9FA5FF;
+}
+
+/* ══════════════════════════════════════
+   TRANSITIONS
+══════════════════════════════════════ */
+body, .region, .region-header, .region-body, .card,
+.mini-card, .pathway-step, .pearl, .clinical, .insight,
+.chip-flow, .chip, .kv-row, .kv-key, .kv-val,
+.toggle-track, .vis-stage, .agnosia-row, th, td {
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.2s ease;
+}
+
+/* ══════════════════════════════════════
+   BASE
+══════════════════════════════════════ */
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.page { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+/* ── Top bar ── */
+.topbar { display: flex; justify-content: flex-end; padding: 20px 0 0; }
+
+.toggle-wrap {
+  display: flex; align-items: center; gap: 9px;
+  cursor: pointer; user-select: none;
+}
+
+.toggle-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.07em;
+  text-transform: uppercase; color: var(--text-faint);
+}
+
+.toggle-track {
+  width: 44px; height: 24px; border-radius: 99px;
+  background: var(--toggle-bg); position: relative;
+  border: 1px solid var(--border-strong); flex-shrink: 0;
+}
+
+.toggle-knob {
+  position: absolute; top: 3px; left: 3px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--toggle-knob);
+  transition: transform 0.22s cubic-bezier(.4,0,.2,1), background 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.25);
+}
+
+[data-theme="dark"] .toggle-knob { transform: translateX(20px); }
+
+.toggle-sun, .toggle-moon {
+  position: absolute; font-size: 11px;
+  top: 50%; transform: translateY(-50%);
+}
+.toggle-sun  { left:  6px; color: var(--amber-mid); }
+.toggle-moon { right: 6px; color: var(--purple-mid); }
+
+[data-theme="light"] .toggle-moon { opacity: 0.35; }
+[data-theme="dark"]  .toggle-sun  { opacity: 0.35; }
+
+/* ── Header ── */
+.header {
+  padding: 36px 0 40px; border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.header-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.dot-accent { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+.eyebrow-text {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-muted);
+}
+.header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(32px, 5vw, 52px); line-height: 1.1;
+  font-weight: 400; margin-bottom: 14px;
+}
+.header h1 em { font-style: italic; color: var(--accent); }
+.header-sub { font-size: 15px; color: var(--text-muted); max-width: 580px; line-height: 1.7; }
+
+/* ── Quick-jump chips ── */
+.quicknav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
+.qchip {
+  font-size: 12px; font-weight: 500; padding: 5px 13px;
+  border-radius: 99px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text-muted);
+  cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+}
+.qchip:hover { background: var(--surface-2); color: var(--text); border-color: var(--border-strong); }
+
+/* ══════════════════════════════════════
+   COLLAPSIBLE REGIONS
+══════════════════════════════════════ */
+.region { margin-bottom: 20px; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+
+.region-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 22px; cursor: pointer; user-select: none;
+}
+.region-header:hover { filter: brightness(0.97); }
+[data-theme="dark"] .region-header:hover { filter: brightness(1.08); }
+
+.region-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 500; padding: 3px 9px;
+  border-radius: 99px; flex-shrink: 0; letter-spacing: 0.04em;
+}
+.region-title { font-family: 'DM Serif Display', serif; font-size: 19px; font-weight: 400; flex: 1; line-height: 1.2; }
+.region-sub   { font-size: 12px; margin-top: 2px; opacity: 0.75; }
+
+.chevron-icon { margin-left: auto; flex-shrink: 0; transition: transform 0.25s; color: var(--text-faint); }
+.chevron-icon.open { transform: rotate(180deg); }
+
+/* region colour themes */
+.rh-teal   { background: var(--teal-bg); }
+.rh-blue   { background: var(--blue-bg); }
+.rh-purple { background: var(--purple-bg); }
+.rh-indigo { background: var(--indigo-bg); }
+.rh-amber  { background: var(--amber-bg); }
+.rh-red    { background: var(--red-bg); }
+.rh-green  { background: var(--green-bg); }
+
+.rb-teal   { background: var(--teal-bg);   color: var(--teal-dark); }
+.rb-blue   { background: var(--blue-bg);   color: var(--blue-dark); }
+.rb-purple { background: var(--purple-bg); color: var(--purple-dark); }
+.rb-indigo { background: var(--indigo-bg); color: var(--indigo-dark); }
+.rb-amber  { background: var(--amber-bg);  color: var(--amber-dark); }
+.rb-red    { background: var(--red-bg);    color: var(--red-dark); }
+.rb-green  { background: var(--green-bg);  color: var(--green-dark); }
+
+.rt-teal   { color: var(--teal-dark); }
+.rt-blue   { color: var(--blue-dark); }
+.rt-purple { color: var(--purple-dark); }
+.rt-indigo { color: var(--indigo-dark); }
+.rt-amber  { color: var(--amber-dark); }
+.rt-red    { color: var(--red-dark); }
+.rt-green  { color: var(--green-dark); }
+
+.region-body { display: none; padding: 24px; background: var(--surface); border-top: 1px solid var(--border); }
+.region-body.open { display: block; animation: fadeIn 0.18s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+
+/* ══════════════════════════════════════
+   SHARED UTILITIES
+══════════════════════════════════════ */
+.s-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text-faint); margin: 0 0 12px;
+}
+.mt  { margin-top: 22px; }
+.mt2 { margin-top: 14px; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+
+/* Fact list */
+.facts { list-style: none; margin-bottom: 4px; }
+.facts li {
+  font-size: 13.5px; color: var(--text-muted); line-height: 1.65;
+  padding: 6px 0 6px 16px; border-left: 1.5px solid var(--border);
+  margin-bottom: 4px; position: relative;
+}
+.facts li::before {
+  content: ''; position: absolute; left: -4px; top: 13px;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--border-strong);
+}
+.facts li b  { color: var(--text); font-weight: 600; }
+.facts li em { font-style: italic; }
+
+/* Grids */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+@media (max-width: 580px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+/* Mini card */
+.mini-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.mini-card-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 6px; }
+.mini-card-val   { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+.mini-card-val b { color: var(--text); font-weight: 600; }
+
+/* Inner cards */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 14px; position: relative; overflow: hidden; }
+.card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
+.card.blue::before   { background: var(--blue-mid); }
+.card.indigo::before { background: var(--indigo-mid); }
+.card.purple::before { background: var(--purple-mid); }
+.card.teal::before   { background: var(--teal-mid); }
+.card.amber::before  { background: var(--amber-mid); }
+.card.green::before  { background: var(--green-mid); }
+.card.none::before   { display: none; }
+.card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.card h2 { font-family: 'DM Serif Display', serif; font-size: 16px; font-weight: 400; color: var(--text); line-height: 1.3; margin-bottom: 12px; }
+.card-head h2 { margin-bottom: 0; }
+
+/* Badges */
+.zone-badge {
+  display: inline-flex; align-items: center; font-size: 10px; font-weight: 600;
+  letter-spacing: 0.07em; text-transform: uppercase; padding: 3px 9px;
+  border-radius: 99px; white-space: nowrap; flex-shrink: 0;
+}
+.badge-blue   { background: var(--blue-bg);   color: var(--blue-dark); }
+.badge-indigo { background: var(--indigo-bg); color: var(--indigo-dark); }
+.badge-purple { background: var(--purple-bg); color: var(--purple-dark); }
+.badge-teal   { background: var(--teal-bg);   color: var(--teal-dark); }
+.badge-amber  { background: var(--amber-bg);  color: var(--amber-dark); }
+.badge-green  { background: var(--green-bg);  color: var(--green-dark); }
+.badge-red    { background: var(--red-bg);    color: var(--red-dark); }
+
+/* Pills */
+.pill {
+  display: inline-flex; align-items: center; font-size: 11.5px; font-weight: 500;
+  padding: 3px 10px; border-radius: 99px; margin: 3px 4px 3px 0;
+}
+.pill-blue   { background: var(--blue-bg);   color: var(--blue-dark); }
+.pill-indigo { background: var(--indigo-bg); color: var(--indigo-dark); }
+.pill-purple { background: var(--purple-bg); color: var(--purple-dark); }
+.pill-teal   { background: var(--teal-bg);   color: var(--teal-dark); }
+.pill-amber  { background: var(--amber-bg);  color: var(--amber-dark); }
+.pill-green  { background: var(--green-bg);  color: var(--green-dark); }
+
+/* Pathway flow (vertical) */
+.pathway { display: flex; flex-direction: column; gap: 0; margin: 10px 0 14px; }
+.pathway-step {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 9px 14px; background: var(--surface-2);
+  border-left: 2px solid var(--border);
+  font-size: 13px; color: var(--text-muted); line-height: 1.55;
+}
+.pathway-step:first-child { border-radius: 8px 8px 0 0; }
+.pathway-step:last-child  { border-radius: 0 0 8px 8px; }
+.pathway-step b { color: var(--text); font-weight: 600; }
+.step-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  font-weight: 500; color: var(--text-faint); flex-shrink: 0;
+  margin-top: 2px; min-width: 18px;
+}
+
+/* Visual pathway stage cards */
+.vis-stages { display: flex; flex-direction: column; gap: 0; margin: 10px 0 18px; }
+.vis-stage {
+  display: grid; grid-template-columns: 32px 1fr;
+  align-items: stretch; border-bottom: 1px solid var(--border);
+}
+.vis-stage:first-child { border-radius: 10px 10px 0 0; }
+.vis-stage:last-child  { border-radius: 0 0 10px 10px; border-bottom: none; }
+.vis-stage-num {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface-2); border-right: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  font-weight: 600; color: var(--text-faint); writing-mode: initial;
+}
+.vis-stage-body {
+  padding: 11px 14px; background: var(--surface); font-size: 13px;
+  color: var(--text-muted); line-height: 1.55;
+}
+.vis-stage-body b { color: var(--text); font-weight: 600; }
+.vis-stage.highlight-blue .vis-stage-num  { background: var(--blue-bg); color: var(--blue-dark); border-right-color: var(--blue-mid); }
+.vis-stage.highlight-blue .vis-stage-body { background: var(--blue-bg); color: var(--blue-dark); border-left: 2px solid var(--blue-mid); }
+.vis-stage.highlight-indigo .vis-stage-num  { background: var(--indigo-bg); color: var(--indigo-dark); border-right-color: var(--indigo-mid); }
+.vis-stage.highlight-indigo .vis-stage-body { background: var(--indigo-bg); color: var(--indigo-dark); border-left: 2px solid var(--indigo-mid); }
+
+/* Comparison two-col — primary vs assoc */
+.cortex-pair {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;
+}
+@media (max-width: 580px) { .cortex-pair { grid-template-columns: 1fr; } }
+
+.cortex-card {
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 18px 20px; position: relative; overflow: hidden;
+  background: var(--surface);
+}
+.cortex-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.cortex-card.primary::before { background: var(--blue-mid); }
+.cortex-card.assoc::before   { background: var(--indigo-mid); }
+
+.cortex-card h3 {
+  font-family: 'DM Serif Display', serif; font-size: 15px;
+  font-weight: 400; margin-bottom: 10px;
+}
+.cortex-card.primary h3 { color: var(--blue-dark); }
+.cortex-card.assoc   h3 { color: var(--indigo-dark); }
+.cortex-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 6px; }
+.cortex-card p:last-child { margin-bottom: 0; }
+.cortex-card b { color: var(--text); font-weight: 600; }
+
+/* Analysis grid */
+.analysis-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 16px;
+}
+@media (max-width: 480px) { .analysis-grid { grid-template-columns: 1fr; } }
+
+.analysis-chip {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 14px;
+  font-size: 13px; color: var(--text-muted);
+}
+.analysis-chip-icon {
+  width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+  background: var(--indigo-bg);
+}
+.analysis-chip b { color: var(--text); font-weight: 600; display: block; margin-bottom: 1px; }
+
+/* Agnosia status table */
+.agnosia-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 4px; }
+.agnosia-table th {
+  text-align: left; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-faint); padding: 8px 12px 10px;
+  border-bottom: 1px solid var(--border); background: var(--surface-2);
+}
+.agnosia-table td {
+  padding: 11px 12px; border-bottom: 1px solid var(--border);
+  color: var(--text-muted); vertical-align: middle; line-height: 1.5;
+}
+.agnosia-table td:first-child { font-weight: 600; color: var(--text); width: 35%; }
+.agnosia-table tr:last-child td { border-bottom: none; }
+.agnosia-table .ok  { color: var(--green-dark); font-weight: 600; }
+.agnosia-table .bad { color: var(--red-dark);   font-weight: 600; }
+[data-theme="dark"] .agnosia-table .ok  { color: var(--green-dark); }
+[data-theme="dark"] .agnosia-table .bad { color: var(--red-dark); }
+
+/* Summary table */
+.summary-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.summary-table th {
+  text-align: left; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-faint); padding: 7px 12px 9px;
+  border-bottom: 1px solid var(--border); background: var(--surface-2);
+}
+.summary-table td {
+  padding: 11px 12px; border-bottom: 1px solid var(--border);
+  color: var(--text-muted); vertical-align: top; line-height: 1.55;
+}
+.summary-table td:first-child { font-weight: 600; color: var(--text); width: 28%; }
+.summary-table tr:last-child td { border-bottom: none; }
+.summary-table b { color: var(--text); font-weight: 600; }
+
+/* Clinical box */
+.clinical {
+  background: var(--red-bg); border: 1px solid var(--red-mid);
+  border-left: 3px solid var(--red-mid);
+  border-radius: 0 10px 10px 0; padding: 14px 16px; margin-top: 14px;
+}
+.clinical-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.clinical-icon {
+  width: 18px; height: 18px; border-radius: 50%; background: var(--red-mid);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.clinical-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red-dark); }
+.clinical p   { font-size: 13px; color: var(--red-dark); line-height: 1.65; }
+.clinical p+p { margin-top: 8px; }
+.clinical b   { font-weight: 600; }
+
+/* Pearl */
+.pearl {
+  background: var(--amber-bg); border: 1px solid var(--amber-mid);
+  border-radius: 10px; padding: 14px 16px; margin-top: 14px;
+}
+.pearl-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.pearl-icon {
+  width: 18px; height: 18px; border-radius: 50%; background: var(--amber-mid);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.pearl-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber-dark); }
+.pearl p   { font-size: 13px; color: var(--amber-dark); line-height: 1.65; }
+.pearl p+p { margin-top: 8px; }
+.pearl b   { font-weight: 600; }
+
+/* Insight strip */
+.insight {
+  background: var(--surface-2); border-left: 3px solid var(--purple-mid);
+  border-radius: 0 8px 8px 0; padding: 12px 16px; margin-top: 14px;
+  font-size: 13px; color: var(--text-muted); line-height: 1.65;
+}
+.insight b { color: var(--text); font-weight: 600; }
+.insight.blue   { border-left-color: var(--blue-mid); }
+.insight.indigo { border-left-color: var(--indigo-mid); }
+.insight.green  { border-left-color: var(--green-mid); }
+.insight.amber  { border-left-color: var(--amber-mid); }
+
+/* Footer */
+.footer {
+  text-align: center; padding: 40px 0 0; font-size: 12px;
+  color: var(--text-faint); border-top: 1px solid var(--border); margin-top: 60px;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── Theme toggle ── -->
+  <div class="topbar">
+    <div class="toggle-wrap" onclick="toggleTheme()" role="button" aria-label="Toggle dark/light mode" tabindex="0">
+      <span class="toggle-label" id="toggle-label">Light</span>
+      <div class="toggle-track">
+        <span class="toggle-sun">☀︎</span>
+        <span class="toggle-moon">☽</span>
+        <div class="toggle-knob"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <div class="header-eyebrow">
+      <div class="dot-accent"></div>
+      <span class="eyebrow-text">Neuroscience · Unit 7</span>
+    </div>
+    <h1>Occipital<br><em>Lobe</em></h1>
+    <p class="header-sub">Boundaries, primary visual cortex, visual association cortex, the full visual pathway, and the clinical correlation of visual agnosia.</p>
+  </header>
+
+  <!-- ── Quick-jump chips ── -->
+  <nav aria-label="Quick jump" class="quicknav">
+    <button class="qchip" onclick="openRegion('boundaries')">Boundaries</button>
+    <button class="qchip" onclick="openRegion('areas')">Cortical Areas</button>
+    <button class="qchip" onclick="openRegion('pathway')">Visual Pathway</button>
+    <button class="qchip" onclick="openRegion('assoc')">Visual Association Cortex</button>
+    <button class="qchip" onclick="openRegion('agnosia')">Visual Agnosia</button>
+    <button class="qchip" onclick="openRegion('summary')">Quick Reference</button>
+  </nav>
+
+
+  <!-- ══════════════ BOUNDARIES ══════════════ -->
+  <div class="region" id="reg-boundaries">
+    <div class="region-header rh-teal" onclick="toggle('boundaries')">
+      <span class="region-badge rb-teal">Section 01</span>
+      <div>
+        <div class="region-title rt-teal">Boundaries of the Occipital Lobe</div>
+        <div class="region-sub rt-teal">One real sulcus · one imaginary line</div>
+      </div>
+      <svg class="chevron-icon" id="chev-boundaries" width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="region-body" id="body-boundaries">
+
+      <!-- Brain diagram — occipital lobe highlighted -->
+      <div style="margin-bottom:22px;">
+        <svg viewBox="0 0 680 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);" aria-label="Lateral brain view highlighting the occipital lobe and its two boundaries">
+
+          <!-- Whole brain outline -->
+          <path d="M75,165 C55,165 36,144 34,118 C32,92 46,66 66,50 C88,33 115,27 142,25 C172,22 212,30 244,38 C278,47 318,62 350,68 C382,74 415,72 442,77 C468,82 492,96 507,114 C522,132 524,156 515,165 Z" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="1.5"/>
+
+          <!-- Occipital lobe shading — posterior wedge -->
+          <path d="M454,76 C468,81 484,92 497,107 C508,120 516,138 517,155 C517,160 516,163 515,165 L395,165 C390,160 385,152 384,142 C382,128 388,110 398,98 C412,84 435,77 454,76 Z" fill="var(--teal-bg)" opacity="0.8"/>
+
+          <!-- Parieto-occipital sulcus — real -->
+          <path d="M454,76 C450,96 446,118 444,138 C442,152 442,162 443,168" stroke="var(--teal-mid)" stroke-width="2.5" stroke-dasharray="5,3" fill="none"/>
+
+          <!-- Preoccipital notch → lateral sulcus tip (imaginary line) -->
+          <line x1="483" y1="148" x2="395" y2="165" stroke="var(--purple-mid)" stroke-width="2" stroke-dasharray="4,3"/>
+          <circle cx="483" cy="148" r="4" fill="var(--purple-mid)" opacity="0.7"/>
+
+          <!-- Lateral sulcus tip marker -->
+          <circle cx="395" cy="165" r="4" fill="var(--purple-mid)" opacity="0.5"/>
+
+          <!-- Calcarine sulcus (inside occipital — primary visual) -->
+          <path d="M460,110 C470,118 480,128 488,140" stroke="var(--blue-mid)" stroke-width="1.5" stroke-dasharray="3,2" fill="none" opacity="0.7"/>
+
+          <!-- Lobe labels -->
+          <text x="148" y="88" font-family="'DM Sans',sans-serif" font-size="12" fill="var(--text-muted)">Frontal</text>
+          <text x="310" y="76" font-family="'DM Sans',sans-serif" font-size="12" fill="var(--text-muted)">Parietal</text>
+          <text x="232" y="158" font-family="'DM Sans',sans-serif" font-size="12" fill="var(--text-muted)">Temporal</text>
+          <text x="453" y="130" font-family="'DM Serif Display',serif" font-size="14" fill="var(--teal-dark)">Occipital</text>
+
+          <!-- Boundary labels -->
+          <text x="348" y="56" font-family="'DM Sans',sans-serif" font-size="10" fill="var(--teal-dark)" font-weight="600">Parieto-occipital sulcus</text>
+          <line x1="450" y1="59" x2="455" y2="78" stroke="var(--teal-dark)" stroke-width="1"/>
+
+          <text x="492" y="138" font-family="'DM Sans',sans-serif" font-size="10" fill="var(--purple-dark)" font-weight="600">Preoccipital</text>
+          <text x="492" y="150" font-family="'DM Sans',sans-serif" font-size="10" fill="var(--purple-dark)" font-weight="600">notch</text>
+
+          <text x="312" y="178" font-family="'DM Sans',sans-serif" font-size="9" fill="var(--purple-dark)" font-style="italic">imaginary line →</text>
+
+          <!-- Calcarine label -->
+          <text x="470" y="108" font-family="'DM Sans',sans-serif" font-size="9" fill="var(--blue-dark)" font-weight="600">Calcarine</text>
+          <text x="470" y="118" font-family="'DM Sans',sans-serif" font-size="9" fill="var(--blue-dark)" font-weight="600">sulcus (V1)</text>
+
+          <text x="85" y="196" font-family="'DM Sans',sans-serif" font-size="9" fill="var(--text-faint)">← Anterior</text>
+          <text x="450" y="196" font-family="'DM Sans',sans-serif" font-size="9" fill="var(--text-faint)">Posterior →</text>
+        </svg>
+      </div>
+
+      <div class="grid2">
+        <div class="mini-card" style="border-top:3px solid var(--teal-mid);">
+          <div class="mini-card-label" style="color:var(--teal-dark);">Superior boundary — real sulcus</div>
+          <div class="mini-card-val"><b>Parieto-occipital sulcus</b> — a clearly defined sulcus on the medial surface. Separates the occipital lobe from the parietal lobe above and anterior to it.</div>
+        </div>
+        <div class="mini-card" style="border-top:3px solid var(--purple-mid);">
+          <div class="mini-card-label" style="color:var(--purple-dark);">Anterior boundary — imaginary line</div>
+          <div class="mini-card-val"><b>Preoccipital notch → tip of lateral sulcus</b> — an imaginary line connecting these two landmarks separates the occipital lobe from the temporal lobe anteriorly.</div>
+        </div>
+      </div>
+
+      <div class="insight teal" style="margin-top:14px;">
+        <b>Key distinction:</b> The parieto-occipital sulcus is a <em>real</em>, identifiable anatomical structure. The anterior boundary is <em>imaginary</em> — drawn by convention between two landmarks to define where temporal ends and occipital begins.
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ CORTICAL AREAS ══════════════ -->
+  <div class="region" id="reg-areas">
+    <div class="region-header rh-blue" onclick="toggle('areas')">
+      <span class="region-badge rb-blue">Section 02</span>
+      <div>
+        <div class="region-title rt-blue">Two Cortical Areas</div>
+        <div class="region-sub rt-blue">Primary visual cortex · visual association cortex</div>
+      </div>
+      <svg class="chevron-icon" id="chev-areas" width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="region-body" id="body-areas">
+
+      <p style="font-size:13.5px;color:var(--text-muted);line-height:1.65;margin-bottom:18px;">The occipital lobe contains exactly <b>two</b> functionally distinct cortices — a primary sensory area and a higher-order association area. They work in strict sequence: primary cortex first, association cortex second.</p>
+
+      <div class="cortex-pair">
+        <div class="cortex-card primary">
+          <h3>① Primary Visual Cortex</h3>
+          <p><b>Location:</b> Most posterior part of the occipital lobe, along the calcarine sulcus (medial surface)</p>
+          <p><b>Brodmann Area:</b> 17</p>
+          <p><b>Core function:</b> <b>Conscious awareness</b> of visual stimuli — knowing that a visual object is present</p>
+          <p style="font-style:italic;">Receives the raw image but does <em>not</em> yet identify or interpret it.</p>
+        </div>
+        <div class="cortex-card assoc">
+          <h3>② Visual Association Cortex</h3>
+          <p><b>Location:</b> Anterior to the primary visual cortex, surrounding it</p>
+          <p><b>Brodmann Areas:</b> 18, 19</p>
+          <p><b>Core function:</b> <b>Meaning, understanding, and recognition</b> of visual stimuli</p>
+          <p style="font-style:italic;">Analyzes the raw image, compares it with stored memories, and names it.</p>
+        </div>
+      </div>
+
+      <div class="pearl">
+        <div class="pearl-head">
+          <div class="pearl-icon">!</div>
+          <span class="pearl-label">Two-stage analogy</span>
+        </div>
+        <p>Think of it as a two-stage process: the <b>primary visual cortex</b> says <em>"something is there"</em> — the <b>visual association cortex</b> says <em>"I know exactly what that is."</em></p>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ VISUAL PATHWAY ══════════════ -->
+  <div class="region" id="reg-pathway">
+    <div class="region-header rh-indigo" onclick="toggle('pathway')">
+      <span class="region-badge rb-indigo">Section 03</span>
+      <div>
+        <div class="region-title rt-indigo">Visual Pathway</div>
+        <div class="region-sub rt-indigo">From external object to conscious recognition — step by step</div>
+      </div>
+      <svg class="chevron-icon" id="chev-pathway" width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="region-body" id="body-pathway">
+
+      <!-- Pathway with visual eye diagram -->
+      <p class="s-label">Complete visual pathway</p>
+
+      <div class="vis-stages" style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+        <div class="vis-stage">
+          <div class="vis-stage-num">①</div>
+          <div class="vis-stage-body"><b>Object</b> — light reflected from the object enters the eye through the cornea and lens</div>
+        </div>
+        <div class="vis-stage">
+          <div class="vis-stage-num">②</div>
+          <div class="vis-stage-body"><b>Retina</b> — photoreceptors (rods for low light, cones for color/acuity) transduce light energy into neural signals via retinal ganglion cells</div>
+        </div>
+        <div class="vis-stage">
+          <div class="vis-stage-num">③</div>
+          <div class="vis-stage-body"><b>Optic nerve (CN II)</b> — carries signals from each eye toward the optic chiasma</div>
+        </div>
+        <div class="vis-stage">
+          <div class="vis-stage-num">④</div>
+          <div class="vis-stage-body"><b>Optic chiasma</b> — partial decussation: <b>nasal fibers cross</b> to the contralateral optic tract; temporal fibers remain ipsilateral. Each optic tract carries signals from the <em>contralateral</em> visual field of both eyes</div>
+        </div>
+        <div class="vis-stage">
+          <div class="vis-stage-num">⑤</div>
+          <div class="vis-stage-body"><b>Lateral Geniculate Nucleus (LGN)</b> of the thalamus — main visual relay station; preserves retinotopic organization</div>
+        </div>
+        <div class="vis-stage">
+          <div class="vis-stage-num">⑥</div>
+          <div class="vis-stage-body"><b>Optic radiations</b> (geniculocalcarine tract) — fan of white matter fibers projecting from LGN to the calcarine sulcus</div>
+        </div>
+        <div class="vis-stage highlight-blue">
+          <div class="vis-stage-num">⑦</div>
+          <div class="vis-stage-body"><b>Primary visual cortex (V1 · Area 17)</b> — calcarine sulcus, medial occipital lobe → <b>conscious awareness</b> of the image</div>
+        </div>
+        <div class="vis-stage highlight-indigo">
+          <div class="vis-stage-num">⑧</div>
+          <div class="vis-stage-body"><b>Visual association cortex (Areas 18, 19)</b> — analysis, memory comparison, and <b>recognition</b> of the object</div>
+        </div>
+      </div>
+
+      <divider class="divider" style="display:block;height:1px;background:var(--border);margin:20px 0;border:none;"></divider>
+      <p class="s-label">Decussation at the optic chiasma — what crosses?</p>
+
+      <div class="grid2" style="margin-bottom:16px;">
+        <div class="mini-card" style="border-left:3px solid var(--blue-mid);">
+          <div class="mini-card-label" style="color:var(--blue-dark);">Nasal retinal fibers — cross</div>
+          <div class="mini-card-val">Carry signals from the <b>temporal (outer) visual field</b>. Cross at the chiasma to the <b>contralateral</b> optic tract.</div>
+        </div>
+        <div class="mini-card" style="border-left:3px solid var(--purple-mid);">
+          <div class="mini-card-label" style="color:var(--purple-dark);">Temporal retinal fibers — stay</div>
+          <div class="mini-card-val">Carry signals from the <b>nasal (inner) visual field</b>. Remain <b>ipsilateral</b> — do not cross.</div>
+        </div>
+      </div>
+
+      <div class="insight indigo">
+        <b>Net result:</b> Each primary visual cortex receives input from the <em>opposite</em> visual field of <em>both</em> eyes. The <b>right</b> primary visual cortex processes the <b>left visual field</b> as seen by both the left and right eyes — not just the left eye.
+      </div>
+
+      <div class="clinical" style="margin-top:16px;">
+        <div class="clinical-head">
+          <div class="clinical-icon">Rx</div>
+          <span class="clinical-label">Pathway lesion correlations</span>
+        </div>
+        <p><b>Optic nerve cut</b> → monocular blindness in that eye (all signals from one eye lost).</p>
+        <p><b>Optic chiasma lesion</b> (e.g., pituitary adenoma pressing from below) → <b>bitemporal hemianopia</b> — loss of both temporal visual fields (the crossing nasal fibers are cut).</p>
+        <p><b>Optic tract / LGN / optic radiation / V1 lesion</b> → <b>contralateral homonymous hemianopia</b> — loss of the same half of the visual field in both eyes.</p>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ VISUAL ASSOCIATION CORTEX ══════════════ -->
+  <div class="region" id="reg-assoc">
+    <div class="region-header rh-purple" onclick="toggle('assoc')">
+      <span class="region-badge rb-purple">Section 04</span>
+      <div>
+        <div class="region-title rt-purple">Visual Association Cortex — Detail</div>
+        <div class="region-sub rt-purple">Areas 18 &amp; 19 · analysis · recognition · two output streams</div>
+      </div>
+      <svg class="chevron-icon" id="chev-assoc" width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="region-body" id="body-assoc">
+
+      <p class="s-label">What it analyzes — four properties</p>
+      <div class="analysis-grid" style="margin-bottom:20px;">
+        <div class="analysis-chip">
+          <div class="analysis-chip-icon">🎨</div>
+          <div><b>Color</b><br><span style="font-size:12px;">Wavelength discrimination — hue, saturation, brightness</span></div>
+        </div>
+        <div class="analysis-chip">
+          <div class="analysis-chip-icon">📐</div>
+          <div><b>Size &amp; shape</b><br><span style="font-size:12px;">Object dimensions, angles, outlines, contours</span></div>
+        </div>
+        <div class="analysis-chip">
+          <div class="analysis-chip-icon">🔄</div>
+          <div><b>Motion</b><br><span style="font-size:12px;">Moving vs. stationary; speed and direction of motion</span></div>
+        </div>
+        <div class="analysis-chip">
+          <div class="analysis-chip-icon">📍</div>
+          <div><b>Location / depth</b><br><span style="font-size:12px;">Spatial position, distance, binocular disparity</span></div>
+        </div>
+      </div>
+
+      <p class="s-label">Two-step recognition process</p>
+      <div class="pathway" style="margin-bottom:20px;">
+        <div class="pathway-step"><span class="step-num">①</span><span><b>Analyze</b> — break down the visual properties (color, size, shape, motion) of the incoming image from V1</span></div>
+        <div class="pathway-step" style="background:var(--purple-bg);border-left-color:var(--purple-mid);">
+          <span class="step-num" style="color:var(--purple-dark);">②</span>
+          <span style="color:var(--purple-dark);"><b>Compare with past memories</b> — match the analyzed properties against stored visual memory traces → <b>Recognition</b></span>
+        </div>
+      </div>
+
+      <p class="s-label">Two output streams</p>
+      <div class="grid2" style="margin-bottom:16px;">
+        <div class="mini-card" style="border-top:3px solid var(--blue-mid);">
+          <div class="mini-card-label" style="color:var(--blue-dark);">Ventral stream — "What"</div>
+          <div class="mini-card-val">Projects to <b>inferior temporal cortex</b>. Handles <b>object identity</b> — what an object is (color, shape, face recognition). Damage → visual agnosia, prosopagnosia.</div>
+        </div>
+        <div class="mini-card" style="border-top:3px solid var(--purple-mid);">
+          <div class="mini-card-label" style="color:var(--purple-dark);">Dorsal stream — "Where/How"</div>
+          <div class="mini-card-val">Projects to <b>posterior parietal cortex</b>. Handles <b>spatial location</b> and visual guidance of action — where an object is and how to reach it. Damage → visual-spatial neglect, optic ataxia.</div>
+        </div>
+      </div>
+
+      <div class="insight">
+        <b>Basketball example:</b> Your eyes deliver raw visual data to V1 (primary cortex). The association cortex then extracts: orange color, spherical shape, black seam lines, bouncing motion — compares all four against stored memory — and concludes: <em>"basketball."</em> Without this step you could <em>see</em> it but not <em>name</em> it.
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ VISUAL AGNOSIA ══════════════ -->
+  <div class="region" id="reg-agnosia">
+    <div class="region-header rh-red" onclick="toggle('agnosia')">
+      <span class="region-badge rb-red">Section 05</span>
+      <div>
+        <div class="region-title rt-red">Visual Agnosia</div>
+        <div class="region-sub rt-red">Clinical correlation — sees but cannot recognize</div>
+      </div>
+      <svg class="chevron-icon" id="chev-agnosia" width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="region-body" id="body-agnosia">
+
+      <div class="card none">
+        <div class="card-head">
+          <h2>Definition</h2>
+          <span class="zone-badge badge-red">Association cortex lesion</span>
+        </div>
+        <ul class="facts">
+          <li>The inability to <b>recognize</b> a visual object despite having <b>intact vision</b></li>
+          <li>Lesion site: <b>visual association cortex</b> (Areas 18/19) — not the primary visual cortex</li>
+          <li>The entire visual pathway up to and including V1 is functioning normally</li>
+          <li>The failure is in <em>interpretation</em> of the image, not its <em>reception</em></li>
+        </ul>
+      </div>
+
+      <p class="s-label mt">What is intact vs. impaired</p>
+
+      <div class="card none" style="padding:0;overflow:hidden;margin-bottom:16px;">
+        <table class="agnosia-table">
+          <thead>
+            <tr>
+              <th>Structure</th>
+              <th>Status</th>
+              <th>Implication</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Retina (photoreceptors)</td>
+              <td class="ok">✓ Intact</td>
+              <td>Light transduced normally into neural signals</td>
+            </tr>
+            <tr>
+              <td>Optic nerve (CN II)</td>
+              <td class="ok">✓ Intact</td>
+              <td>Signal travels normally toward the brain</td>
+            </tr>
+            <tr>
+              <td>Optic chiasma &amp; tracts</td>
+              <td class="ok">✓ Intact</td>
+              <td>Decussation and relay proceed normally</td>
+            </tr>
+            <tr>
+              <td>LGN (thalamus)</td>
+              <td class="ok">✓ Intact</td>
+              <td>Visual relay station functioning normally</td>
+            </tr>
+            <tr>
+              <td>Primary visual cortex (V1)</td>
+              <td class="ok">✓ Intact</td>
+              <td>Patient <em>can</em> see — conscious awareness preserved</td>
+            </tr>
+            <tr style="background:var(--red-bg);">
+              <td style="color:var(--red-dark);"><b>Visual association cortex</b></td>
+              <td class="bad">✗ Lesioned</td>
+              <td style="color:var(--red-dark);">Patient <b>cannot recognize</b> — analysis and memory comparison fail</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pearl">
+        <div class="pearl-head">
+          <div class="pearl-icon">!</div>
+          <span class="pearl-label">Clinical scenario</span>
+        </div>
+        <p>The patient is shown a basketball. They can describe seeing <em>"an orange, round object"</em> (V1 is working — conscious awareness intact). But they <b>cannot identify it as a basketball</b> — the association cortex lesion has severed the link between visual analysis and stored object memory.</p>
+        <p>They <em>see</em> it perfectly. They simply cannot <em>recognize</em> it.</p>
+      </div>
+
+      <div class="insight amber" style="margin-top:14px;">
+        <b>Contrast with cortical blindness:</b> A <em>primary visual cortex</em> lesion causes <b>cortical blindness</b> — the patient has no conscious visual awareness at all (cannot see). A <em>visual association cortex</em> lesion causes <b>visual agnosia</b> — vision is present but recognition is lost.
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ QUICK REFERENCE ══════════════ -->
+  <div class="region" id="reg-summary">
+    <div class="region-header rh-green" onclick="toggle('summary')">
+      <span class="region-badge rb-green">Section 06</span>
+      <div>
+        <div class="region-title rt-green">Quick-Reference Summary</div>
+        <div class="region-sub rt-green">All occipital lobe structures at a glance</div>
+      </div>
+      <svg class="chevron-icon" id="chev-summary" width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="region-body" id="body-summary">
+
+      <div class="card none" style="padding:0;overflow:hidden;margin-bottom:22px;">
+        <table class="summary-table">
+          <thead>
+            <tr>
+              <th>Structure</th>
+              <th>Location</th>
+              <th>Function</th>
+              <th>Lesion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <span style="color:var(--blue-dark);">Primary Visual Cortex (V1)</span><br>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-faint);font-weight:400;">Area 17</span>
+              </td>
+              <td>Calcarine sulcus, medial posterior occipital</td>
+              <td>Conscious awareness of visual stimuli. Receives from LGN via optic radiations.</td>
+              <td><b>Cortical blindness</b> — no conscious vision in contralateral visual field</td>
+            </tr>
+            <tr>
+              <td>
+                <span style="color:var(--indigo-dark);">Visual Association Cortex</span><br>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-faint);font-weight:400;">Areas 18, 19</span>
+              </td>
+              <td>Surrounding V1; anterior to primary visual cortex</td>
+              <td>Analysis (color, size, shape, motion), memory comparison, recognition. Outputs to ventral ("what") and dorsal ("where") streams.</td>
+              <td><b>Visual agnosia</b> — sees but cannot recognize; <b>prosopagnosia</b> (face blindness) with ventral stream damage</td>
+            </tr>
+            <tr>
+              <td>Parieto-occipital sulcus</td>
+              <td>Medial brain surface</td>
+              <td>Anatomical boundary separating occipital from parietal</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Preoccipital notch line</td>
+              <td>Imaginary posterior line</td>
+              <td>Convention boundary separating occipital from temporal</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Brodmann reference -->
+      <p class="s-label">Brodmann area quick reference</p>
+      <div class="grid3">
+        <div class="mini-card" style="text-align:center;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:500;color:var(--blue-dark);margin-bottom:4px;">17</div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);">Primary Visual</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Calcarine sulcus · V1</div>
+        </div>
+        <div class="mini-card" style="text-align:center;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:500;color:var(--indigo-dark);margin-bottom:4px;">18</div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);">Visual Assoc. (V2)</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Surrounds V1</div>
+        </div>
+        <div class="mini-card" style="text-align:center;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:500;color:var(--purple-dark);margin-bottom:4px;">19</div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);">Visual Assoc. (V3–V5)</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Motion, color, form</div>
+        </div>
+      </div>
+
+      <!-- Pathway lesion summary -->
+      <p class="s-label mt">Visual pathway lesion map</p>
+      <div class="card none" style="padding:0;overflow:hidden;">
+        <table class="summary-table">
+          <thead>
+            <tr><th>Lesion site</th><th>Visual field deficit</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Optic nerve (one side)</td><td><b>Monocular blindness</b> — total loss of vision in one eye</td></tr>
+            <tr><td>Optic chiasma (central)</td><td><b>Bitemporal hemianopia</b> — loss of both temporal fields (tunnel vision)</td></tr>
+            <tr><td>Optic tract / LGN / V1 (one side)</td><td><b>Contralateral homonymous hemianopia</b> — same half-field lost in both eyes</td></tr>
+            <tr><td>V1 (bilateral)</td><td><b>Cortical blindness</b> — complete loss of conscious vision</td></tr>
+            <tr><td>Visual association cortex</td><td><b>Visual agnosia</b> — vision intact, recognition lost</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Neuroscience Study Guide &nbsp;·&nbsp; Unit 7: Occipital Lobe</p>
+    <p style="margin-top:6px;">For study purposes only. Always verify with primary course materials.</p>
+  </footer>
+
+</div>
+
+<script>
+/* ── Collapsible regions ── */
+function toggle(id) {
+  document.getElementById('body-' + id).classList.toggle('open');
+  document.getElementById('chev-' + id).classList.toggle('open');
+}
+function openRegion(id) {
+  document.getElementById('body-' + id).classList.add('open');
+  document.getElementById('chev-' + id).classList.add('open');
+  setTimeout(() => {
+    document.getElementById('reg-' + id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 60);
+}
+
+/* ── Dark / light toggle ── */
+function toggleTheme() {
+  const html  = document.documentElement;
+  const label = document.getElementById('toggle-label');
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  label.textContent = isDark ? 'Light' : 'Dark';
+  try { localStorage.setItem('u7-theme', isDark ? 'light' : 'dark'); } catch(e) {}
+}
+// Restore saved preference
+try {
+  const saved = localStorage.getItem('u7-theme');
+  if (saved === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('toggle-label').textContent = 'Dark';
+  }
+} catch(e) {}
+// Keyboard accessibility
+document.querySelector('.toggle-wrap').addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleTheme(); }
+});
+
+// Open first section by default
+openRegion('boundaries');
+</script>
+</body>
+</html>

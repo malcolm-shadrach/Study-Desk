@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Occipital Lobe — Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161e;
+    --surface2: #1a1e29;
+    --border: #252a38;
+    --accent: #7eb8f7;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --warn: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --correct: #22c55e;
+    --wrong: #ef4444;
+    --correct-bg: #052e16;
+    --wrong-bg: #1c0a0a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    padding: 2rem 1rem 5rem;
+  }
+
+  .page { max-width: 780px; margin: 0 auto; }
+
+  /* ── Header ── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.75rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+
+  .tag {
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.9rem, 5vw, 3rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 0.4rem;
+  }
+
+  .subtitle { color: var(--muted); font-size: 0.95rem; }
+
+  /* ── Progress bar ── */
+  .progress-wrap {
+    margin: 1.5rem 0 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 99px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .progress-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    white-space: nowrap;
+    min-width: 70px;
+    text-align: right;
+  }
+
+  /* ── Category pills ── */
+  .categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .cat-pill {
+    padding: 0.25rem 0.75rem;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--surface);
+    letter-spacing: 0.04em;
+  }
+
+  .cat-pill.active, .cat-pill:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: #0d1d30;
+  }
+
+  /* ── Score strip ── */
+  .score-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .score-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    text-align: center;
+  }
+
+  .score-card .val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    display: block;
+  }
+
+  .score-card .lbl {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .val-correct { color: var(--correct); }
+  .val-wrong   { color: var(--wrong); }
+  .val-remain  { color: var(--accent); }
+
+  /* ── Question card ── */
+  .q-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.75rem 1.75rem 1.25rem;
+    margin-bottom: 1.5rem;
+    animation: fadeSlide 0.35s ease both;
+  }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .q-num {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .q-category {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.55rem;
+    border-radius: 99px;
+    border: 1px solid;
+  }
+
+  .cat-boundaries  { color: var(--accent);  border-color: var(--accent);  }
+  .cat-cortex      { color: var(--accent2); border-color: var(--accent2); }
+  .cat-pathway     { color: var(--accent3); border-color: var(--accent3); }
+  .cat-association { color: #fb923c;        border-color: #fb923c; }
+  .cat-clinical    { color: var(--warn);    border-color: var(--warn);    }
+
+  .q-diff {
+    margin-left: auto;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  .q-text {
+    font-size: 1.05rem;
+    color: #fff;
+    margin-bottom: 1.25rem;
+    line-height: 1.6;
+  }
+
+  /* ── Options ── */
+  .options { display: flex; flex-direction: column; gap: 0.6rem; }
+
+  .option {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem 1.1rem;
+    cursor: pointer;
+    font-size: 0.93rem;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    transition: border-color 0.18s, background 0.18s;
+    position: relative;
+  }
+
+  .option:hover:not(.disabled) {
+    border-color: var(--accent);
+    background: #131a28;
+  }
+
+  .opt-letter {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--muted);
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: all 0.18s;
+  }
+
+  .option:hover:not(.disabled) .opt-letter {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .option.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+  }
+
+  .option.correct .opt-letter {
+    background: var(--correct);
+    border-color: var(--correct);
+    color: #000;
+  }
+
+  .option.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+  }
+
+  .option.wrong .opt-letter {
+    background: var(--wrong);
+    border-color: var(--wrong);
+    color: #fff;
+  }
+
+  .option.disabled { cursor: default; }
+
+  /* ── Explanation ── */
+  .explanation {
+    margin-top: 1rem;
+    background: #0d1625;
+    border: 1px solid #1e3a5f;
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
+    font-size: 0.88rem;
+    color: #93c5fd;
+    line-height: 1.65;
+    display: none;
+    animation: fadeSlide 0.3s ease;
+  }
+
+  .explanation.show { display: block; }
+  .explanation strong { color: #bfdbfe; }
+
+  /* ── Nav buttons ── */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.75rem;
+  }
+
+  .btn {
+    padding: 0.6rem 1.4rem;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.18s;
+    letter-spacing: 0.03em;
+  }
+
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+    font-weight: 700;
+  }
+
+  .btn-primary:hover { background: #a8d4ff; border-color: #a8d4ff; color: #000; }
+
+  /* ── Results screen ── */
+  #results-screen {
+    display: none;
+    text-align: center;
+    animation: fadeSlide 0.5s ease;
+  }
+
+  .result-score {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(4rem, 12vw, 7rem);
+    font-weight: 700;
+    line-height: 1;
+    margin: 1.5rem 0 0.5rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .result-label {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+
+  .result-breakdown {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+    margin: 1.5rem 0 2rem;
+    text-align: left;
+  }
+
+  .breakdown-row {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.85rem;
+  }
+
+  .breakdown-row .br-cat {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+  }
+
+  .breakdown-row .br-score { font-size: 1.1rem; font-family: 'Playfair Display', serif; font-weight: 700; }
+
+  .grade-msg {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── Start screen ── */
+  #start-screen { text-align: center; padding: 3rem 1rem; }
+
+  .start-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.75rem;
+    margin: 2rem 0 2.5rem;
+    text-align: left;
+  }
+
+  .start-cat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+  }
+
+  .start-cat-card .scc-title { font-size: 0.8rem; font-weight: 700; margin-bottom: 0.2rem; }
+  .start-cat-card .scc-count { font-size: 0.75rem; color: var(--muted); }
+
+  footer {
+    margin-top: 4rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.78rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <span class="tag">Neuroscience · Cerebral Cortex</span>
+    <h1>Occipital Lobe Quiz</h1>
+    <p class="subtitle">Boundaries · Cortical Areas · Visual Pathway · Clinical Correlates</p>
+    <div class="progress-wrap" id="progress-wrap" style="display:none;">
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <span class="progress-label" id="progress-label">0 / 25</span>
+    </div>
+  </header>
+
+  <!-- Score strip -->
+  <div class="score-strip" id="score-strip" style="display:none;">
+    <div class="score-card">
+      <span class="val val-correct" id="sc-correct">0</span>
+      <span class="lbl">Correct</span>
+    </div>
+    <div class="score-card">
+      <span class="val val-wrong" id="sc-wrong">0</span>
+      <span class="lbl">Incorrect</span>
+    </div>
+    <div class="score-card">
+      <span class="val val-remain" id="sc-remain">25</span>
+      <span class="lbl">Remaining</span>
+    </div>
+  </div>
+
+  <!-- Start screen -->
+  <div id="start-screen">
+    <p style="color:var(--muted); max-width:520px; margin:0 auto 0.5rem; font-size:0.95rem;">
+      Test your knowledge of the occipital lobe across five categories. 25 questions, instant feedback with explanations.
+    </p>
+    <div class="start-grid">
+      <div class="start-cat-card">
+        <div class="scc-title" style="color:var(--accent);">Boundaries</div>
+        <div class="scc-count">5 questions · Sulci, notches, neighboring lobes</div>
+      </div>
+      <div class="start-cat-card">
+        <div class="scc-title" style="color:var(--accent2);">Cortical Areas</div>
+        <div class="scc-count">5 questions · Location & core functions</div>
+      </div>
+      <div class="start-cat-card">
+        <div class="scc-title" style="color:var(--accent3);">Visual Pathway</div>
+        <div class="scc-count">5 questions · Retina → LGN → Cortex</div>
+      </div>
+      <div class="start-cat-card">
+        <div class="scc-title" style="color:#fb923c;">Visual Association Cortex</div>
+        <div class="scc-count">5 questions · Analysis, memory, recognition</div>
+      </div>
+      <div class="start-cat-card">
+        <div class="scc-title" style="color:var(--warn);">Clinical Correlates</div>
+        <div class="scc-count">5 questions · Agnosia & lesion effects</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="startQuiz()" style="font-size:1rem; padding:0.8rem 2.5rem;">Begin Quiz →</button>
+  </div>
+
+  <!-- Quiz screen -->
+  <div id="quiz-screen" style="display:none;">
+    <div id="q-container"></div>
+    <div class="nav">
+      <button class="btn" id="btn-prev" onclick="go(-1)">← Previous</button>
+      <button class="btn btn-primary" id="btn-next" onclick="go(1)">Next →</button>
+    </div>
+  </div>
+
+  <!-- Results screen -->
+  <div id="results-screen">
+    <p class="grade-msg" id="grade-msg">Excellent work!</p>
+    <div class="result-score" id="final-pct">—</div>
+    <p class="result-label" id="final-label">— / 25 correct</p>
+    <div class="result-breakdown" id="breakdown"></div>
+    <button class="btn btn-primary" onclick="restart()" style="margin-top:0.5rem; font-size:0.95rem; padding:0.75rem 2rem;">Retake Quiz</button>
+  </div>
+
+  <footer>Occipital Lobe · Cerebral Cortex Series · Neuroscience Quiz</footer>
+</div>
+
+<script>
+const QUESTIONS = [
+  // ── BOUNDARIES (5) ──
+  {
+    cat: "boundaries", catLabel: "Boundaries", diff: "Easy",
+    q: "Which sulcus forms the boundary between the occipital lobe and the parietal lobe?",
+    opts: ["Lateral sulcus", "Central sulcus", "Parieto-occipital sulcus", "Calcarine sulcus"],
+    ans: 2,
+    exp: "The <strong>parieto-occipital sulcus</strong> is a real, visible sulcus that separates the occipital lobe from the parietal lobe. It is the posterior boundary of the occipital lobe."
+  },
+  {
+    cat: "boundaries", catLabel: "Boundaries", diff: "Easy",
+    q: "The lateral boundary of the occipital lobe is:",
+    opts: [
+      "A real sulcus called the occipito-temporal sulcus",
+      "An imaginary line from the preoccipital notch to the tip of the lateral sulcus",
+      "The calcarine sulcus",
+      "The central sulcus extended posteriorly"
+    ],
+    ans: 1,
+    exp: "The lateral boundary is <strong>imaginary</strong> — a line drawn from the <strong>preoccipital notch</strong> to the tip of the <strong>lateral sulcus</strong>. This separates the occipital lobe from the temporal lobe."
+  },
+  {
+    cat: "boundaries", catLabel: "Boundaries", diff: "Medium",
+    q: "The preoccipital notch is described as:",
+    opts: [
+      "A prominent sulcus on the medial surface of the brain",
+      "A small notch or divot used as a landmark for the imaginary boundary of the occipital lobe",
+      "The origin of the lateral sulcus",
+      "A groove separating the two cerebral hemispheres"
+    ],
+    ans: 1,
+    exp: "The <strong>preoccipital notch</strong> is a small notch (divot) on the inferior edge of the hemisphere. An imaginary line is drawn from this notch toward the tip of the lateral sulcus to define the occipital lobe's lateral border."
+  },
+  {
+    cat: "boundaries", catLabel: "Boundaries", diff: "Medium",
+    q: "Which lobe is separated from the occipital lobe by the imaginary line drawn from the preoccipital notch?",
+    opts: ["Frontal lobe", "Parietal lobe", "Temporal lobe", "Insular lobe"],
+    ans: 2,
+    exp: "The imaginary line from the preoccipital notch to the tip of the lateral sulcus separates the occipital lobe from the <strong>temporal lobe</strong>."
+  },
+  {
+    cat: "boundaries", catLabel: "Boundaries", diff: "Hard",
+    q: "Which statement about occipital lobe boundaries is CORRECT?",
+    opts: [
+      "Both boundaries of the occipital lobe are real, visible sulci",
+      "Both boundaries are imaginary lines with no anatomical landmarks",
+      "One boundary is a real sulcus (parieto-occipital); the other is an imaginary line based on the preoccipital notch",
+      "The occipital lobe has three boundaries, all of which are real sulci"
+    ],
+    ans: 2,
+    exp: "The occipital lobe has exactly two boundaries: the <strong>parieto-occipital sulcus</strong> (real) separating it from the parietal lobe, and an <strong>imaginary line</strong> from the preoccipital notch to the lateral sulcus tip separating it from the temporal lobe."
+  },
+
+  // ── CORTICAL AREAS (5) ──
+  {
+    cat: "cortex", catLabel: "Cortical Areas", diff: "Easy",
+    q: "How many functionally distinct cortical areas does the occipital lobe contain?",
+    opts: ["One", "Two", "Three", "Four"],
+    ans: 1,
+    exp: "The occipital lobe contains exactly <strong>two</strong> cortical areas: the <strong>primary visual cortex</strong> and the <strong>visual association cortex</strong>."
+  },
+  {
+    cat: "cortex", catLabel: "Cortical Areas", diff: "Easy",
+    q: "What is the core function of the primary visual cortex?",
+    opts: [
+      "Recognition and identification of objects",
+      "Storing memories of past visual experiences",
+      "Conscious awareness of visual stimuli",
+      "Coordinating eye movement"
+    ],
+    ans: 2,
+    exp: "The primary visual cortex provides <strong>conscious awareness of visual stimuli</strong>. It receives the raw visual image but does <em>not</em> yet identify or interpret it."
+  },
+  {
+    cat: "cortex", catLabel: "Cortical Areas", diff: "Medium",
+    q: "Where is the visual association cortex located relative to the primary visual cortex?",
+    opts: [
+      "Posterior to it",
+      "Anterior to it",
+      "Directly superior to it",
+      "On the contralateral hemisphere"
+    ],
+    ans: 1,
+    exp: "The visual association cortex is located <strong>anterior to</strong> the primary visual cortex within the occipital lobe."
+  },
+  {
+    cat: "cortex", catLabel: "Cortical Areas", diff: "Medium",
+    q: "Which cortex is located at the most posterior part of the occipital lobe?",
+    opts: [
+      "Visual association cortex",
+      "Primary somatosensory cortex",
+      "Primary visual cortex",
+      "Secondary visual cortex"
+    ],
+    ans: 2,
+    exp: "The <strong>primary visual cortex</strong> occupies the most posterior part of the occipital lobe. The visual association cortex is positioned just anterior to it."
+  },
+  {
+    cat: "cortex", catLabel: "Cortical Areas", diff: "Hard",
+    q: "A student says: 'The primary visual cortex identifies what object I'm looking at.' This statement is:",
+    opts: [
+      "Correct — it is the main identification center",
+      "Incorrect — identification is the role of the visual association cortex; the primary visual cortex only provides conscious awareness",
+      "Partially correct — it identifies shape but not color",
+      "Correct — it works alongside the lateral geniculate nucleus to identify objects"
+    ],
+    ans: 1,
+    exp: "The statement is <strong>incorrect</strong>. The primary visual cortex provides only <em>conscious awareness</em> of visual stimuli. Object <em>identification and recognition</em> is the function of the <strong>visual association cortex</strong>."
+  },
+
+  // ── VISUAL PATHWAY (5) ──
+  {
+    cat: "pathway", catLabel: "Visual Pathway", diff: "Easy",
+    q: "Which thalamic nucleus serves as the relay station in the visual pathway before signals reach the cortex?",
+    opts: [
+      "Medial geniculate nucleus",
+      "Ventral posterolateral nucleus",
+      "Lateral geniculate nucleus (LGN)",
+      "Pulvinar nucleus"
+    ],
+    ans: 2,
+    exp: "The <strong>lateral geniculate nucleus (LGN)</strong> of the thalamus is the relay station in the visual pathway. Signals travel: retina → optic nerve → optic chiasma → LGN → primary visual cortex."
+  },
+  {
+    cat: "pathway", catLabel: "Visual Pathway", diff: "Easy",
+    q: "What happens at the optic chiasma?",
+    opts: [
+      "All fibers from both eyes cross to the opposite side",
+      "No fibers cross — all remain ipsilateral",
+      "A partial crossing of optic nerve fibers occurs",
+      "The optic nerve synapses onto the LGN"
+    ],
+    ans: 2,
+    exp: "At the <strong>optic chiasma</strong>, there is a <strong>partial crossing</strong> of fibers — specifically, fibers from the nasal (medial) retina of each eye cross to the contralateral side, while temporal fibers remain ipsilateral."
+  },
+  {
+    cat: "pathway", catLabel: "Visual Pathway", diff: "Medium",
+    q: "Place the following in the correct order of the visual pathway: (1) Primary visual cortex, (2) Retina, (3) Lateral geniculate nucleus, (4) Optic chiasma",
+    opts: [
+      "1 → 2 → 3 → 4",
+      "2 → 4 → 3 → 1",
+      "3 → 2 → 4 → 1",
+      "2 → 3 → 4 → 1"
+    ],
+    ans: 1,
+    exp: "The correct order is: <strong>Retina (2) → Optic chiasma (4) → LGN (3) → Primary visual cortex (1)</strong>. From there, the signal goes to the visual association cortex for recognition."
+  },
+  {
+    cat: "pathway", catLabel: "Visual Pathway", diff: "Medium",
+    q: "After the primary visual cortex receives a visual stimulus, where does it send the information next?",
+    opts: [
+      "Back to the LGN for re-processing",
+      "To the frontal lobe motor cortex",
+      "To the visual association cortex",
+      "Directly to the hypothalamus"
+    ],
+    ans: 2,
+    exp: "After the primary visual cortex registers conscious awareness of the stimulus, it sends the information to the <strong>visual association cortex</strong>, which then analyzes and interprets the image."
+  },
+  {
+    cat: "pathway", catLabel: "Visual Pathway", diff: "Hard",
+    q: "Where do photoreceptors first transduce light into neural signals?",
+    opts: ["Optic nerve", "Lateral geniculate nucleus", "Retina", "Primary visual cortex"],
+    ans: 2,
+    exp: "Phototransduction occurs in the <strong>retina</strong>. Photoreceptors (rods and cones) convert light into electrochemical signals, which are then transmitted via the optic nerve toward the brain."
+  },
+
+  // ── VISUAL ASSOCIATION CORTEX (5) ──
+  {
+    cat: "association", catLabel: "Visual Association", diff: "Easy",
+    q: "Which of the following is NOT analyzed by the visual association cortex?",
+    opts: ["Color of the object", "Size of the object", "Temperature of the object", "Motion of the object"],
+    ans: 2,
+    exp: "The visual association cortex analyzes <strong>color, size, shape/angles, and motion</strong> of visual stimuli. Temperature is a somatosensory modality processed elsewhere — it is <strong>not</strong> part of visual analysis."
+  },
+  {
+    cat: "association", catLabel: "Visual Association", diff: "Easy",
+    q: "The visual association cortex achieves recognition of an object by:",
+    opts: [
+      "Sending signals to the retina for re-scanning",
+      "Analyzing visual properties AND comparing them with past memories",
+      "Receiving input directly from the LGN without involving the primary visual cortex",
+      "Processing only the color information of an object"
+    ],
+    ans: 1,
+    exp: "Recognition is a two-step process: (1) <strong>analyze</strong> visual properties (color, size, shape, motion) and (2) <strong>compare with past memories</strong> of similar visual experiences. Both steps together produce recognition."
+  },
+  {
+    cat: "association", catLabel: "Visual Association", diff: "Medium",
+    q: "In the basketball example from the lecture, which cortex allows you to conclude 'That is a basketball'?",
+    opts: [
+      "Primary visual cortex",
+      "Primary somatosensory cortex",
+      "Visual association cortex",
+      "Lateral geniculate nucleus"
+    ],
+    ans: 2,
+    exp: "The <strong>visual association cortex</strong> analyzes the orange color, round shape, and texture, then compares these with stored memories of a basketball to achieve <em>recognition</em>. The primary visual cortex only gave you awareness that 'something is there.'"
+  },
+  {
+    cat: "association", catLabel: "Visual Association", diff: "Medium",
+    q: "The visual association cortex stores which type of information to facilitate recognition?",
+    opts: [
+      "Procedural memories for motor movements",
+      "Past memories of visual experiences",
+      "Emotional responses to stimuli",
+      "Auditory memory traces"
+    ],
+    ans: 1,
+    exp: "The visual association cortex stores <strong>past memories of visual experiences</strong>. When a new visual stimulus arrives, it is compared against these stored memories to produce recognition."
+  },
+  {
+    cat: "association", catLabel: "Visual Association", diff: "Hard",
+    q: "Using the memory hook from the notes — 'The primary visual cortex says ___, the visual association cortex says ___.' Which best completes this?",
+    opts: [
+      "'I know what that is.' / 'Something is there.'",
+      "'Something is there.' / 'I know what that is.'",
+      "'The object is moving.' / 'The object has color.'",
+      "'I see light.' / 'The eye is healthy.'"
+    ],
+    ans: 1,
+    exp: "The memory hook is: Primary visual cortex → <strong>'Something is there'</strong> (conscious awareness). Visual association cortex → <strong>'I know what that is'</strong> (recognition through analysis + memory comparison)."
+  },
+
+  // ── CLINICAL CORRELATES (5) ──
+  {
+    cat: "clinical", catLabel: "Clinical", diff: "Easy",
+    q: "Visual agnosia is defined as:",
+    opts: [
+      "Complete blindness due to damage to the retina",
+      "Inability to recognize a visual object despite having intact vision",
+      "Loss of peripheral vision only",
+      "Inability to track moving objects"
+    ],
+    ans: 1,
+    exp: "<strong>Visual agnosia</strong> is the inability to <em>recognize</em> a visual object even though the patient's vision itself is intact. They can see the object but cannot identify it."
+  },
+  {
+    cat: "clinical", catLabel: "Clinical", diff: "Easy",
+    q: "A lesion in which structure causes visual agnosia?",
+    opts: [
+      "Retina",
+      "Optic nerve",
+      "Lateral geniculate nucleus",
+      "Visual association cortex"
+    ],
+    ans: 3,
+    exp: "Visual agnosia results from damage to the <strong>visual association cortex</strong>. All upstream structures (retina, optic nerve, LGN, primary visual cortex) remain intact — the patient can see but cannot recognize."
+  },
+  {
+    cat: "clinical", catLabel: "Clinical", diff: "Medium",
+    q: "A patient can see a basketball in front of them but cannot name it or identify what it is. Their retina, optic nerve, LGN, and primary visual cortex are all intact. Where is the lesion?",
+    opts: [
+      "Retina",
+      "Optic chiasma",
+      "Primary visual cortex",
+      "Visual association cortex"
+    ],
+    ans: 3,
+    exp: "This is classic <strong>visual agnosia</strong>. All upstream structures are intact (so the patient can see), but the <strong>visual association cortex</strong> is damaged, preventing analysis and recognition of the object."
+  },
+  {
+    cat: "clinical", catLabel: "Clinical", diff: "Medium",
+    q: "In a patient with visual agnosia, which of the following is TRUE?",
+    opts: [
+      "The patient cannot see the object at all",
+      "The patient can see the object but cannot recognize it",
+      "The patient can recognize the object but has blurry vision",
+      "The patient loses both vision and recognition simultaneously"
+    ],
+    ans: 1,
+    exp: "In visual agnosia, vision is <strong>intact</strong> — the patient can see the object. What is lost is the ability to <strong>recognize or identify</strong> the object, because the visual association cortex is damaged."
+  },
+  {
+    cat: "clinical", catLabel: "Clinical", diff: "Hard",
+    q: "A lesion limited to the primary visual cortex (with the visual association cortex intact) would most likely result in:",
+    opts: [
+      "Visual agnosia — can see but not recognize",
+      "Cortical blindness — loss of conscious visual awareness",
+      "Loss of color perception only",
+      "No deficit, as the visual association cortex compensates completely"
+    ],
+    ans: 1,
+    exp: "Damage to the <strong>primary visual cortex</strong> results in <strong>cortical blindness</strong> — loss of conscious visual awareness, because this is where visual signals first reach conscious perception. This is distinct from visual agnosia (which requires an intact primary visual cortex but damaged association cortex)."
+  }
+];
+
+// State
+let current = 0;
+let answered = [];
+let scores = { correct: 0, wrong: 0 };
+let catScores = {};
+
+const CATS = ["boundaries","cortex","pathway","association","clinical"];
+CATS.forEach(c => catScores[c] = { correct: 0, total: 0 });
+QUESTIONS.forEach(q => catScores[q.cat].total++);
+
+function startQuiz() {
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'block';
+  document.getElementById('progress-wrap').style.display = 'flex';
+  document.getElementById('score-strip').style.display = 'grid';
+  answered = new Array(QUESTIONS.length).fill(null);
+  scores = { correct: 0, wrong: 0 };
+  CATS.forEach(c => catScores[c].correct = 0);
+  current = 0;
+  renderQ();
+  updateProgress();
+  updateScore();
+}
+
+function renderQ() {
+  const q = QUESTIONS[current];
+  const userAns = answered[current];
+  const letters = ['A','B','C','D'];
+
+  let optsHtml = q.opts.map((opt, i) => {
+    let cls = '';
+    if (userAns !== null) {
+      if (i === q.ans) cls = 'correct';
+      else if (i === userAns && i !== q.ans) cls = 'wrong';
+    }
+    return `<div class="option ${cls} ${userAns !== null ? 'disabled' : ''}" onclick="selectOpt(${i})">
+      <span class="opt-letter">${letters[i]}</span>
+      <span>${opt}</span>
+    </div>`;
+  }).join('');
+
+  const expCls = userAns !== null ? 'show' : '';
+
+  document.getElementById('q-container').innerHTML = `
+    <div class="q-card">
+      <div class="q-meta">
+        <span class="q-num">Q${current + 1} of ${QUESTIONS.length}</span>
+        <span class="q-category cat-${q.cat}">${q.catLabel}</span>
+        <span class="q-diff">${q.diff}</span>
+      </div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">${optsHtml}</div>
+      <div class="explanation ${expCls}">💡 ${q.exp}</div>
+    </div>
+  `;
+
+  // Nav
+  document.getElementById('btn-prev').disabled = current === 0;
+  const isLast = current === QUESTIONS.length - 1;
+  const nextBtn = document.getElementById('btn-next');
+  if (isLast && answered.every(a => a !== null)) {
+    nextBtn.textContent = 'See Results →';
+    nextBtn.onclick = showResults;
+  } else {
+    nextBtn.textContent = isLast ? 'Next →' : 'Next →';
+    nextBtn.onclick = () => go(1);
+    nextBtn.disabled = isLast;
+  }
+}
+
+function selectOpt(idx) {
+  if (answered[current] !== null) return;
+  const q = QUESTIONS[current];
+  answered[current] = idx;
+
+  if (idx === q.ans) {
+    scores.correct++;
+    catScores[q.cat].correct++;
+  } else {
+    scores.wrong++;
+  }
+
+  updateScore();
+  renderQ();
+
+  // If last question answered, enable results
+  if (current === QUESTIONS.length - 1 && answered.every(a => a !== null)) {
+    const nextBtn = document.getElementById('btn-next');
+    nextBtn.textContent = 'See Results →';
+    nextBtn.onclick = showResults;
+    nextBtn.disabled = false;
+  }
+}
+
+function go(dir) {
+  current = Math.max(0, Math.min(QUESTIONS.length - 1, current + dir));
+  renderQ();
+  updateProgress();
+}
+
+function updateProgress() {
+  const done = answered.filter(a => a !== null).length;
+  const pct = (done / QUESTIONS.length) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `${done} / ${QUESTIONS.length}`;
+}
+
+function updateScore() {
+  document.getElementById('sc-correct').textContent = scores.correct;
+  document.getElementById('sc-wrong').textContent = scores.wrong;
+  document.getElementById('sc-remain').textContent = QUESTIONS.length - scores.correct - scores.wrong;
+  updateProgress();
+}
+
+function showResults() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  document.getElementById('results-screen').style.display = 'block';
+
+  const pct = Math.round((scores.correct / QUESTIONS.length) * 100);
+  document.getElementById('final-pct').textContent = pct + '%';
+  document.getElementById('final-label').textContent = `${scores.correct} / ${QUESTIONS.length} correct`;
+
+  const grades = [
+    [90, 'Outstanding — Occipital lobe mastered! 🎯'],
+    [75, 'Great work — solid understanding overall.'],
+    [60, 'Good effort — review the areas you missed.'],
+    [0,  'Keep going — revisit the study notes and try again.']
+  ];
+  const msg = grades.find(([min]) => pct >= min)[1];
+  document.getElementById('grade-msg').textContent = msg;
+
+  const catNames = {
+    boundaries: 'Boundaries',
+    cortex: 'Cortical Areas',
+    pathway: 'Visual Pathway',
+    association: 'Assoc. Cortex',
+    clinical: 'Clinical'
+  };
+  const catColors = {
+    boundaries: 'var(--accent)',
+    cortex: 'var(--accent2)',
+    pathway: 'var(--accent3)',
+    association: '#fb923c',
+    clinical: 'var(--warn)'
+  };
+
+  document.getElementById('breakdown').innerHTML = CATS.map(c => {
+    const s = catScores[c];
+    const p = Math.round((s.correct / s.total) * 100);
+    return `<div class="breakdown-row">
+      <div class="br-cat">${catNames[c]}</div>
+      <div class="br-score" style="color:${catColors[c]}">${s.correct}/${s.total} <span style="font-size:0.8rem;color:var(--muted)">(${p}%)</span></div>
+    </div>`;
+  }).join('');
+}
+
+function restart() {
+  answered = new Array(QUESTIONS.length).fill(null);
+  scores = { correct: 0, wrong: 0 };
+  CATS.forEach(c => catScores[c].correct = 0);
+  current = 0;
+  document.getElementById('results-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'block';
+  renderQ();
+  updateProgress();
+  updateScore();
+}
+</script>
+</body>
+</html>
