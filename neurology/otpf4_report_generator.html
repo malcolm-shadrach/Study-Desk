@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OTPF4 Report Generator</title>
+<style>
+  :root{
+    --navy:#1c2c4c;
+    --navy-soft:#33456b;
+    --box-blue:#d7e2f4;
+    --box-blue-line:#9fb3d6;
+    --page-bg:#eef1f6;
+    --panel-bg:#ffffff;
+    --amber-bg:#fdf1de;
+    --amber-line:#e0a63a;
+    --amber-text:#8a5a12;
+    --green:#2c7a4b;
+    --ink:#1c2230;
+    --muted:#6b7385;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+    background:var(--page-bg);
+    color:var(--ink);
+  }
+  .app{
+    display:grid;
+    grid-template-columns: 380px 1fr;
+    gap:20px;
+    padding:20px;
+    max-width:1400px;
+    margin:0 auto;
+  }
+  @media (max-width:900px){
+    .app{grid-template-columns:1fr;}
+  }
+  h1{
+    font-family:Georgia,'Times New Roman',serif;
+    font-size:1.35rem;
+    color:var(--navy);
+    margin:0 0 2px 0;
+    letter-spacing:.2px;
+  }
+  .subtitle{
+    color:var(--muted);
+    font-size:.82rem;
+    margin-bottom:16px;
+  }
+  .panel{
+    background:var(--panel-bg);
+    border-radius:var(--radius);
+    padding:16px;
+    box-shadow:0 1px 3px rgba(20,30,60,.08);
+    border:1px solid #e2e6ee;
+  }
+  .input-panel{position:sticky; top:20px; align-self:start;}
+  textarea{
+    width:100%;
+    min-height:360px;
+    resize:vertical;
+    border:1px solid #cfd6e4;
+    border-radius:8px;
+    padding:10px;
+    font-family:ui-monospace,Consolas,monospace;
+    font-size:.78rem;
+    line-height:1.4;
+    color:var(--ink);
+  }
+  .hint{
+    font-size:.72rem;
+    color:var(--muted);
+    margin:8px 0 14px 0;
+    line-height:1.4;
+  }
+  button.primary{
+    width:100%;
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:11px 14px;
+    border-radius:8px;
+    font-size:.9rem;
+    font-weight:600;
+    cursor:pointer;
+    letter-spacing:.2px;
+  }
+  button.primary:disabled{background:#9aa6bd; cursor:default;}
+  button.secondary{
+    width:100%;
+    margin-top:10px;
+    background:#fff;
+    color:var(--navy);
+    border:1.5px solid var(--navy);
+    padding:9px 14px;
+    border-radius:8px;
+    font-size:.85rem;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .status{
+    font-size:.78rem;
+    color:var(--navy-soft);
+    margin-top:10px;
+    min-height:1em;
+  }
+  .error{color:#a3341f;}
+
+  .summary-bar{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:var(--panel-bg);
+    border:1px solid #e2e6ee;
+    border-radius:var(--radius);
+    padding:14px 18px;
+    margin-bottom:16px;
+  }
+  .ring{
+    font-family:Georgia,serif;
+    font-size:1.1rem;
+    font-weight:700;
+    color:var(--navy);
+    white-space:nowrap;
+  }
+  .bar-track{
+    flex:1;
+    height:8px;
+    background:#e6eaf2;
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .bar-fill{
+    height:100%;
+    background:var(--green);
+    transition:width .4s ease;
+  }
+
+  .frame{
+    border:2px solid var(--navy);
+    border-radius:var(--radius);
+    background:var(--panel-bg);
+    padding:18px 20px 22px 20px;
+  }
+  .frame-title{
+    font-weight:700;
+    font-size:.95rem;
+    text-align:center;
+    color:var(--navy);
+    margin-bottom:14px;
+    letter-spacing:.3px;
+  }
+  .client-strip{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:8px 18px;
+    background:#f4f6fb;
+    border:1px solid #dde3ee;
+    border-radius:8px;
+    padding:12px 16px;
+    margin-bottom:18px;
+    font-size:.82rem;
+  }
+  .client-strip div span.k{color:var(--muted); display:block; font-size:.68rem; text-transform:uppercase; letter-spacing:.4px;}
+
+  .grid-row{
+    display:grid;
+    gap:14px;
+    margin-bottom:14px;
+  }
+  .cols-1{grid-template-columns:1fr;}
+  .cols-2{grid-template-columns:1fr 1fr;}
+  .cols-3{grid-template-columns:1fr 1fr 1fr;}
+  @media (max-width:700px){
+    .cols-2, .cols-3{grid-template-columns:1fr;}
+  }
+
+  .box{
+    background:var(--box-blue);
+    border-radius:8px;
+    padding:12px 14px 14px 14px;
+  }
+  .box h3{
+    margin:0 0 8px 0;
+    font-size:.82rem;
+    color:var(--navy);
+    border-bottom:1px solid var(--box-blue-line);
+    padding-bottom:5px;
+  }
+  .item{
+    font-size:.78rem;
+    line-height:1.35;
+    margin-bottom:7px;
+  }
+  .item .label{font-weight:600; color:var(--navy-soft);}
+  .item .val{color:var(--ink);}
+  .item.missing{
+    background:var(--amber-bg);
+    border:1px solid var(--amber-line);
+    border-radius:5px;
+    padding:5px 7px;
+  }
+  .item.missing .val{color:var(--amber-text); font-style:italic;}
+  .flag{
+    display:inline-block;
+    font-size:.65rem;
+    font-weight:700;
+    color:#fff;
+    background:var(--amber-line);
+    border-radius:4px;
+    padding:1px 5px;
+    margin-left:5px;
+    vertical-align:middle;
+  }
+
+  .checklist-panel{
+    margin-top:18px;
+    background:var(--amber-bg);
+    border:1.5px solid var(--amber-line);
+    border-radius:var(--radius);
+    padding:16px 18px;
+  }
+  .checklist-panel h3{
+    margin:0 0 10px 0;
+    color:var(--amber-text);
+    font-size:.9rem;
+  }
+  .checklist-panel ul{margin:0; padding-left:18px; font-size:.8rem; color:var(--amber-text); line-height:1.6;}
+
+  .placeholder{
+    text-align:center;
+    color:var(--muted);
+    padding:60px 20px;
+    font-size:.9rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- INPUT PANEL -->
+  <div class="panel input-panel">
+    <h1>OTPF4 Report Generator</h1>
+    <div class="subtitle">Paste a completed neurological assessment → auto-mapped to OTPF4 domains</div>
+
+    <textarea id="assessmentInput" placeholder="Paste the filled-in SRRC Neurological Assessment text here (demographic data, history, on examination, motor components, functional abilities, higher cortical function, goals, treatment approaches, etc.)"></textarea>
+
+    <div class="hint">Paste as much free text as you have — headings, bullet notes, or full sentences are fine. The tool extracts what's documented and clearly flags every OTPF4 element that has no supporting information, so you know exactly what still needs to be filled in.</div>
+
+    <button class="primary" id="generateBtn" onclick="generateReport()">Generate OTPF4 Report</button>
+    <button class="secondary" id="downloadBtn" onclick="downloadWord()" style="display:none;">Download as Word Document</button>
+    <div class="status" id="statusMsg"></div>
+  </div>
+
+  <!-- OUTPUT PANEL -->
+  <div id="outputArea">
+    <div class="placeholder">Paste an assessment on the left and click "Generate OTPF4 Report" to see the mapped report here.</div>
+  </div>
+
+</div>
+
+<script>
+let lastReport = null;
+
+const DOMAIN_LAYOUT = [
+  { row:['performance_in_areas_of_occupation'], cols:1 },
+  { row:['performance_skills','performance_patterns'], cols:2 },
+  { row:['context','activity_demands','client_factors'], cols:3 }
+];
+
+const LABELS = {
+  performance_in_areas_of_occupation: { title:'Performance in Areas of Occupation', fields:{
+    adl:'Activities of Daily Living (ADL)', iadl:'Instrumental ADL (IADL)', education:'Education',
+    work:'Work', play:'Play', leisure:'Leisure', social_participation:'Social Participation'
+  }},
+  performance_skills: { title:'Performance Skills', fields:{
+    motor_skills:'Motor Skills', process_skills:'Process Skills', communication_interaction_skills:'Communication/Interaction Skills'
+  }},
+  performance_patterns: { title:'Performance Patterns', fields:{
+    habits:'Habits', routines:'Routines', roles:'Roles'
+  }},
+  context: { title:'Context', fields:{
+    cultural:'Cultural', physical:'Physical', social:'Social', personal:'Personal',
+    spiritual:'Spiritual', temporal:'Temporal', virtual:'Virtual'
+  }},
+  activity_demands: { title:'Activity Demands', fields:{
+    objects_used:'Objects Used & Properties', space_demands:'Space Demands', social_demands:'Social Demands',
+    sequencing_timing:'Sequencing & Timing', required_actions:'Required Actions',
+    required_body_functions:'Required Body Functions', required_body_structures:'Required Body Structures'
+  }},
+  client_factors: { title:'Client Factors', fields:{
+    body_functions:'Body Functions', body_structures:'Body Structures'
+  }}
+};
+
+const CLIENT_FIELDS = { name:'Name', age:'Age', sex:'Sex', diagnosis:'Diagnosis', chief_complaints:'Chief Complaints', date_of_assessment:'Date' };
+
+function buildSystemPrompt(){
+  return `You are an occupational therapy documentation assistant. You will receive raw, free-text notes from a completed SRRC Neurological Assessment form (an OT intake exam covering demographics, history, cranial nerve exam, motor components - tone/MAS/Brunnstrom/RLA/ROM/MMT/reflexes/voluntary motor control, sensation, balance, coordination, tremor, hand function, functional abilities/ADL, oro-motor evaluation, higher cortical function, perceptual components, OT problems, goals, and treatment approaches).
+
+Your job: extract every clinically relevant fact and MAP it into the OTPF4 (Occupational Therapy Practice Framework, 4th Ed.) domain structure below. Use standard OT clinical reasoning for mapping, e.g.:
+- Client Factors > Body Functions: mental/cognitive functions, sensory functions, neuromusculoskeletal & movement-related functions (tone, reflexes, ROM, strength, motor control, tremor, balance, coordination, sensation, higher cortical/executive function, perceptual findings).
+- Client Factors > Body Structures: structural findings (contractures, deformities, structures of the nervous/musculoskeletal system).
+- Performance Skills > Motor Skills: observed motor performance during functional tasks (hand function, gait/mobility as it appears during activity, oro-motor function affecting eating).
+- Performance Skills > Process Skills: organizing/sequencing/problem-solving/attention as applied to task performance (drawn from higher executive function findings).
+- Performance Skills > Communication/Interaction Skills: only if the notes describe interaction/communication behavior.
+- Performance Patterns (Habits/Routines/Roles): drawn from occupational, educational, family history.
+- Performance in Areas of Occupation > ADL/IADL: drawn from the Functional Abilities / ADL section (and oro-motor/drooling if it affects self-feeding).
+- Education/Work: from educational and occupational history.
+- Play/Leisure/Social Participation: usually NOT captured by a standard neuro exam — mark missing unless explicitly mentioned.
+- Context (Cultural/Physical/Social/Personal/Spiritual/Temporal/Virtual): Personal often maps from demographics (age/sex/diagnosis); others are rarely captured in a neuro exam — mark missing unless explicit.
+- Activity Demands (all 7 sub-items): this domain describes a SPECIFIC occupation-based activity analysis. A standard intake neuro exam almost never documents this — mark these missing unless the notes explicitly analyze a specific activity's demands. Do not force-fit unrelated exam data here.
+
+For every single field listed below you MUST return an object: {"value": "<short extracted finding, max ~18 words, in clinical shorthand>", "documented": true} if the notes support it, OR {"value": "", "documented": false} if the notes do not support it. Do not guess or fabricate. Do not leave any field out.
+
+Return ONLY a single valid JSON object, no markdown fences, no preamble, no explanation, matching exactly this shape:
+
+{
+ "client_info": { "name":{}, "age":{}, "sex":{}, "diagnosis":{}, "chief_complaints":{}, "date_of_assessment":{} },
+ "domains": {
+   "performance_in_areas_of_occupation": { "adl":{}, "iadl":{}, "education":{}, "work":{}, "play":{}, "leisure":{}, "social_participation":{} },
+   "performance_skills": { "motor_skills":{}, "process_skills":{}, "communication_interaction_skills":{} },
+   "performance_patterns": { "habits":{}, "routines":{}, "roles":{} },
+   "context": { "cultural":{}, "physical":{}, "social":{}, "personal":{}, "spiritual":{}, "temporal":{}, "virtual":{} },
+   "activity_demands": { "objects_used":{}, "space_demands":{}, "social_demands":{}, "sequencing_timing":{}, "required_actions":{}, "required_body_functions":{}, "required_body_structures":{} },
+   "client_factors": { "body_functions":{}, "body_structures":{} }
+ }
+}
+
+Each {} above must be filled with the {"value":..., "documented":...} object format. Keep values concise. Respond with JSON only.`;
+}
+
+async function generateReport(){
+  const text = document.getElementById('assessmentInput').value.trim();
+  const statusEl = document.getElementById('statusMsg');
+  const btn = document.getElementById('generateBtn');
+  const downloadBtn = document.getElementById('downloadBtn');
+
+  if(!text){
+    statusEl.innerHTML = '<span class="error">Paste some assessment text first.</span>';
+    return;
+  }
+
+  btn.disabled = true;
+  statusEl.textContent = 'Analyzing assessment and mapping to OTPF4…';
+  document.getElementById('outputArea').innerHTML = '<div class="placeholder">Generating report…</div>';
+
+  try{
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({
+        model:"claude-sonnet-4-6",
+        max_tokens:1000,
+        system: buildSystemPrompt(),
+        messages:[{ role:"user", content: text }]
+      })
+    });
+
+    const data = await response.json();
+    let raw = (data.content || []).map(b => b.text || '').join('').trim();
+    raw = raw.replace(/^```json/i,'').replace(/^```/,'').replace(/```$/,'').trim();
+
+    let parsed;
+    try{
+      parsed = JSON.parse(raw);
+    }catch(e){
+      const match = raw.match(/\{[\s\S]*\}/);
+      if(match){ parsed = JSON.parse(match[0]); } else { throw e; }
+    }
+
+    lastReport = parsed;
+    renderReport(parsed);
+    downloadBtn.style.display = 'block';
+    statusEl.textContent = 'Report generated.';
+  }catch(err){
+    console.error(err);
+    statusEl.innerHTML = '<span class="error">Could not generate the report. Please try again.</span>';
+    document.getElementById('outputArea').innerHTML = '<div class="placeholder">Something went wrong generating the report. Try again.</div>';
+  }finally{
+    btn.disabled = false;
+  }
+}
+
+function countStats(domains){
+  let total = 0, done = 0;
+  for(const domKey in domains){
+    for(const fKey in domains[domKey]){
+      total++;
+      if(domains[domKey][fKey] && domains[domKey][fKey].documented) done++;
+    }
+  }
+  return {total, done};
+}
+
+function renderReport(report){
+  const out = document.getElementById('outputArea');
+  const domains = report.domains || {};
+  const client = report.client_info || {};
+  const {total, done} = countStats(domains);
+  const pct = total ? Math.round((done/total)*100) : 0;
+
+  let html = '';
+
+  html += `<div class="summary-bar">
+    <div class="ring">${done} / ${total} OTPF4 elements documented (${pct}%)</div>
+    <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+  </div>`;
+
+  html += `<div class="frame">`;
+  html += `<div class="frame-title">ENGAGEMENT IN OCCUPATION — OTPF4 MAPPED REPORT</div>`;
+
+  html += `<div class="client-strip">`;
+  for(const k in CLIENT_FIELDS){
+    const f = client[k] || {value:'', documented:false};
+    html += `<div><span class="k">${CLIENT_FIELDS[k]}</span>${f.documented ? escapeHtml(f.value) : '<span class="flag">MISSING</span>'}</div>`;
+  }
+  html += `</div>`;
+
+  DOMAIN_LAYOUT.forEach(rowDef=>{
+    html += `<div class="grid-row cols-${rowDef.cols}">`;
+    rowDef.row.forEach(domKey=>{
+      const domInfo = LABELS[domKey];
+      const domData = domains[domKey] || {};
+      html += `<div class="box"><h3>${domInfo.title}</h3>`;
+      for(const fKey in domInfo.fields){
+        const f = domData[fKey] || {value:'', documented:false};
+        if(f.documented && f.value){
+          html += `<div class="item"><span class="label">${domInfo.fields[fKey]}:</span> <span class="val">${escapeHtml(f.value)}</span></div>`;
+        }else{
+          html += `<div class="item missing"><span class="label">${domInfo.fields[fKey]}:</span> <span class="val">Not documented — needs to be filled</span></div>`;
+        }
+      }
+      html += `</div>`;
+    });
+    html += `</div>`;
+  });
+
+  html += `</div>`; // frame
+
+  // checklist of missing items
+  const missing = [];
+  for(const domKey in domains){
+    const domInfo = LABELS[domKey];
+    for(const fKey in domains[domKey]){
+      const f = domains[domKey][fKey];
+      if(!f || !f.documented){
+        missing.push(`${domInfo.title} → ${domInfo.fields[fKey]}`);
+      }
+    }
+  }
+  for(const k in CLIENT_FIELDS){
+    const f = client[k];
+    if(!f || !f.documented) missing.push(`Client Information → ${CLIENT_FIELDS[k]}`);
+  }
+
+  if(missing.length){
+    html += `<div class="checklist-panel"><h3>Needs to be filled (${missing.length})</h3><ul>`;
+    missing.forEach(m => html += `<li>${escapeHtml(m)}</li>`);
+    html += `</ul></div>`;
+  }
+
+  out.innerHTML = html;
+}
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function downloadWord(){
+  if(!lastReport) return;
+  const domains = lastReport.domains || {};
+  const client = lastReport.client_info || {};
+  const {total, done} = countStats(domains);
+
+  let body = `<h1 style="font-family:Georgia,serif;color:#1c2c4c;">OTPF4 Mapped Report</h1>`;
+  body += `<p style="font-size:12px;color:#555;">${done} of ${total} OTPF4 elements documented</p>`;
+
+  body += `<h2 style="font-family:Georgia,serif;color:#1c2c4c;font-size:16px;">Client Information</h2><table style="width:100%;border-collapse:collapse;font-size:12px;">`;
+  for(const k in CLIENT_FIELDS){
+    const f = client[k] || {};
+    body += `<tr><td style="padding:4px;border:1px solid #ccc;font-weight:bold;width:180px;">${CLIENT_FIELDS[k]}</td><td style="padding:4px;border:1px solid #ccc;${f.documented?'':'color:#a3341f;font-style:italic;'}">${f.documented ? escapeHtml(f.value) : 'Not documented — needs to be filled'}</td></tr>`;
+  }
+  body += `</table>`;
+
+  DOMAIN_LAYOUT.forEach(rowDef=>{
+    rowDef.row.forEach(domKey=>{
+      const domInfo = LABELS[domKey];
+      const domData = domains[domKey] || {};
+      body += `<h2 style="font-family:Georgia,serif;color:#1c2c4c;font-size:16px;margin-top:18px;">${domInfo.title}</h2><table style="width:100%;border-collapse:collapse;font-size:12px;">`;
+      for(const fKey in domInfo.fields){
+        const f = domData[fKey] || {};
+        body += `<tr><td style="padding:4px;border:1px solid #ccc;font-weight:bold;width:220px;">${domInfo.fields[fKey]}</td><td style="padding:4px;border:1px solid #ccc;${f.documented?'':'color:#a3341f;font-style:italic;'}">${f.documented ? escapeHtml(f.value) : 'Not documented — needs to be filled'}</td></tr>`;
+      }
+      body += `</table>`;
+    });
+  });
+
+  const html = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+  <head><meta charset="utf-8"><title>OTPF4 Report</title></head>
+  <body>${body}</body></html>`;
+
+  const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const nameField = client.name;
+  const fname = (nameField && nameField.documented && nameField.value) ? nameField.value.replace(/[^a-z0-9]/gi,'_') : 'patient';
+  a.href = url;
+  a.download = `OTPF4_Report_${fname}.doc`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
