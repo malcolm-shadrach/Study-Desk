@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cerebral Cortex — Unit 12 Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ══════════════════════════════════════
+   LOBE PALETTE (theme-invariant hues,
+   adjusted per mode via CSS vars)
+══════════════════════════════════════ */
+:root {
+  --frontal-h:  #D85A30; /* coral-red */
+  --temporal-h: #EF9F27; /* amber     */
+  --parietal-h: #1D9E75; /* teal      */
+  --occipital-h:#378ADD; /* blue      */
+  --insula-h:   #D4537E; /* pink      */
+
+  --accent: #1D9E75;
+}
+
+/* ── LIGHT ── */
+[data-theme="light"] {
+  --bg:            #F9F7F4;
+  --surface:       #FFFFFF;
+  --surface-2:     #F4F1EC;
+  --border:        #E5E0D8;
+  --border-strong: #C8C0B4;
+  --text:          #1A1714;
+  --text-muted:    #6B6560;
+  --text-faint:    #A39D97;
+  --toggle-bg:     #E5E0D8;
+  --toggle-knob:   #FFFFFF;
+
+  /* lobe tints */
+  --frontal-bg:   #FAECE7; --frontal-dark:   #712B13;
+  --temporal-bg:  #FDF3E3; --temporal-dark:  #633806;
+  --parietal-bg:  #E4F5EE; --parietal-dark:  #085041;
+  --occipital-bg: #E6F1FB; --occipital-dark: #0C447C;
+  --insula-bg:    #FBEAF0; --insula-dark:    #72243E;
+
+  --sulci-bg:    #EEEDFE; --sulci-dark:   #3C3489; --sulci-mid: #534AB7;
+  --blue-bg:     #E6F1FB; --blue-dark:    #0C447C; --blue-mid:  #378ADD;
+  --purple-bg:   #EEEDFE; --purple-dark:  #3C3489; --purple-mid:#534AB7;
+  --red-bg:      #FCEBEB; --red-dark:     #791F1F; --red-mid:   #E24B4A;
+  --amber-bg:    #FDF3E3; --amber-dark:   #633806; --amber-mid: #EF9F27;
+  --green-bg:    #EAF3DE; --green-dark:   #27500A; --green-mid: #639922;
+}
+
+/* ── DARK ── */
+[data-theme="dark"] {
+  --bg:            #0F0F13;
+  --surface:       #16161D;
+  --surface-2:     #1E1E28;
+  --border:        #2A2A38;
+  --border-strong: #3E3E52;
+  --text:          #E8E4D8;
+  --text-muted:    #8A8478;
+  --text-faint:    #5A5650;
+  --toggle-bg:     #3C3489;
+  --toggle-knob:   #E8E4D8;
+
+  --frontal-bg:   #2A150E; --frontal-dark:   #F0946A;
+  --temporal-bg:  #261A07; --temporal-dark:  #F5C97A;
+  --parietal-bg:  #0D2B22; --parietal-dark:  #5ECFA6;
+  --occipital-bg: #0C1E33; --occipital-dark: #7BBFEE;
+  --insula-bg:    #260C18; --insula-dark:    #F09ABE;
+
+  --sulci-bg:    #1A1840; --sulci-dark:  #A99FF0; --sulci-mid: #534AB7;
+  --blue-bg:     #0C1E33; --blue-dark:   #7BBFEE; --blue-mid:  #378ADD;
+  --purple-bg:   #1A1840; --purple-dark: #A99FF0; --purple-mid:#534AB7;
+  --red-bg:      #260B0B; --red-dark:    #F08080; --red-mid:   #E24B4A;
+  --amber-bg:    #261A07; --amber-dark:  #F5C97A; --amber-mid: #EF9F27;
+  --green-bg:    #0F2009; --green-dark:  #8FCC50; --green-mid: #639922;
+}
+
+/* ══════════════════════════════════════
+   TRANSITIONS
+══════════════════════════════════════ */
+body, .region, .region-header, .region-body, .card,
+.mini-card, .pathway-step, .pearl, .clinical, .insight,
+.lobe-section, .lobe-head, .area-row, .area-row-head,
+.sulci-card, .clin-card, .toggle-track, th, td,
+.summary-tbl td, .summary-tbl th {
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.2s ease;
+}
+
+/* ══════════════════════════════════════
+   BASE
+══════════════════════════════════════ */
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.page { max-width: 960px; margin: 0 auto; padding: 0 24px 80px; }
+
+/* ── Top bar (toggle) ── */
+.topbar { display: flex; justify-content: flex-end; padding: 20px 0 0; }
+
+.toggle-wrap {
+  display: flex; align-items: center; gap: 9px;
+  cursor: pointer; user-select: none;
+}
+.toggle-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.07em;
+  text-transform: uppercase; color: var(--text-faint);
+}
+.toggle-track {
+  width: 44px; height: 24px; border-radius: 99px;
+  background: var(--toggle-bg); position: relative;
+  border: 1px solid var(--border-strong); flex-shrink: 0;
+}
+.toggle-knob {
+  position: absolute; top: 3px; left: 3px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--toggle-knob);
+  transition: transform 0.22s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 1px 3px rgba(0,0,0,.25);
+}
+[data-theme="dark"] .toggle-knob { transform: translateX(20px); }
+.toggle-sun, .toggle-moon { position: absolute; font-size: 11px; top: 50%; transform: translateY(-50%); }
+.toggle-sun  { left: 6px; color: var(--amber-mid); }
+.toggle-moon { right: 6px; color: var(--sulci-mid); }
+[data-theme="light"] .toggle-moon { opacity: 0.35; }
+[data-theme="dark"]  .toggle-sun  { opacity: 0.35; }
+
+/* ── Header ── */
+.header { padding: 36px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+.header-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.dot-accent { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+.eyebrow-text { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+.header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(32px, 5vw, 52px); line-height: 1.1; font-weight: 400; margin-bottom: 14px; }
+.header h1 em { font-style: italic; color: var(--accent); }
+.header-sub { font-size: 15px; color: var(--text-muted); max-width: 600px; line-height: 1.7; }
+
+/* ── Quick-jump chips ── */
+.quicknav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
+.qchip {
+  font-size: 12px; font-weight: 500; padding: 5px 13px;
+  border-radius: 99px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text-muted);
+  cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+}
+.qchip:hover { background: var(--surface-2); color: var(--text); border-color: var(--border-strong); }
+
+/* lobe-coloured qchips */
+.qchip-frontal  { border-color: var(--frontal-h); color: var(--frontal-dark); background: var(--frontal-bg); }
+.qchip-temporal { border-color: var(--temporal-h); color: var(--temporal-dark); background: var(--temporal-bg); }
+.qchip-parietal { border-color: var(--parietal-h); color: var(--parietal-dark); background: var(--parietal-bg); }
+.qchip-occipital{ border-color: var(--occipital-h); color: var(--occipital-dark); background: var(--occipital-bg); }
+.qchip-insula   { border-color: var(--insula-h); color: var(--insula-dark); background: var(--insula-bg); }
+.qchip-frontal:hover, .qchip-temporal:hover, .qchip-parietal:hover,
+.qchip-occipital:hover, .qchip-insula:hover { filter: brightness(0.96); }
+
+/* ══════════════════════════════════════
+   COLLAPSIBLE REGIONS
+══════════════════════════════════════ */
+.region { margin-bottom: 20px; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.region-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 22px; cursor: pointer; user-select: none;
+}
+.region-header:hover { filter: brightness(0.97); }
+[data-theme="dark"] .region-header:hover { filter: brightness(1.08); }
+.region-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 99px; flex-shrink: 0; letter-spacing: 0.04em; }
+.region-title { font-family: 'DM Serif Display', serif; font-size: 19px; font-weight: 400; flex: 1; line-height: 1.2; }
+.region-sub   { font-size: 12px; margin-top: 2px; opacity: 0.75; }
+.chevron-icon { margin-left: auto; flex-shrink: 0; transition: transform 0.25s; color: var(--text-faint); }
+.chevron-icon.open { transform: rotate(180deg); }
+
+.rh-sulci    { background: var(--sulci-bg); }
+.rh-frontal  { background: var(--frontal-bg); }
+.rh-temporal { background: var(--temporal-bg); }
+.rh-parietal { background: var(--parietal-bg); }
+.rh-occipital{ background: var(--occipital-bg); }
+.rh-insula   { background: var(--insula-bg); }
+.rh-blue     { background: var(--blue-bg); }
+.rh-red      { background: var(--red-bg); }
+.rh-green    { background: var(--green-bg); }
+
+.rb-sulci    { background: var(--sulci-bg);    color: var(--sulci-dark); }
+.rb-frontal  { background: var(--frontal-bg);  color: var(--frontal-dark); }
+.rb-temporal { background: var(--temporal-bg); color: var(--temporal-dark); }
+.rb-parietal { background: var(--parietal-bg); color: var(--parietal-dark); }
+.rb-occipital{ background: var(--occipital-bg);color: var(--occipital-dark); }
+.rb-insula   { background: var(--insula-bg);   color: var(--insula-dark); }
+.rb-blue     { background: var(--blue-bg);     color: var(--blue-dark); }
+.rb-red      { background: var(--red-bg);      color: var(--red-dark); }
+.rb-green    { background: var(--green-bg);    color: var(--green-dark); }
+
+.rt-sulci    { color: var(--sulci-dark); }
+.rt-frontal  { color: var(--frontal-dark); }
+.rt-temporal { color: var(--temporal-dark); }
+.rt-parietal { color: var(--parietal-dark); }
+.rt-occipital{ color: var(--occipital-dark); }
+.rt-insula   { color: var(--insula-dark); }
+.rt-blue     { color: var(--blue-dark); }
+.rt-red      { color: var(--red-dark); }
+.rt-green    { color: var(--green-dark); }
+
+.region-body { display: none; padding: 24px; background: var(--surface); border-top: 1px solid var(--border); }
+.region-body.open { display: block; animation: fadeIn 0.18s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+
+/* ══════════════════════════════════════
+   SHARED UTILITIES
+══════════════════════════════════════ */
+.s-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); margin: 0 0 12px; }
+.mt  { margin-top: 22px; }
+.mt2 { margin-top: 14px; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+
+.facts { list-style: none; }
+.facts li { font-size: 13.5px; color: var(--text-muted); line-height: 1.65; padding: 6px 0 6px 16px; border-left: 1.5px solid var(--border); margin-bottom: 4px; position: relative; }
+.facts li::before { content: ''; position: absolute; left: -4px; top: 13px; width: 6px; height: 6px; border-radius: 50%; background: var(--border-strong); }
+.facts li b  { color: var(--text); font-weight: 600; }
+.facts li em { font-style: italic; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.grid4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+@media (max-width: 680px) { .grid2, .grid3, .grid4 { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 440px) { .grid2, .grid3, .grid4 { grid-template-columns: 1fr; } }
+
+.mini-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.mini-card-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 6px; }
+.mini-card-val   { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+.mini-card-val b { color: var(--text); font-weight: 600; }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 14px; position: relative; overflow: hidden; }
+.card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
+.card.frontal::before  { background: var(--frontal-h); }
+.card.temporal::before { background: var(--temporal-h); }
+.card.parietal::before { background: var(--parietal-h); }
+.card.occipital::before{ background: var(--occipital-h); }
+.card.insula::before   { background: var(--insula-h); }
+.card.blue::before     { background: var(--blue-mid); }
+.card.none::before     { display: none; }
+.card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.card h2 { font-family: 'DM Serif Display', serif; font-size: 16px; font-weight: 400; color: var(--text); line-height: 1.3; margin-bottom: 12px; }
+.card-head h2 { margin-bottom: 0; }
+
+.zone-badge { display: inline-flex; align-items: center; font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; white-space: nowrap; flex-shrink: 0; }
+.badge-frontal  { background: var(--frontal-bg);  color: var(--frontal-dark); }
+.badge-temporal { background: var(--temporal-bg); color: var(--temporal-dark); }
+.badge-parietal { background: var(--parietal-bg); color: var(--parietal-dark); }
+.badge-occipital{ background: var(--occipital-bg);color: var(--occipital-dark); }
+.badge-insula   { background: var(--insula-bg);   color: var(--insula-dark); }
+.badge-blue     { background: var(--blue-bg);     color: var(--blue-dark); }
+.badge-red      { background: var(--red-bg);      color: var(--red-dark); }
+.badge-sulci    { background: var(--sulci-bg);    color: var(--sulci-dark); }
+
+.insight { background: var(--surface-2); border-left: 3px solid var(--sulci-mid); border-radius: 0 8px 8px 0; padding: 12px 16px; margin-top: 14px; font-size: 13px; color: var(--text-muted); line-height: 1.65; }
+.insight b { color: var(--text); font-weight: 600; }
+.insight.frontal  { border-left-color: var(--frontal-h); }
+.insight.temporal { border-left-color: var(--temporal-h); }
+.insight.parietal { border-left-color: var(--parietal-h); }
+.insight.occipital{ border-left-color: var(--occipital-h); }
+.insight.insula   { border-left-color: var(--insula-h); }
+.insight.blue     { border-left-color: var(--blue-mid); }
+.insight.red      { border-left-color: var(--red-mid); }
+
+.clinical { background: var(--red-bg); border: 1px solid var(--red-mid); border-left: 3px solid var(--red-mid); border-radius: 0 10px 10px 0; padding: 14px 16px; margin-top: 14px; }
+.clinical-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.clinical-icon { width: 18px; height: 18px; border-radius: 50%; background: var(--red-mid); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.clinical-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red-dark); }
+.clinical p { font-size: 13px; color: var(--red-dark); line-height: 1.65; }
+.clinical p+p { margin-top: 8px; }
+.clinical b { font-weight: 600; }
+
+/* ══════════════════════════════════════
+   OVERVIEW BRAIN MAP
+══════════════════════════════════════ */
+.brain-overview {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 22px;
+}
+.brain-overview p {
+  font-size: 13.5px; color: var(--text-muted); line-height: 1.7;
+  margin-bottom: 12px;
+}
+.brain-overview p:last-child { margin-bottom: 0; }
+.brain-overview b { color: var(--text); font-weight: 600; }
+
+/* universal pattern strip */
+.pattern-strip {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 0;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden; margin-top: 14px;
+}
+.pattern-node {
+  flex: 1; padding: 12px 14px; text-align: center;
+  font-size: 12px; font-weight: 600; color: var(--text);
+  border-right: 1px solid var(--border);
+  min-width: 120px;
+}
+.pattern-node:last-child { border-right: none; }
+.pattern-node span { display: block; font-size: 10px; font-weight: 400; color: var(--text-muted); margin-top: 3px; }
+.pattern-arrow { padding: 12px 6px; color: var(--text-faint); font-size: 16px; }
+
+/* ══════════════════════════════════════
+   SULCI CARDS
+══════════════════════════════════════ */
+.sulci-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 560px) { .sulci-grid { grid-template-columns: 1fr; } }
+
+.sulci-card {
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 18px;
+  border-top: 3px solid var(--sulci-mid);
+}
+.sulci-name { font-family: 'DM Serif Display', serif; font-size: 15px; font-weight: 400; color: var(--text); margin-bottom: 4px; }
+.sulci-alt  { font-size: 11px; font-style: italic; color: var(--text-faint); margin-bottom: 8px; }
+.sulci-sep  { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+.sulci-sep b { color: var(--text); font-weight: 600; }
+
+/* ══════════════════════════════════════
+   LOBE AREA SECTIONS
+══════════════════════════════════════ */
+.lobe-section {
+  border: 1px solid var(--border); border-radius: 12px;
+  overflow: hidden; margin-bottom: 18px;
+}
+.lobe-head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 20px;
+}
+.lobe-head-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+.lobe-head-title { font-family: 'DM Serif Display', serif; font-size: 16px; font-weight: 400; flex: 1; }
+.lobe-head-sub   { font-size: 11px; color: var(--text-muted); }
+
+/* frontal */
+.lobe-section.frontal  .lobe-head { background: var(--frontal-bg); border-bottom: 1px solid; border-color: var(--frontal-h); }
+.lobe-section.frontal  .lobe-head-dot { background: var(--frontal-h); }
+.lobe-section.frontal  .lobe-head-title { color: var(--frontal-dark); }
+/* temporal */
+.lobe-section.temporal .lobe-head { background: var(--temporal-bg); border-bottom: 1px solid; border-color: var(--temporal-h); }
+.lobe-section.temporal .lobe-head-dot { background: var(--temporal-h); }
+.lobe-section.temporal .lobe-head-title { color: var(--temporal-dark); }
+/* parietal */
+.lobe-section.parietal .lobe-head { background: var(--parietal-bg); border-bottom: 1px solid; border-color: var(--parietal-h); }
+.lobe-section.parietal .lobe-head-dot { background: var(--parietal-h); }
+.lobe-section.parietal .lobe-head-title { color: var(--parietal-dark); }
+/* occipital */
+.lobe-section.occipital .lobe-head { background: var(--occipital-bg); border-bottom: 1px solid; border-color: var(--occipital-h); }
+.lobe-section.occipital .lobe-head-dot { background: var(--occipital-h); }
+.lobe-section.occipital .lobe-head-title { color: var(--occipital-dark); }
+/* insula */
+.lobe-section.insula   .lobe-head { background: var(--insula-bg); border-bottom: 1px solid; border-color: var(--insula-h); }
+.lobe-section.insula   .lobe-head-dot { background: var(--insula-h); }
+.lobe-section.insula   .lobe-head-title { color: var(--insula-dark); }
+
+/* area rows inside lobe sections */
+.area-rows { width: 100%; }
+.area-row {
+  display: grid; grid-template-columns: 200px 1fr 1fr;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.area-row:last-child { border-bottom: none; }
+.area-row-head {
+  display: grid; grid-template-columns: 200px 1fr 1fr;
+  background: var(--surface-2); border-bottom: 1px solid var(--border);
+}
+.area-row-head span, .area-col {
+  padding: 11px 16px; font-size: 12.5px; vertical-align: top; color: var(--text-muted);
+}
+.area-row-head span { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
+.area-name { padding: 12px 16px; font-size: 13px; font-weight: 600; color: var(--text); }
+.area-col b { color: var(--text); font-weight: 600; }
+.area-col em { font-style: italic; }
+.area-tag { display: inline-flex; align-items: center; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 7px; border-radius: 99px; margin-top: 4px; }
+.tag-dom { background: var(--temporal-bg); color: var(--temporal-dark); }
+.tag-con { background: var(--occipital-bg); color: var(--occipital-dark); }
+.area-pos { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--text-faint); display: block; margin-top: 4px; }
+@media (max-width: 640px) {
+  .area-row, .area-row-head { grid-template-columns: 1fr; }
+  .area-row-head span { border-bottom: 1px solid var(--border); }
+  .area-name, .area-col { border-bottom: 1px solid var(--border); }
+}
+
+/* callout strip */
+.callout {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 0 0 10px 10px; padding: 12px 18px;
+}
+.callout-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.callout-text { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+.callout-text b { color: var(--text); font-weight: 600; }
+
+/* ══════════════════════════════════════
+   MASTER SUMMARY TABLE
+══════════════════════════════════════ */
+.summary-tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
+.summary-tbl { width: 100%; border-collapse: collapse; min-width: 580px; font-size: 13px; }
+.summary-tbl th {
+  text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-faint);
+  padding: 9px 14px 10px; border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.summary-tbl td {
+  padding: 10px 14px; border-bottom: 1px solid var(--border);
+  vertical-align: top; color: var(--text-muted); line-height: 1.5;
+}
+.summary-tbl tr:last-child td { border-bottom: none; }
+.summary-tbl td:first-child { width: 14%; }
+.summary-tbl td:nth-child(2){ font-weight: 600; color: var(--text); width: 28%; }
+.summary-tbl b { color: var(--text); font-weight: 600; }
+
+.lobe-dot-sm {
+  display: inline-block; width: 9px; height: 9px;
+  border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════
+   CLINICAL FLASH CARDS
+══════════════════════════════════════ */
+.clin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 580px) { .clin-grid { grid-template-columns: 1fr; } }
+
+.clin-card {
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px 20px;
+  position: relative; overflow: hidden;
+}
+.clin-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.clin-card.frontal::before  { background: var(--frontal-h); }
+.clin-card.temporal::before { background: var(--temporal-h); }
+.clin-card.parietal::before { background: var(--parietal-h); }
+.clin-card.occipital::before{ background: var(--occipital-h); }
+.clin-card h4 { font-family: 'DM Serif Display', serif; font-size: 15px; font-weight: 400; margin-bottom: 8px; }
+.clin-card.frontal  h4 { color: var(--frontal-dark); }
+.clin-card.temporal h4 { color: var(--temporal-dark); }
+.clin-card.parietal h4 { color: var(--parietal-dark); }
+.clin-card.occipital h4{ color: var(--occipital-dark); }
+.clin-card p { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
+.clin-card p b { color: var(--text); font-weight: 600; }
+.clin-lobe-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.07em;
+  text-transform: uppercase; padding: 2px 8px; border-radius: 99px;
+  display: inline-block; margin-bottom: 8px;
+}
+.clin-card.frontal  .clin-lobe-tag { background: var(--frontal-bg); color: var(--frontal-dark); }
+.clin-card.temporal .clin-lobe-tag { background: var(--temporal-bg); color: var(--temporal-dark); }
+.clin-card.parietal .clin-lobe-tag { background: var(--parietal-bg); color: var(--parietal-dark); }
+.clin-card.occipital .clin-lobe-tag{ background: var(--occipital-bg); color: var(--occipital-dark); }
+
+/* ── Footer ── */
+.footer { text-align: center; padding: 40px 0 0; font-size: 12px; color: var(--text-faint); border-top: 1px solid var(--border); margin-top: 60px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── Theme toggle ── -->
+  <div class="topbar">
+    <div class="toggle-wrap" onclick="toggleTheme()" role="button" aria-label="Toggle dark/light mode" tabindex="0">
+      <span class="toggle-label" id="toggle-label">Light</span>
+      <div class="toggle-track">
+        <span class="toggle-sun">☀︎</span>
+        <span class="toggle-moon">☽</span>
+        <div class="toggle-knob"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <div class="header-eyebrow">
+      <div class="dot-accent"></div>
+      <span class="eyebrow-text">Neuroscience · Unit 12</span>
+    </div>
+    <h1>Cerebral<br><em>Cortex</em></h1>
+    <p class="header-sub">Master reference — all lobes, their functional areas, sulcal boundaries, and clinical correlates in a single consolidated guide.</p>
+  </header>
+
+  <!-- ── Quick-jump chips ── -->
+  <nav aria-label="Quick jump" class="quicknav">
+    <button class="qchip" onclick="openRegion('overview')">Overview</button>
+    <button class="qchip" onclick="openRegion('sulci')">Sulci &amp; Boundaries</button>
+    <button class="qchip qchip-frontal"  onclick="openRegion('frontal')">Frontal Lobe</button>
+    <button class="qchip qchip-temporal" onclick="openRegion('temporal')">Temporal Lobe</button>
+    <button class="qchip qchip-parietal" onclick="openRegion('parietal')">Parietal Lobe</button>
+    <button class="qchip qchip-occipital" onclick="openRegion('occipital')">Occipital Lobe</button>
+    <button class="qchip qchip-insula"  onclick="openRegion('insula')">Insula</button>
+    <button class="qchip" onclick="openRegion('mastertable')">Master Table</button>
+    <button class="qchip" onclick="openRegion('clinical')">Clinical Correlates</button>
+  </nav>
+
+
+  <!-- ══════════════ OVERVIEW ══════════════ -->
+  <div class="region" id="reg-overview">
+    <div class="region-header rh-blue" onclick="toggle('overview')">
+      <span class="region-badge rb-blue">Section 01</span>
+      <div>
+        <div class="region-title rt-blue">Overview of the Cerebral Cortex</div>
+        <div class="region-sub rt-blue">Five lobes · universal primary → association → integration pattern</div>
+      </div>
+      <svg class="chevron-icon" id="chev-overview" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="region-body" id="body-overview">
+
+      <div class="brain-overview">
+        <p>The cerebral cortex is divided into <b>four main lobes</b> — frontal, temporal, parietal, and occipital — plus a fifth, smaller lobe called the <b>insula</b>, which is hidden within the lateral sulcus and only visible when that sulcus is opened.</p>
+        <p>Each lobe follows a universal two-tier architecture: a <b>primary cortex</b> that receives or sends raw signals, paired with an <b>association cortex</b> that analyses, interprets, and stores those signals. Higher-order integration occurs in the <b>posterior association area</b>, where parietal, occipital, and temporal signals converge.</p>
+      </div>
+
+      <p class="s-label">Universal cortical processing pattern</p>
+      <div class="pattern-strip">
+        <div class="pattern-node" style="background:var(--blue-bg);color:var(--blue-dark);">
+          Primary Cortex
+          <span>Raw signal — awareness only</span>
+        </div>
+        <div class="pattern-arrow">→</div>
+        <div class="pattern-node" style="background:var(--sulci-bg);color:var(--sulci-dark);">
+          Association Cortex
+          <span>Analyse · recognise · store</span>
+        </div>
+        <div class="pattern-arrow">→</div>
+        <div class="pattern-node" style="background:var(--parietal-bg);color:var(--parietal-dark);">
+          Posterior Association Area
+          <span>Multi-modal integration</span>
+        </div>
+        <div class="pattern-arrow">→</div>
+        <div class="pattern-node" style="background:var(--frontal-bg);color:var(--frontal-dark);">
+          Motor Output / Memory
+          <span>Action · long-term encoding</span>
+        </div>
+      </div>
+
+      <p class="s-label mt">Five lobes at a glance</p>
+      <div class="grid2" style="margin-bottom:0;">
+        <div class="mini-card" style="border-left:3px solid var(--frontal-h);">
+          <div class="mini-card-label" style="color:var(--frontal-dark);">Frontal lobe</div>
+          <div class="mini-card-val"><b>Motor control, executive function, speech production.</b> Anterior to central sulcus; superior to lateral sulcus.</div>
+        </div>
+        <div class="mini-card" style="border-left:3px solid var(--temporal-h);">
+          <div class="mini-card-label" style="color:var(--temporal-dark);">Temporal lobe</div>
+          <div class="mini-card-val"><b>Auditory processing, language comprehension, olfaction.</b> Inferior to lateral sulcus.</div>
+        </div>
+        <div class="mini-card" style="border-left:3px solid var(--parietal-h);">
+          <div class="mini-card-label" style="color:var(--parietal-dark);">Parietal lobe</div>
+          <div class="mini-card-val"><b>Somatosensory processing, spatial integration.</b> Posterior to central sulcus; anterior to parieto-occipital sulcus.</div>
+        </div>
+        <div class="mini-card" style="border-left:3px solid var(--occipital-h);">
+          <div class="mini-card-label" style="color:var(--occipital-dark);">Occipital lobe</div>
+          <div class="mini-card-val"><b>Visual processing and recognition.</b> Posterior to parieto-occipital sulcus and imaginary preoccipital line.</div>
+        </div>
+      </div>
+      <div class="mini-card mt2" style="border-left:3px solid var(--insula-h);">
+        <div class="mini-card-label" style="color:var(--insula-dark);">Insula (5th lobe)</div>
+        <div class="mini-card-val"><b>Taste, visceral sensation, vestibular processing.</b> Hidden within the lateral sulcus — only visible when the sulcus is retracted.</div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ SULCI ══════════════ -->
+  <div class="region" id="reg-sulci">
+    <div class="region-header rh-sulci" onclick="toggle('sulci')">
+      <span class="region-badge rb-sulci">Section 02</span>
+      <div>
+        <div class="region-title rt-sulci">Sulci &amp; Lobar Demarcations</div>
+        <div class="region-sub rt-sulci">Four boundaries that define all lobe territories</div>
+      </div>
+      <svg class="chevron-icon" id="chev-sulci" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="region-body" id="body-sulci">
+
+      <!-- Brain diagram with all sulci -->
+      <div style="margin-bottom:22px;">
+        <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);" aria-label="Lateral brain diagram showing all four lobar sulci">
+          <!-- Brain outline -->
+          <path d="M75,162 C55,162 36,142 34,116 C32,90 46,65 66,49 C88,32 115,26 142,24 C172,21 212,29 244,37 C278,46 318,61 350,67 C382,73 415,71 442,76 C468,81 492,95 507,113 C522,131 524,155 515,162 Z" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="1.5"/>
+
+          <!-- Frontal shading -->
+          <path d="M75,162 C55,162 36,142 34,116 C32,90 46,65 66,49 C88,32 115,26 142,24 C172,21 212,29 244,37 C278,46 306,57 314,67 L310,100 C290,105 262,112 240,116 C210,121 182,128 162,136 C145,143 128,152 113,158 C100,163 86,163 75,162 Z" fill="var(--frontal-bg)" opacity="0.6"/>
+          <!-- Temporal shading -->
+          <path d="M88,136 C110,126 145,118 175,113 C210,108 242,108 268,109 C290,110 308,116 328,124 C350,133 375,143 400,151 C422,158 450,162 480,158 C494,155 505,150 511,143 C515,152 516,160 515,162 L75,162 Z" fill="var(--temporal-bg)" opacity="0.55"/>
+          <!-- Parietal shading -->
+          <path d="M314,67 C332,73 362,80 384,82 C404,84 422,82 440,78 C448,80 458,84 465,89 C458,84 448,80 440,78 C430,100 422,122 414,138 C406,152 396,160 385,161 C368,162 348,158 330,152 C310,144 290,134 280,122 C270,110 268,96 268,82 C278,72 298,66 314,67 Z" fill="var(--parietal-bg)" opacity="0.55"/>
+          <!-- Occipital shading -->
+          <path d="M440,78 C456,80 472,87 486,100 C500,113 510,130 513,148 C514,154 513,159 511,162 L385,162 C396,160 406,153 414,140 C422,124 430,104 440,78 Z" fill="var(--occipital-bg)" opacity="0.7"/>
+
+          <!-- Central sulcus -->
+          <path d="M314,65 C317,86 313,108 306,130 C299,150 290,162 288,164" stroke="var(--frontal-h)" stroke-width="2.2" stroke-dasharray="5,3" fill="none"/>
+          <!-- Lateral sulcus -->
+          <path d="M88,136 C120,124 160,116 200,111 C235,107 265,107 290,108 C314,109 332,115 350,124" stroke="var(--temporal-h)" stroke-width="2.2" stroke-dasharray="5,3" fill="none"/>
+          <!-- Parieto-occipital sulcus -->
+          <path d="M440,76 C444,96 446,118 445,136 C444,150 440,162 438,165" stroke="var(--parietal-h)" stroke-width="2.2" stroke-dasharray="5,3" fill="none"/>
+          <!-- Preoccipital notch line (imaginary) -->
+          <line x1="486" y1="145" x2="350" y2="162" stroke="var(--occipital-h)" stroke-width="2" stroke-dasharray="4,3"/>
+          <circle cx="486" cy="145" r="4" fill="var(--occipital-h)" opacity="0.7"/>
+
+          <!-- Lobe labels -->
+          <text x="148" y="82" font-family="'DM Serif Display',serif" font-size="13" fill="var(--frontal-dark)">Frontal</text>
+          <text x="356" y="82" font-family="'DM Serif Display',serif" font-size="13" fill="var(--parietal-dark)">Parietal</text>
+          <text x="450" y="115" font-family="'DM Serif Display',serif" font-size="12" fill="var(--occipital-dark)">Occipital</text>
+          <text x="220" y="148" font-family="'DM Serif Display',serif" font-size="13" fill="var(--temporal-dark)">Temporal</text>
+
+          <!-- Sulcus labels -->
+          <text x="218" y="52" font-family="'DM Sans',sans-serif" font-size="9.5" fill="var(--frontal-dark)" font-weight="600">Central sulcus</text>
+          <line x1="311" y1="57" x2="316" y2="67" stroke="var(--frontal-dark)" stroke-width="1"/>
+          <text x="100" y="103" font-family="'DM Sans',sans-serif" font-size="9.5" fill="var(--temporal-dark)" font-weight="600">Lateral sulcus (Sylvian)</text>
+          <line x1="190" y1="106" x2="196" y2="114" stroke="var(--temporal-dark)" stroke-width="1"/>
+          <text x="450" y="62" font-family="'DM Sans',sans-serif" font-size="9.5" fill="var(--parietal-dark)" font-weight="600">Parieto-occipital</text>
+          <line x1="441" y1="65" x2="441" y2="76" stroke="var(--parietal-dark)" stroke-width="1"/>
+          <text x="494" y="135" font-family="'DM Sans',sans-serif" font-size="9.5" fill="var(--occipital-dark)" font-weight="600">Preoccipital</text>
+          <text x="494" y="147" font-family="'DM Sans',sans-serif" font-size="9.5" fill="var(--occipital-dark)" font-weight="600">notch (imaginary)</text>
+
+          <text x="85" y="188" font-family="'DM Sans',sans-serif" font-size="9" fill="var(--text-faint)">← Anterior</text>
+          <text x="455" y="188" font-family="'DM Sans',sans-serif" font-size="9" fill="var(--text-faint)">Posterior →</text>
+        </svg>
+      </div>
+
+      <div class="sulci-grid">
+        <div class="sulci-card" style="border-top-color:var(--frontal-h);">
+          <div class="sulci-name">Central Sulcus</div>
+          <div class="sulci-sep">Separates <b>Frontal</b> (anterior) from <b>Parietal</b> (posterior). Pre-central gyrus = motor cortex; post-central gyrus = sensory cortex.</div>
+        </div>
+        <div class="sulci-card" style="border-top-color:var(--temporal-h);">
+          <div class="sulci-name">Lateral Sulcus</div>
+          <div class="sulci-alt">aka Sylvian fissure</div>
+          <div class="sulci-sep">Separates <b>Temporal</b> (inferior) from <b>Frontal &amp; Parietal</b> (superior). Insula is hidden within.</div>
+        </div>
+        <div class="sulci-card" style="border-top-color:var(--parietal-h);">
+          <div class="sulci-name">Parieto-occipital Sulcus</div>
+          <div class="sulci-alt">Real sulcus on medial surface</div>
+          <div class="sulci-sep">Separates <b>Parietal</b> (anterior) from <b>Occipital</b> (posterior).</div>
+        </div>
+        <div class="sulci-card" style="border-top-color:var(--occipital-h);">
+          <div class="sulci-name">Preoccipital Notch → Lateral Sulcus tip</div>
+          <div class="sulci-alt">Imaginary convention line</div>
+          <div class="sulci-sep">Separates <b>Occipital</b> (posterior) from <b>Temporal</b> (anterior).</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ FRONTAL LOBE ══════════════ -->
+  <div class="region" id="reg-frontal">
+    <div class="region-header rh-frontal" onclick="toggle('frontal')">
+      <span class="region-badge rb-frontal">Section 03</span>
+      <div>
+        <div class="region-title rt-frontal">Frontal Lobe</div>
+        <div class="region-sub rt-frontal">Anterior to central sulcus · superior to lateral sulcus · 5 functional areas</div>
+      </div>
+      <svg class="chevron-icon" id="chev-frontal" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="region-body" id="body-frontal">
+
+      <div class="lobe-section frontal">
+        <div class="lobe-head">
+          <div class="lobe-head-dot"></div>
+          <div class="lobe-head-title">Frontal Lobe — Functional Areas</div>
+          <div class="lobe-head-sub">Brodmann Areas 4, 6, 8, 9–47, 44/45</div>
+        </div>
+        <div class="area-rows">
+          <div class="area-row-head">
+            <span>Area</span><span>Position</span><span>Function</span>
+          </div>
+          <div class="area-row">
+            <div class="area-name">Primary Motor Cortex<br><span class="area-tag tag-con">Contralateral control</span><br><span class="area-pos">BA 4</span></div>
+            <div class="area-col"><span class="area-pos">Pre-central gyrus</span><br>Immediately anterior to central sulcus</div>
+            <div class="area-col"><b>Voluntary movement</b> of the contralateral body. Left PMC controls right body; right PMC controls left. Outputs via <b>corticospinal</b> and <b>corticobulbar</b> tracts.</div>
+          </div>
+          <div class="area-row">
+            <div class="area-name">Motor Association Cortex<br><span class="area-pos">BA 6 (pre-motor + SMA)</span></div>
+            <div class="area-col"><span class="area-pos">Anterior to PMC</span><br>Pre-motor (lateral) + Supplementary Motor Area (medial)</div>
+            <div class="area-col"><b>Planning, sequencing, and execution</b> of voluntary movement. Contributes ~15% of corticospinal fibers; targets axial and proximal musculature.</div>
+          </div>
+          <div class="area-row">
+            <div class="area-name">Frontal Eye Fields<br><span class="area-pos">BA 8</span></div>
+            <div class="area-col"><span class="area-pos">Anterior &amp; superior to motor assoc. cortex</span></div>
+            <div class="area-col">Voluntary <b>conjugate saccadic eye movements</b>. Each FEF drives gaze to the <b>contralateral</b> side via the PPRF → CN VI nucleus → MLF → CN III.</div>
+          </div>
+          <div class="area-row">
+            <div class="area-name">Prefrontal Cortex<br><span class="area-pos">BA 9–14, 24, 25, 32, 45–47</span></div>
+            <div class="area-col"><span class="area-pos">Anterior to FEF</span><br>Prefrontal association area</div>
+            <div class="area-col"><b>Memory &amp; learning</b> · <b>Personality &amp; behaviour</b> · <b>Judgment, reasoning, decision-making</b> · Working memory. Projects to motor association cortex for planning.</div>
+          </div>
+          <div class="area-row">
+            <div class="area-name">Broca's Area<br><span class="area-tag tag-dom">Dominant hemisphere</span><br><span class="area-pos">BA 44/45</span></div>
+            <div class="area-col"><span class="area-pos">Inferior frontal gyrus (usually left)</span></div>
+            <div class="area-col"><b>Speech production</b> — generates the motor program for spoken language; outputs via corticobulbar tract to CN VII, IX/X/XI, XII.</div>
+          </div>
+        </div>
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <div class="callout-text"><b>Dominant hemisphere:</b> Broca's area is found on the <b>dominant</b> cerebral hemisphere (left in ~95% of right-handed individuals). Damage → <b>expressive (non-fluent) aphasia</b> — understands but cannot produce fluent speech.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ TEMPORAL LOBE ══════════════ -->
+  <div class="region" id="reg-temporal">
+    <div class="region-header rh-temporal" onclick="toggle('temporal')">
+      <span class="region-badge rb-temporal">Section 04</span>
+      <div>
+        <div class="region-title rt-temporal">Temporal Lobe</div>
+        <div class="region-sub rt-temporal">Inferior to lateral sulcus · auditory · language · olfaction</div>
+      </div>
+      <svg class="chevron-icon" id="chev-temporal" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="region-body" id="body-temporal">
+
+      <div class="lobe-section temporal">
+        <div class="lobe-head">
+          <div class="lobe-head-dot"></div>
+          <div class="lobe-head-title">Temporal Lobe — Functional Areas</div>
+          <div class="lobe-head-sub">Brodmann Areas 41, 42, 22, + medial olfactory cortex</div>
+        </div>
+        <div class="area-rows">
+          <div class="area-row-head">
+            <span>Area</span><span>Position</span><span>Function</span>
+          </div>
+          <div class="area-row">
+            <div class="area-name">Primary Auditory Cortex<br><span class="area-pos">BA 41, 42</span></div>
+            <div class="area-col"><span class="area-pos">Superior temporal gyrus</span><br>Just below lateral sulcus</div>
+            <div class="area-col">Conscious awareness of <b>sound pitch, frequency, and spatial location</b>. Receives from CN VIII → cochlear nuclei → medial geniculate nucleus (thalamus). Contralateral dominance.</div>
+          </div>
+          <div class="area-row">
+            <div class="area-name">Auditory Association Cortex</div>
+            <div class="area-col"><span class="area-pos">Inferior to primary auditory cortex</span></div>
+            <div class="area-col"><b>Analyses</b> pitch, frequency, amplitude, tone · <b>Compares</b> with stored auditory memories · <b>Identifies</b> sounds (musical notes, speech phonemes, alarms).</div>
+          </div>
+          <div class="area-row">
+            <div class="area-name">Wernicke's Area<br><span class="area-tag tag-dom">Dominant hemisphere</span><br><span class="area-pos">BA 22</span></div>
+            <div class="area-col"><span class="area-pos">Posterior superior temporal gyrus</span><br>Near temporal–parietal junction</div>
+            <div class="area-col"><b>Comprehension and understanding</b> of spoken and written language. Projects to Broca's via <b>arcuate fasciculus</b>. Lesion → receptive (fluent) aphasia — word salad speech, impaired comprehension.</div>
+          </div>
+          <div class="area-row">
+            <div class="area-name">Primary Olfactory Cortex<br>+ Olfactory Association Cortex</div>
+            <div class="area-col"><span class="area-pos">Medial temporal lobe</span><br>Uncus — not visible on lateral surface</div>
+            <div class="area-col">Primary: <b>awareness of smell</b> (CN I → cribriform plate → olfactory bulb → lateral striae → uncus). Association: <b>identifies &amp; stores</b> smells; projects to <b>amygdala</b> for emotional scent-memory.</div>
+          </div>
+        </div>
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <div class="callout-text"><b>Wernicke's vs Broca's:</b> Wernicke's = language <em>comprehension</em> (temporal lobe). Broca's = language <em>production</em> (frontal lobe). Both dominant hemisphere. Wernicke's aphasia is <em>fluent but meaningless</em>; Broca's is <em>non-fluent but understood</em>.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ PARIETAL LOBE ══════════════ -->
+  <div class="region" id="reg-parietal">
+    <div class="region-header rh-parietal" onclick="toggle('parietal')">
+      <span class="region-badge rb-parietal">Section 05</span>
+      <div>
+        <div class="region-title rt-parietal">Parietal Lobe</div>
+        <div class="region-sub rt-parietal">Posterior to central sulcus · somatosensory · spatial integration</div>
+      </div>
+      <svg class="chevron-icon" id="chev-parietal" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="region-body" id="body-parietal">
+
+      <div class="lobe-section parietal">
+        <div class="lobe-head">
+          <div class="lobe-head-dot"></div>
+          <div class="lobe-head-title">Parietal Lobe — Functional Areas</div>
+          <div class="lobe-head-sub">Brodmann Areas 3/1/2, 5/7, 39/40</div>
+        </div>
+        <div class="area-rows">
+          <div class="area-row-head">
+            <span>Area</span><span>Position</span><span>Function</span>
+          </div>
+          <div class="area-row">
+            <div class="area-name">Primary Somatosensory Cortex<br><span class="area-pos">BA 3, 1, 2</span></div>
+            <div class="area-col"><span class="area-pos">Post-central gyrus</span><br>Immediately posterior to central sulcus</div>
+            <div class="area-col">Conscious awareness of <b>somatic sensations</b>: fine/discriminative touch (DCML pathway), proprioception, vibration, pressure, pain, and temperature (STT pathway). Somatotopic organisation = sensory homunculus.</div>
+          </div>
+          <div class="area-row">
+            <div class="area-name">Somatosensory Association Cortex<br><span class="area-pos">BA 5, 7</span></div>
+            <div class="area-col"><span class="area-pos">Posterior to primary somatosensory cortex</span></div>
+            <div class="area-col"><b>Analyses &amp; recognises</b> somatic sensations — stereognosis (object ID by touch), graphesthesia (symbol on skin), barognosis (weight discrimination), statognosis (joint position).</div>
+          </div>
+          <div class="area-row">
+            <div class="area-name">Posterior Association Area<br><span class="area-pos">BA 39, 40</span></div>
+            <div class="area-col"><span class="area-pos">Posterior parietal cortex</span><br>Angular &amp; supramarginal gyri</div>
+            <div class="area-col"><b>Multi-modal integration</b> of visual, auditory, and somatosensory association cortices. Generates unified spatial awareness of the environment. Outputs to prefrontal cortex and motor areas.</div>
+          </div>
+        </div>
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <div class="callout-text"><b>Multi-modal convergence:</b> The posterior association area is where vision + hearing + touch all meet — the neurological foundation for coherent perception of where you are, what surrounds you, and how to navigate it.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ OCCIPITAL LOBE ══════════════ -->
+  <div class="region" id="reg-occipital">
+    <div class="region-header rh-occipital" onclick="toggle('occipital')">
+      <span class="region-badge rb-occipital">Section 06</span>
+      <div>
+        <div class="region-title rt-occipital">Occipital Lobe</div>
+        <div class="region-sub rt-occipital">Posterior to parieto-occipital sulcus · visual awareness &amp; recognition</div>
+      </div>
+      <svg class="chevron-icon" id="chev-occipital" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="region-body" id="body-occipital">
+
+      <div class="lobe-section occipital">
+        <div class="lobe-head">
+          <div class="lobe-head-dot"></div>
+          <div class="lobe-head-title">Occipital Lobe — Functional Areas</div>
+          <div class="lobe-head-sub">Brodmann Areas 17, 18, 19</div>
+        </div>
+        <div class="area-rows">
+          <div class="area-row-head">
+            <span>Area</span><span>Position</span><span>Function</span>
+          </div>
+          <div class="area-row">
+            <div class="area-name">Primary Visual Cortex (V1)<br><span class="area-pos">BA 17</span></div>
+            <div class="area-col"><span class="area-pos">Calcarine sulcus</span><br>Most posterior occipital (medial)</div>
+            <div class="area-col">Conscious <b>awareness of visual stimuli</b>. Receives from retina → CN II → optic chiasma → LGN (thalamus) → optic radiations → calcarine cortex. Contralateral visual field representation.</div>
+          </div>
+          <div class="area-row">
+            <div class="area-name">Visual Association Cortex<br><span class="area-pos">BA 18, 19</span></div>
+            <div class="area-col"><span class="area-pos">Surrounding and anterior to V1</span></div>
+            <div class="area-col"><b>Analyses</b> color, size, shape, and motion · <b>Compares</b> with stored visual memories · <b>Recognises</b> objects. Outputs: ventral ("what") stream → temporal; dorsal ("where/how") stream → parietal.</div>
+          </div>
+        </div>
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <div class="callout-text">V1 says <em>"something is there."</em> The visual association cortex says <em>"I know what that is."</em> A V1 lesion → <b>cortical blindness</b>. An association cortex lesion → <b>visual agnosia</b> (sees but cannot recognise).</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ INSULA ══════════════ -->
+  <div class="region" id="reg-insula">
+    <div class="region-header rh-insula" onclick="toggle('insula')">
+      <span class="region-badge rb-insula">Section 07</span>
+      <div>
+        <div class="region-title rt-insula">Insula — The 5th Lobe</div>
+        <div class="region-sub rt-insula">Hidden in the lateral sulcus · taste · visceral · vestibular</div>
+      </div>
+      <svg class="chevron-icon" id="chev-insula" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="region-body" id="body-insula">
+
+      <div class="lobe-section insula">
+        <div class="lobe-head">
+          <div class="lobe-head-dot"></div>
+          <div class="lobe-head-title">Insula — Functional Areas</div>
+          <div class="lobe-head-sub">Visible only when the lateral sulcus is retracted · BA 13</div>
+        </div>
+        <div class="area-rows">
+          <div class="area-row-head">
+            <span>Function</span><span>Inputs</span><span>Detail</span>
+          </div>
+          <div class="area-row">
+            <div class="area-name">Gustation (Taste)<br><em style="font-size:11px;color:var(--text-faint);">Primary gustatory cortex</em></div>
+            <div class="area-col">CN VII (anterior ⅔ tongue), CN IX (posterior ⅓), CN X (epiglottis) → <b>nucleus tractus solitarius</b> (NTS, medulla) → thalamus → insula</div>
+            <div class="area-col">Conscious awareness and discrimination of the five tastes: <b>sweet, sour, salty, bitter, umami</b>. Association cortex layers identify specific foods.</div>
+          </div>
+          <div class="area-row">
+            <div class="area-name">Visceral Sensation<br><em style="font-size:11px;color:var(--text-faint);">Interoception</em></div>
+            <div class="area-col">GVA fibers from heart, lungs, GI tract → brainstem → thalamus → insula</div>
+            <div class="area-col">Awareness of internal organ sensations — gut pain, nausea, cardiac sensation. Contributes to <b>visceral memory</b> (e.g., food aversion after poisoning).</div>
+          </div>
+          <div class="area-row">
+            <div class="area-name">Vestibular Cortex<br><em style="font-size:11px;color:var(--text-faint);">Proposed site</em></div>
+            <div class="area-col">Semicircular canals (dynamic equilibrium) + vestibule (static equilibrium) → CN VIII → vestibular nuclei → thalamus → insula</div>
+            <div class="area-col">Proposed cortical site for equilibrium processing — <b>dynamic</b> (rotational acceleration) and <b>static</b> (linear head tilt). Still under active investigation.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ MASTER TABLE ══════════════ -->
+  <div class="region" id="reg-mastertable">
+    <div class="region-header rh-green" onclick="toggle('mastertable')">
+      <span class="region-badge rb-green">Section 08</span>
+      <div>
+        <div class="region-title rt-green">Master Reference Table</div>
+        <div class="region-sub rt-green">All 17 cortical areas · lobe · position · one-liner function</div>
+      </div>
+      <svg class="chevron-icon" id="chev-mastertable" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="region-body" id="body-mastertable">
+
+      <div class="summary-tbl-wrap">
+        <table class="summary-tbl">
+          <thead>
+            <tr><th>Lobe</th><th>Area</th><th>One-liner function</th><th>Notes / Lesion</th></tr>
+          </thead>
+          <tbody>
+            <!-- FRONTAL -->
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--frontal-h)"></span>Frontal</td>
+              <td>Primary Motor Cortex</td>
+              <td>Contralateral voluntary movement via CST &amp; CBT</td>
+              <td><span class="area-tag tag-con">BA 4</span> Pre-central gyrus</td>
+            </tr>
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--frontal-h)"></span>Frontal</td>
+              <td>Motor Association Cortex</td>
+              <td>Plan, sequence &amp; execute voluntary movement</td>
+              <td><span class="area-tag tag-con">BA 6</span> Pre-motor + SMA</td>
+            </tr>
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--frontal-h)"></span>Frontal</td>
+              <td>Frontal Eye Fields</td>
+              <td>Voluntary conjugate saccadic eye movements</td>
+              <td><span class="area-tag tag-con">BA 8</span> Lesion → eyes deviate to lesion side</td>
+            </tr>
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--frontal-h)"></span>Frontal</td>
+              <td>Prefrontal Cortex</td>
+              <td>Memory, personality, judgment, decision-making</td>
+              <td><span class="area-tag tag-con">BA 9–47</span> Lesion → prefrontal syndrome (FTD)</td>
+            </tr>
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--frontal-h)"></span>Frontal</td>
+              <td>Broca's Area</td>
+              <td>Speech production (motor program)</td>
+              <td><span class="area-tag tag-dom">Dominant · BA 44/45</span> Lesion → expressive aphasia</td>
+            </tr>
+            <!-- TEMPORAL -->
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--temporal-h)"></span>Temporal</td>
+              <td>Primary Auditory Cortex</td>
+              <td>Conscious awareness of pitch, frequency, sound location</td>
+              <td><span class="area-tag tag-con">BA 41/42</span> Superior temporal gyrus</td>
+            </tr>
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--temporal-h)"></span>Temporal</td>
+              <td>Auditory Association Cortex</td>
+              <td>Analyse &amp; recognise sounds; store auditory memory</td>
+              <td>Inferior to primary auditory cortex</td>
+            </tr>
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--temporal-h)"></span>Temporal</td>
+              <td>Wernicke's Area</td>
+              <td>Language comprehension — spoken &amp; written</td>
+              <td><span class="area-tag tag-dom">Dominant · BA 22</span> Lesion → receptive aphasia</td>
+            </tr>
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--temporal-h)"></span>Temporal</td>
+              <td>Primary Olfactory Cortex</td>
+              <td>Awareness of smell (CN I pathway)</td>
+              <td>Medial temporal (uncus) — not visible laterally</td>
+            </tr>
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--temporal-h)"></span>Temporal</td>
+              <td>Olfactory Association Cortex</td>
+              <td>Identify &amp; store smells; amygdala emotional links</td>
+              <td>Below primary olfactory cortex</td>
+            </tr>
+            <!-- PARIETAL -->
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--parietal-h)"></span>Parietal</td>
+              <td>Primary Somatosensory Cortex</td>
+              <td>Aware of touch, proprioception, vibration, pressure</td>
+              <td><span class="area-tag tag-con">BA 3/1/2</span> Post-central gyrus</td>
+            </tr>
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--parietal-h)"></span>Parietal</td>
+              <td>Somatosensory Association Cortex</td>
+              <td>Analyse &amp; recognise somatic sensations (stereognosis)</td>
+              <td><span class="area-tag tag-con">BA 5/7</span> Lesion → astereognosis, agraphesthesia</td>
+            </tr>
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--parietal-h)"></span>Parietal</td>
+              <td>Posterior Association Area</td>
+              <td>Multi-modal spatial integration: vision + hearing + touch</td>
+              <td><span class="area-tag tag-con">BA 39/40</span> Lesion → hemispatial neglect</td>
+            </tr>
+            <!-- OCCIPITAL -->
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--occipital-h)"></span>Occipital</td>
+              <td>Primary Visual Cortex (V1)</td>
+              <td>Conscious visual awareness</td>
+              <td><span class="area-tag tag-con">BA 17</span> Lesion → cortical blindness</td>
+            </tr>
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--occipital-h)"></span>Occipital</td>
+              <td>Visual Association Cortex</td>
+              <td>Analyse color, motion, shape; recognise objects</td>
+              <td><span class="area-tag tag-con">BA 18/19</span> Lesion → visual agnosia</td>
+            </tr>
+            <!-- INSULA -->
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--insula-h)"></span>Insula</td>
+              <td>Gustatory Cortex</td>
+              <td>Taste awareness &amp; discrimination (5 tastes)</td>
+              <td>BA 13 · NTS pathway via CN VII/IX/X</td>
+            </tr>
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--insula-h)"></span>Insula</td>
+              <td>Visceral Sensation Area</td>
+              <td>Internal organ sensation; visceral memory</td>
+              <td>Heart, lungs, GI input</td>
+            </tr>
+            <tr>
+              <td><span class="lobe-dot-sm" style="background:var(--insula-h)"></span>Insula</td>
+              <td>Vestibular Cortex (proposed)</td>
+              <td>Dynamic &amp; static equilibrium processing</td>
+              <td>CN VIII pathway; still under investigation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ CLINICAL CORRELATES ══════════════ -->
+  <div class="region" id="reg-clinical">
+    <div class="region-header rh-red" onclick="toggle('clinical')">
+      <span class="region-badge rb-red">Section 09</span>
+      <div>
+        <div class="region-title rt-red">Clinical Correlates</div>
+        <div class="region-sub rt-red">Eight lesion syndromes — one card per condition</div>
+      </div>
+      <svg class="chevron-icon" id="chev-clinical" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="region-body" id="body-clinical">
+
+      <div class="clin-grid">
+        <div class="clin-card frontal">
+          <span class="clin-lobe-tag">Frontal — Broca's Area</span>
+          <h4>Broca's Aphasia</h4>
+          <p>Damage to Broca's area (dominant inferior frontal gyrus, usually MCA territory) → <b>non-fluent (expressive) aphasia</b>. Patient understands language but cannot produce fluent, grammatical speech. Often co-presents with right-sided upper extremity weakness.</p>
+        </div>
+        <div class="clin-card temporal">
+          <span class="clin-lobe-tag">Temporal — Wernicke's Area</span>
+          <h4>Wernicke's Aphasia</h4>
+          <p>Damage to Wernicke's area (dominant posterior temporal, MCA) → <b>fluent aphasia with impaired comprehension</b>. Speech is effortless but meaningless ("word salad"). Patient cannot understand spoken or written language.</p>
+        </div>
+        <div class="clin-card parietal">
+          <span class="clin-lobe-tag">Parietal — Somatosensory Assoc.</span>
+          <h4>Astereognosis</h4>
+          <p>Lesion of somatosensory association cortex → <b>inability to identify objects by touch alone</b> despite intact primary somatosensory sensation. Also associated: agraphesthesia (can't identify symbols traced on skin), baragnosis (can't compare weights).</p>
+        </div>
+        <div class="clin-card parietal">
+          <span class="clin-lobe-tag">Parietal — Posterior Association Area</span>
+          <h4>Hemispatial Neglect</h4>
+          <p>Usually right <b>posterior association area</b> (non-dominant parietal) lesion → patient ignores the <b>contralateral (left) half of space</b> — inattention, failure to dress left side, omitting left side of drawings. Sensory pathways intact; interpretation is disrupted.</p>
+        </div>
+        <div class="clin-card frontal">
+          <span class="clin-lobe-tag">Frontal — Prefrontal Cortex</span>
+          <h4>Prefrontal Syndrome</h4>
+          <p>Damage to prefrontal cortex (e.g., Phineas Gage; frontotemporal dementia) → <b>personality change</b>, poor impulse control, impaired judgment, disinhibition, hypersexuality, working memory loss, and late parkinsonian motor features.</p>
+        </div>
+        <div class="clin-card occipital">
+          <span class="clin-lobe-tag">Occipital Lobe</span>
+          <h4>Cortical Blindness / Visual Agnosia</h4>
+          <p><b>Primary visual cortex (V1) lesion</b> → cortical blindness — patient has no conscious visual awareness despite intact eyes. <b>Visual association cortex lesion</b> → visual agnosia — patient can see but cannot recognise or name what they see.</p>
+        </div>
+        <div class="clin-card frontal">
+          <span class="clin-lobe-tag">Frontal — Frontal Eye Fields</span>
+          <h4>Frontal Eye Field Lesion</h4>
+          <p><b>Destructive (stroke) lesion</b> of FEF → eyes deviate <b>toward the lesion side</b> (ipsilateral) — unopposed contralateral FEF drives gaze away from the lesion. <b>Irritative (seizure) lesion</b> → eyes deviate <b>away from</b> the focus (contralateral).</p>
+        </div>
+        <div class="clin-card temporal">
+          <span class="clin-lobe-tag">Temporal — Olfactory Cortex</span>
+          <h4>Anosmia / Olfactory Agnosia</h4>
+          <p><b>Primary olfactory cortex (uncus) damage</b> → anosmia — loss of conscious smell awareness. <b>Association cortex damage</b> → olfactory agnosia — can detect smell but cannot identify or name the odour. Also: uncal herniation may compress CN III before olfactory symptoms appear.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Neuroscience Study Guide &nbsp;·&nbsp; Unit 12: Cerebral Cortex — Master Reference</p>
+    <p style="margin-top:6px;">For study purposes only. Always verify with primary course materials.</p>
+  </footer>
+
+</div>
+
+<script>
+/* ── Collapsible regions ── */
+function toggle(id) {
+  document.getElementById('body-' + id).classList.toggle('open');
+  document.getElementById('chev-' + id).classList.toggle('open');
+}
+function openRegion(id) {
+  document.getElementById('body-' + id).classList.add('open');
+  document.getElementById('chev-' + id).classList.add('open');
+  setTimeout(() => {
+    document.getElementById('reg-' + id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 60);
+}
+
+/* ── Dark / light toggle ── */
+function toggleTheme() {
+  const html  = document.documentElement;
+  const label = document.getElementById('toggle-label');
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  label.textContent = isDark ? 'Light' : 'Dark';
+  try { localStorage.setItem('u12-theme', isDark ? 'light' : 'dark'); } catch(e) {}
+}
+try {
+  const saved = localStorage.getItem('u12-theme');
+  if (saved === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('toggle-label').textContent = 'Dark';
+  }
+} catch(e) {}
+document.querySelector('.toggle-wrap').addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleTheme(); }
+});
+
+// Open first section by default
+openRegion('overview');
+</script>
+</body>
+</html>
